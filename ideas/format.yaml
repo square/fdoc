@@ -25,7 +25,8 @@ Methods:
                 - Required: Yes
                 - Description: The name of a service to update
             - availability
-                - Type: Enum: "Available" | "Unavailable" | "Unknown"
+                - Type: Enum
+                - Values: !!set {"Available", "Unavailable", "Unknown"}
                 - Requied: No
                 - Default: "Unknown"
         Response:
