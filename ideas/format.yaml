@@ -1,0 +1,35 @@
+% fdoc Sample Endpoint
+---
+Reference: /api/v1/status
+
+Abstract:
+    The status endpoint is used to verify the availability of various services.
+
+Discussion:
+    This is where a really long and thought-out discussion about the endpont goes.
+
+Methods:
+    - GET
+        Parameters:
+            - limit
+                - Type: Integer
+                - Required: No
+                - Description: Limits the number of results returned 
+        Response:
+            Success:
+                A list of services and their availabilities.
+    - POST
+        Parameters:
+            - name
+                - Type: String
+                - Required: Yes
+                - Description: The name of a service to update
+            - availability
+                - Type: Enum: "Available" | "Unavailable" | "Unknown"
+                - Requied: No
+                - Default: "Unknown"
+        Response:
+            Success:
+                200 OK
+            Failure:
+                400 Bad Request
