@@ -1,0 +1,35 @@
+* Resource Name
+* Base Path
+** Parameters
+* Abstract
+* Discussion
+* Methods
+** Endpoint & Action(:get, :post, :put, :delete)
+*** Discussion
+*** Parameters
+**** Key
+***** Type
+***** Required
+***** Description?
+***** Default?
+***** Possible values?
+*** Response
+**** Success
+**** Failure
+
+--
+
+
+implement as a test watcher
+- err on undocumented keys, missing keys, etc
+- untested error codes, unknown error codes
+- All controller tests must test all variants of spec
+
+a :)
+b :)
+c ?? :(
+d ?? :(
+
+e1
+e2
+e3
