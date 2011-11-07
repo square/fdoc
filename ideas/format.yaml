@@ -18,19 +18,28 @@ Methods:
         Response:
             Success:
                 A list of services and their availabilities.
+                Sample Output: {
+                    "services": [{
+                        "name": "Sample Service",
+                        "availablity": "available"
+                    }, {
+                        "name": "MIA Service",
+                        "availablility": "unknown"
+                    }]
+                }
     - POST
         Parameters:
             - name
                 - Type: String
                 - Required: Yes
-                - Description: The name of a service to update
+                - Description: The name of a service to update. This will create a service if one does not exist
             - availability
                 - Type: Enum
-                - Values: !!set {"Available", "Unavailable", "Unknown"}
+                - Values: ["available", "unavailable", "unknown"]
                 - Requied: No
-                - Default: "Unknown"
+                - Default: "unknown"
         Response:
-            Success:
-                200 OK
+            Success: 200 OK
             Failure:
-                400 Bad Request
+                - 400 Bad Request
+                - 404 Resource not found
