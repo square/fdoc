@@ -1,5 +1,5 @@
 # fdoc
-## Documentation format and specification generation
+## Farnsdocs: Documentation format and verification
 
 ### Abstract
 

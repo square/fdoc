@@ -1,45 +1,45 @@
-% fdoc Sample Endpoint
----
-Reference: /api/v1/status
-
-Abstract:
-    The status endpoint is used to verify the availability of various services.
-
-Discussion:
-    This is where a really long and thought-out discussion about the endpont goes.
+Resource Name: status
+Base Path: https://api.example.com/status
+Abstract: The status endpoint is used to verify the availability of various services.
+Discussion: This is where a really long and thought-out discussion about the endpont goes.
+Controller: Api::StatusController
 
 Methods:
-    - GET
+    list:
+        Verb: GET
         Parameters:
-            - limit
-                - Type: Integer
-                - Required: No
-                - Description: Limits the number of results returned 
+            limit:
+                Type: Integer
+                Required: No
+                Description: Limits the number of results returned 
         Response:
             Success:
-                A list of services and their availabilities.
-                Sample Output: {
-                    "services": [{
-                        "name": "Sample Service",
-                        "availablity": "available"
-                    }, {
-                        "name": "MIA Service",
-                        "availablility": "unknown"
-                    }]
+                200:
+                    A list of services and their availabilities.
+                    Sample Output: {
+                        "services": [{
+                            "name": "Sample Service",
+                            "availablity": "available"
+                        }, {
+                            "name": "MIA Service",
+                            "availablility": "unknown"
+                        }]
                 }
-    - POST
+    add:
+        Verb: POST
         Parameters:
-            - name
-                - Type: String
-                - Required: Yes
-                - Description: The name of a service to update. This will create a service if one does not exist
-            - availability
-                - Type: Enum
-                - Values: ["available", "unavailable", "unknown"]
-                - Requied: No
-                - Default: "unknown"
+            name:
+                Type: String
+                Required: Yes
+                Description: The name of a service to update. This will create a service if one does not exist
+            availability:
+                Type: Enum
+                Values: ["available", "unavailable", "unknown"]
+                Requied: No
+                Default: "unknown"
         Response:
-            Success: 200 OK
+            Success:
+                200: 
             Failure:
-                - 400 Bad Request
-                - 404 Resource not found
+                400: 
+                404: 
