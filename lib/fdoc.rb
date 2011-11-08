@@ -1,4 +1,3 @@
-require 'yaml'
 lib_dir = File.expand_path(File.dirname(__FILE__) + "/fdoc")
 $:.unshift(lib_dir)
 
