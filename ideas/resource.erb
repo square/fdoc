@@ -1,0 +1,41 @@
+<h1><% @resource["Base Path"] %></h1>
+
+<p><% @resource["Abstract"] %></p>
+
+<h2>Methods</h2>
+
+<% @resource["Methods"].each do |method, details| %>
+    <h3><%= "#{details["Verb"]} #{@resource["Base Path"]}/#{method}" %></h3>
+    
+    <h4>Parameters</h4>
+    <ul>
+        <% details["Parameters"].each do |param, param_details| %>
+            <li><% param %>
+                <ul>
+                    <% param_details.each do |attribute, value| %>
+                        <li><%= "#{attribute}: #{value}" %></li>
+                    <% end %>
+                </ul>
+            </li>
+        <% end %>
+    </ul>
+    
+    <h4>Response</h4>
+    <% if success = details["Response"]["Success"] %>
+        <h5>Success</h5>
+        <ul>
+        <% success.each do |code, code_details| %>
+            <li><%= "#{code}: #{code_details}" %></li>
+        <% end %>
+        </ul>
+    <% end %>
+    
+    <% if failure = details["Response"]["Failure"] %>
+        <h5>Failure</h5>
+        <ul>
+        <% failure.each do |code, code_details| %>
+            <li><%= "#{code}: #{code_details}" %></li>
+        <% end %>
+        </ul>
+    <% end %>
+<% end %>

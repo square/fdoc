@@ -1,7 +1,6 @@
 Resource Name: status
 Base Path: https://api.example.com/status
 Abstract: The status endpoint is used to verify the availability of various services.
-Discussion: This is where a really long and thought-out discussion about the endpont goes.
 Controller: Api::StatusController
 
 Methods:
