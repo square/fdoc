@@ -13,36 +13,40 @@ class Hash
   end
 end
 
-class MethodChecklist
+class MethodChecklist  
   attr_reader :name, :details, :required_params, :optional_params_unused
   
   def initialize(name, details)
     @name, @details = name, details
     
-    # TODO: throw an error if a parameter does not have a Required attrib
-    @required_params = details["Parameters"].select_hash{ |param_name, details| details["Required"] == true }
-    @optional_params_unused = details["Parameters"].select_hash{ |param_name, details| details["Required"] == false }
-    @optional_params_used = {}
+    puts "TODO: throw an error if a parameter does not specify a Required attrib"
+    params = details["Parameters"]
+    @required_params = params.select_hash{ |param_name, details| details["Required"] == true }.with_indifferent_access
+    @optional_params_unused = params.select_hash{ |param_name, details| details["Required"] == false }.with_indifferent_access
+    @optional_params_used = {}.with_indifferent_access
   end
   
   # pass in a hash of parameters that a test sends
   def use(params, from_info=nil)
+    params = params.with_indifferent_access
     # make sure that every required parameter is included
     @required_params.each {|param_name, details|
       unless params.has_key? param_name
-        # TODO: throw an error because a required param is missing
+        raise "Missing param: #{param_name}"
       end
+      params.delete param_name
     }
     
     params.each { |param_name, value|
       if @optional_params_used.has_key? param_name
-        continue # already used, just continue
+        next # already used, just continue
       elsif @optional_params_unused.has_key? param_name
         # first use: move the parameter from unused to used
         @optional_params_used[param_name] = @optional_params_unused[param_name]
         @optional_params_unused.delete param_name
       else
-        # TODO: throw an error because an undocumented parameter was used
+        p @optional_params_used
+        raise "Detected undocumented parameter: #{param_name}"
       end
     }
   end
