@@ -1,0 +1,26 @@
+body {
+	background: #eeeeee;
+	font: 12pt/16pt sans-serif;
+}
+
+tt, kbd {
+	font-family: Monaco, monospace;
+	font-size: 80%;
+}
+
+a {
+	color: inherit;
+	background: #ccc;
+	text-decoration: none;
+}
+a:hover { background: #ddd; }
+
+li {
+	list-style: square;
+}
+
+#page {
+	width: 600pt;
+	margin: 0 auto;
+}
+

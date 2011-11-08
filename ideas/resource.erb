@@ -1,41 +1,57 @@
-<h1><% @resource["Base Path"] %></h1>
+<html>
+  <head>
+    <title><%= "API Documentation: #{@resource["Resource Name"]}" %></title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
 
-<p><% @resource["Abstract"] %></p>
+  <body>
+    <div id="page">
+      <h1><%= @resource["Base Path"] %></h1>
+      <p><%= @resource["Abstract"] %></p>
 
-<h2>Methods</h2>
+      <h2>Methods</h2>
+      <p>Jump to a method</p>
+      <ul id="toc">
+        <% @resource["Methods"].each do |method, details| %>
+          <li><%= "<a href=\"##{method}\">#{details["Verb"]} #{@resource["Base Path"]}/#{method}</a>" %></li>
+        <% end %>
+      </ul>
 
-<% @resource["Methods"].each do |method, details| %>
-    <h3><%= "#{details["Verb"]} #{@resource["Base Path"]}/#{method}" %></h3>
+      <% @resource["Methods"].each do |method, details| %>
+        <%= "<h3 id=\"#{method}\">#{details["Verb"]} #{@resource["Base Path"]}/#{method}</h3>" %>
     
-    <h4>Parameters</h4>
-    <ul>
-        <% details["Parameters"].each do |param, param_details| %>
-            <li><% param %>
-                <ul>
-                    <% param_details.each do |attribute, value| %>
-                        <li><%= "#{attribute}: #{value}" %></li>
-                    <% end %>
-                </ul>
+        <h4>Parameters</h4>
+        <ul class="parameters">
+          <% details["Parameters"].each do |param, param_details| %>
+            <li><tt><%= param %></tt>
+              <ul>
+                <% # TODO: break out special values, don't just iterate? '%>
+                <% param_details.each do |attribute, value| %>
+                  <li><%= "#{attribute}: #{value}" %></li>
+                <% end %>
+              </ul>
             </li>
-        <% end %>
-    </ul>
-    
-    <h4>Response</h4>
-    <% if success = details["Response"]["Success"] %>
-        <h5>Success</h5>
-        <ul>
-        <% success.each do |code, code_details| %>
-            <li><%= "#{code}: #{code_details}" %></li>
-        <% end %>
+          <% end %>
         </ul>
-    <% end %>
     
-    <% if failure = details["Response"]["Failure"] %>
-        <h5>Failure</h5>
-        <ul>
-        <% failure.each do |code, code_details| %>
-            <li><%= "#{code}: #{code_details}" %></li>
+        <h4>Response</h4>
+
+        <% (details["Response"] || {}).each do |status, section| %>
+          <h5><%= status %></h5>
+          <ul>
+            <% (section || {}).each do |code, code_details| %>
+              <li><%= code %>
+                <ul>
+                  <% (code_details || {}).each do |attribute, value| %>
+                    <li><%= "#{attribute}: #{value}" %></li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+          </ul>          
         <% end %>
-        </ul>
-    <% end %>
-<% end %>
+
+      <% end %>
+    </div> <!-- #page -->
+  </body>
+</html>

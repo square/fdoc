@@ -14,7 +14,7 @@ Methods:
         Response:
             Success:
                 200:
-                    A list of services and their availabilities.
+                    Description: A list of services and their availabilities.
                     Sample Output: {
                         "services": [{
                             "name": "Sample Service",
@@ -33,9 +33,9 @@ Methods:
                 Description: The name of a service to update. This will create a service if one does not exist
             availability:
                 Type: Enum
-                Values: ["available", "unavailable", "unknown"]
+                Values: !!set{available, unavailable, unknown}
                 Requied: No
-                Default: "unknown"
+                Default: unknown
         Response:
             Success:
                 200: 
