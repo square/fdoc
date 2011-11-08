@@ -19,8 +19,14 @@ class MethodChecklist
   def initialize(name, details)
     @name, @details = name, details
     
-    puts "TODO: throw an error if a parameter does not specify a Required attrib"
+     
     params = details["Parameters"]
+    params.each { |param_name, details|
+      unless details.has_key? "Required"
+        raise "Need to specify if '#{name}.#{param_name}' is required or not."
+      end
+    }
+    
     @required_params = params.select_hash{ |param_name, details| details["Required"] == true }.with_indifferent_access
     @optional_params_unused = params.select_hash{ |param_name, details| details["Required"] == false }.with_indifferent_access
     @optional_params_used = {}.with_indifferent_access
@@ -45,7 +51,6 @@ class MethodChecklist
         @optional_params_used[param_name] = @optional_params_unused[param_name]
         @optional_params_unused.delete param_name
       else
-        p @optional_params_used
         raise "Detected undocumented parameter: #{param_name}"
       end
     }
