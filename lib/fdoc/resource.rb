@@ -1,10 +1,12 @@
 class Fdoc::Resource < Fdoc::Node
 
+  attr_reader :actions
+  required_keys "Controller", "Resource Name", "Methods"
+
   def self.build_from_file(fdoc_path)
     new YAML.load_file(fdoc_path)
   end
 
-  attr_reader :actions
   def initialize(data)
     super
     @actions = raw["Methods"].map { |method| Fdoc::Action.new(method) }
@@ -13,8 +15,12 @@ class Fdoc::Resource < Fdoc::Node
   def name
     raw["Resource Name"]
   end
+
+  def controller
+    raw["Controller"]
+  end
   
-  def action(action_symbol)
-    actions.detect { |a| a.name.downcase.to_sym == action_symbol }
+  def action(action_name)
+    actions.detect { |a| a.name == action_name }
   end
 end

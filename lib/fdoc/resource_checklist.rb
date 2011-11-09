@@ -1,20 +1,17 @@
-require 'yaml'
-
 class Fdoc::ResourceChecklist
-  def initialize(fdocpath)
-    @fdoc = YAML.load_file(fdocpath)
-    
-    @methods = {}
-    @fdoc["Methods"].each { |method, details|
-      @methods[method.to_sym] = MethodChecklist.new(method, details)
-    }
+  def self.build_from_file(fdoc_path)
+    new YAML.load_file(fdoc_path)
+  end
+  
+  def initialize(data)
+    @resource = Fdoc::Resource.new(data)
   end
   
   def controller
-    @fdoc['Controller']
+    @resource.controller
   end
   
   def method_checklist_for(methodname)
-    @methods[methodname].dup
+    Fdoc::MethodChecklist.new(@resource.action(methodname.to_s))
   end
 end

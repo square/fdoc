@@ -7,7 +7,7 @@ module Fdoc
 
     Dir.foreach(path) do |file|
       next if file == '.' || file == '..'
-      resource_checklist = ResourceChecklist.new(path + "/#{file}")
+      resource_checklist = ResourceChecklist.build_from_file(path + "/#{file}")
       @resource_checklists[resource_checklist.controller] = resource_checklist
     end
   end

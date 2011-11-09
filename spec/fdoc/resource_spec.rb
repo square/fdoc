@@ -17,19 +17,43 @@ describe Fdoc::Resource do
     end
     
     it "stores required parameters for an action" do
-      subject.action(:add).required_parameters.map(&:name).should == %w(name)
+      subject.action('add').required_parameters.map(&:name).should == %w(name)
     end
     
     it "stores optional parameters for an action" do
-      subject.action(:add).optional_parameters.map(&:name).should == %w(email)
+      subject.action('add').optional_parameters.map(&:name).should == %w(email)
     end
     
     it "stores the successfull responses" do
-      subject.action(:add).success_responses.map(&:status).should == ["200 OK"]
+      subject.action('add').success_responses.map(&:status).should == ["200 OK"]
     end
     
     it "stores the failure responses" do
-      subject.action(:add).failure_responses.map(&:status).should == ["400 Bad Request"]
+      subject.action('add').failure_responses.map(&:status).should == ["400 Bad Request"]
+    end
+    
+    context "without a controller" do
+      before { resource_data.delete("Controller") }
+      
+      it "raises an error" do
+        expect { subject }.to raise_exception(Fdoc::MissingAttributeError)
+      end        
+    end
+    
+    context "without a Resource Name" do
+      before { resource_data.delete("Resource Name") }
+      
+      it "raises an error" do
+        expect { subject }.to raise_exception(Fdoc::MissingAttributeError)
+      end        
+    end
+    
+    context "without a Methods" do
+      before { resource_data.delete("Methods") }
+      
+      it "raises an error" do
+        expect { subject }.to raise_exception(Fdoc::MissingAttributeError)
+      end        
     end
   end 
 end
