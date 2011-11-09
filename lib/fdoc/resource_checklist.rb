@@ -1,6 +1,6 @@
 require 'yaml'
 
-class ResourceChecklist
+class Fdoc::ResourceChecklist
   def initialize(fdocpath)
     @fdoc = YAML.load_file(fdocpath)
     

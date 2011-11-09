@@ -13,7 +13,7 @@ class Hash
   end
 end
 
-class MethodChecklist  
+class Fdoc::MethodChecklist  
   attr_reader :name, :details, :required_params, :optional_params_unused
   
   def initialize(name, details)

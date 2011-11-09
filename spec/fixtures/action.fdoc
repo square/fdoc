@@ -1,0 +1,26 @@
+Name: list
+Verb: GET
+Description: The list of members.
+Parameters:
+    -   Name: limit
+        Type: Integer
+        Required: No
+        Default: 50
+        Description: Limits the number of results returned, used for paging.
+    -   Name: offset
+        Type: Integer
+        Required: No
+        Default: 0
+        Description: Offsets the results returned, used for paging.
+Responses:
+    -   Status: 200 OK
+        Successful: Yes
+        Description: A list of current members
+        Sample Output: {
+            "members": [{
+                "name": "Fake Babette",
+                "email": "fbabette@example.com"
+            }, {
+                "name": "Joe Nonexistent"
+            }]
+    }

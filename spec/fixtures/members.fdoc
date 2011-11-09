@@ -1,0 +1,57 @@
+Resource Name: members
+Base Path: https://api.example.com/members
+Abstract: Lists members of an organization
+Controller: Api::PeopleController
+
+Methods:
+    -   Name: list
+        Verb: GET
+        Description: The list of members.
+        Parameters:
+            -   Name: limit
+                Type: Integer
+                Required: No
+                Default: 50
+                Description: Limits the number of results returned, used for paging.
+            -   Name: offset
+                Type: Integer
+                Required: No
+                Default: 0
+                Description: Offsets the results returned, used for paging.
+        Responses:
+            -   Status: 200 OK
+                Successful: Yes
+                Description: A list of current members
+                Sample Output: {
+                    "members": [{
+                        "name": "Fake Babette",
+                        "email": "fbabette@example.com"
+                    }, {
+                        "name": "Joe Nonexistent"
+                    }]
+            }
+    -   Name: add
+        Verb: PUT
+        Description: Add a new member
+        Parameters:
+            -   Name: name
+                Type: String
+                Required: Yes
+                Description: The name of the member to add, must be unique.
+                Example: "Max Power"
+            -   Name: email
+                Type: String
+                Required: No
+                Description: The email of the member to add
+                Example: "mpower@example.com"
+        Responses:
+            -   Status: 200 OK
+                Successful: Yes
+                Description: Returns the member just added
+                Sample Output: {
+                    "name": "Max Power",
+                    "email": "mpower@example.com"
+                }
+            -   Status: 400 Bad Request
+                Successful: No
+                Description: Member already exists
