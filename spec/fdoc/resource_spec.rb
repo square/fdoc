@@ -55,6 +55,15 @@ describe Fdoc::Action do
     subject.parameters.should have(2).items
     subject.parameters.map(&:name).should == %w(limit offset)
   end
+
+  context "without parameters" do
+    before { action_data.delete "Parameters" }
+    
+    it "has no params" do
+      subject.parameters.should be_empty
+    end
+  end
+  
   
   context "without responses" do
     before { action_data.delete "Responses" }
