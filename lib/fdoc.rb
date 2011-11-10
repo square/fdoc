@@ -2,6 +2,16 @@ lib_dir = File.expand_path(File.dirname(__FILE__) + "/fdoc")
 $:.unshift(lib_dir)
 
 module Fdoc
+  class Page
+    def initialize(resource)
+      @resource = resource
+    end
+
+    def get_binding
+      binding
+    end
+  end
+
   def self.load(path = 'docs/fdoc')
     @resource_checklists = {}
 
@@ -11,11 +21,20 @@ module Fdoc
       @resource_checklists[resource_checklist.controller] = resource_checklist
     end
   end
-  
+
   def self.resource_for(controller)
     @resource_checklists[controller].dup
   end
-  
+
+  def self.compile(fdoc_path)
+    template_path = File.expand_path(File.dirname(__FILE__) + "/templates/resource.erb")
+
+    template = ERB.new(File.read(template_path))
+    p = Fdoc::Page.new(YAML.load_file(fdoc_path))
+
+    template.result(p.get_binding)
+  end
+
   class Error < StandardError; end
   class MissingAttributeError < Error; end
 end
