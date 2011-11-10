@@ -16,15 +16,14 @@ class Fdoc::MethodChecklist
     true
   end
 
-  def consume_response_parameters(params)
-    validate_documented(params, @method.response_parameters, "response")
-    true
-  end
+  def consume_response(params, rails_response, successful = true)
+    response_codes =  @method.response_codes.select { |rc| rc.status == rails_response && successful == rc.successful? }
 
-  def consume_response_code(rails_response)
-    unless @method.response_codes.map(&:status).include?(rails_response)
+    if response_codes.empty?
       raise Fdoc::UndocumentedResponseCodeError, "Received code '#{rails_response}' in #{@method.verb} #{@method.name}"
     end
+
+    validate_documented(params, @method.response_parameters, "response") if successful
     true
   end
 

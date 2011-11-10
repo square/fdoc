@@ -59,7 +59,7 @@ describe Fdoc::Resource do
 end
 
 describe Fdoc::Method do
-  subject { described_class.new(action_data)}
+  subject { described_class.new(action_data) }
   let(:action_data) { YAML.load_file(fixture_file) }
   let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc" }
 
@@ -95,7 +95,6 @@ describe Fdoc::Method do
       subject.request_parameters.should be_empty
     end
   end
-
 
   context "without response codes" do
     before { action_data.delete "Response Codes" }

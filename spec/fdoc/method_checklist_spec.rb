@@ -35,32 +35,14 @@ describe Fdoc::MethodChecklist do
     end
   end
 
-  describe "#consume_response_parameters" do
-    subject { described_class.new(mthod).consume_response_parameters(response_parameters)}
+  describe "#consume_response" do
+    subject { described_class.new(mthod).consume_response(response_parameters, response_code, success)}
     let(:valid_response_parameters) { {"success" => true, "member_id" => "4a45eaf"} }
+    let(:valid_response_code)       { "201 Created" }
+    let(:success)                   { true          }
 
     context "valid response parameters" do
       let(:response_parameters) { valid_response_parameters }
-
-      it "returns true" do
-        subject.should == true
-      end
-    end
-
-    context "an undocumented response parameter is present" do
-      let(:response_parameters) { valid_response_parameters.merge({"date_created" => "2011-11-1"}) }
-
-      it "raises an UndocumentedParameterError" do
-        expect { subject }.to raise_exception(Fdoc::UndocumentedParameterError)
-      end
-    end
-  end
-
-  describe "#consume_response_code" do
-    subject { described_class.new(mthod).consume_response_code(response_code)}
-    let(:valid_response_code) { "201 Created" }
-
-    context "valid response parameters" do
       let(:response_code) { valid_response_code }
 
       it "returns true" do
@@ -69,10 +51,60 @@ describe Fdoc::MethodChecklist do
     end
 
     context "an undocumented response parameter is present" do
-      let(:response_code) { "500 Internal Error" }
+      let(:response_parameters) { valid_response_parameters.merge({"date_created" => "2011-11-1"}) }
+      let(:response_code) { valid_response_code }
+
+      it "raises an UndocumentedParameterError" do
+        expect { subject }.to raise_exception(Fdoc::UndocumentedParameterError)
+      end
+    end
+
+    context "valid response parameters" do
+      let(:response_parameters) { valid_response_parameters }
+      let(:response_code) { valid_response_code }
+
+      it "returns true" do
+        subject.should == true
+      end
+    end
+
+    context "an undocumented response parameter is present" do
+      let(:response_parameters) { valid_response_parameters }
+      let(:response_code) { "500 Internal Server Error" }
 
       it "raises an UndocumentedParameterError" do
         expect { subject }.to raise_exception(Fdoc::UndocumentedResponseCodeError)
+      end
+    end
+
+    context "the api response was not successful" do
+      let(:success) { false }
+
+      context "without response parameter keys" do
+        let(:response_parameters) { {} }
+        let(:response_code) { "400 Bad Request" }
+
+        it "returns true" do
+          subject.should == true
+        end
+      end
+
+      context "status is undocumented" do
+        let(:response_parameters) { valid_response_parameters }
+        let(:response_code) { "500 Internal Server Error" }
+
+        it "raises an UndocumentedResponseCodeError" do
+          expect { subject }.to raise_exception(Fdoc::UndocumentedResponseCodeError)
+        end
+      end
+
+      context "status is documented only as successful" do
+        let(:response_parameters) { valid_response_parameters }
+        let(:response_code) { "201 Created" }
+
+        it "raises an UndocumentedResponseCodeError" do
+          expect { subject }.to raise_exception(Fdoc::UndocumentedResponseCodeError)
+        end
       end
     end
   end

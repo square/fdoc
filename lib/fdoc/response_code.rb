@@ -5,8 +5,6 @@ class Fdoc::ResponseCode < Fdoc::Node
     raw["Status"]
   end
 
-
-
   def successful?
     raw["Successful"]
   end
