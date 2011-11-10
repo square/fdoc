@@ -1,0 +1,87 @@
+mini roadmap
+- refactor checklist to use the classes
+- refactor the erb
+- talk to mike s about posting stuff
+
+
+long term roadmap
+- document our documenting tool
+- collect feedback (1week)
+- set a deadline and get everything documented
+
+
+responses
+- on web page, figure out changes since date - EricD
+- be able to go to /docs/ENDPOINT - EricD
+- not have to test things redundantly, ie say something in the docs and restate it in the spec - JimP
+- want to be able to flag an endpoint as an internal service
+
+
+
+Parameter property ideas
+- Added (since?)
+- Way to describe enum values
+- Range?
+- Section (for display only), maybe call it _Section
+- Format?
+- Conditional requirements!!!!!
+- Response parameters? Global or success case?
+- Abstract or Description? pick one and be consistent
+
+TODOs
+- Fix HTML generation
+  - Links between HTML files
+  - ?? Figure out where to display the docs, what can we do with go/docs
+    - go/docs/ <-- master
+    - go/docs/staging
+    - go/docs/dogfood01... etc
+- with Matt: Test checklists
+- with Matt: Move spec watcher into gem
+- with Matt: Test spec water
+- with Matt: Attempt notifying about unused optional keys again?
+- with Matt: Clean up :fdoc keys and stuff
+
+
+Documentation across services
+- one services that pulls from other services (w/ service autodiscovery?)
+- mechanism 
+
+Selling Points
+- Agree on one machine-readable documentation format, implement it everywhere
+  - If we choose to move to another format or update the format, there will be a clear path
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Hierarchy
+
+
+Everything is a Node (hash -> object thing)
+Nodes
+- can be deprecated
+- can have required keys
+- usually have a description
+
+
+
+Parameters 
+ > have a name
+ > (can?) have a type
+ > (can) have a description
+ > (can) have values
+
+Resources
+ > have Methods ("Actions")
+    > have a Verb
+    > have Request Parameters (which are Parameters)
+       > have a required property
+    > have Response Parameters
+    > have Response Codes
+    
+
