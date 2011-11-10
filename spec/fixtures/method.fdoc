@@ -1,0 +1,25 @@
+Name: add
+Verb: PUT
+Description: Add a new member
+Request Parameters:
+    -   Name: name
+        Type: String
+        Required: Yes
+        Description: The name of the member to add, must be unique.
+        Example: "Max Power"
+    -   Name: email
+        Type: String
+        Required: No
+        Description: The email of the member to add
+        Example: "mpower@example.com"
+Response Codes:
+    -   Status: 200 OK
+        Successful: Yes
+        Description: Returns the member just added
+        Sample Output: {
+            "name": "Max Power",
+            "email": "mpower@example.com"
+        }
+    -   Status: 400 Bad Request
+        Successful: No
+        Description: Member already exists

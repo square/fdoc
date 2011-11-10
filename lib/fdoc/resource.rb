@@ -9,9 +9,9 @@ class Fdoc::Resource < Fdoc::Node
 
   def initialize(data)
     super
-    @actions = raw["Methods"].map { |method| Fdoc::Action.new(method) }
+    @actions = raw["Methods"].map { |method| Fdoc::Method.new(method) }
   end
-  
+
   def name
     raw["Resource Name"]
   end
@@ -19,7 +19,7 @@ class Fdoc::Resource < Fdoc::Node
   def controller
     raw["Controller"]
   end
-  
+
   def base_path
     raw["Base Path"]
   end

@@ -1,4 +1,4 @@
-class Fdoc::Action < Fdoc::Node
+class Fdoc::Method < Fdoc::Node
 
   attr_reader :raw, :request_parameters, :response_parameters, :response_codes
   required_keys "Response Codes", "Verb", "Name"

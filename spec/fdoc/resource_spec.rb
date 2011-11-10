@@ -58,26 +58,26 @@ describe Fdoc::Resource do
   end
 end
 
-describe Fdoc::Action do
+describe Fdoc::Method do
   subject { described_class.new(action_data)}
   let(:action_data) { YAML.load_file(fixture_file) }
-  let(:fixture_file) { "#{FIXTURE_PATH}/action.fdoc" }
+  let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc" }
 
   it "contains the name" do
-    subject.name.should == "list"
+    subject.name.should == "add"
   end
 
   it "contains the verb" do
-    subject.verb.should == "GET"
+    subject.verb.should == "PUT"
   end
 
   it "contains the description" do
-    subject.description.should == "The list of members."
+    subject.description.should == "Add a new member"
   end
 
   it "contains ordered request parameters" do
     subject.request_parameters.should have(2).items
-    subject.request_parameters.map(&:name).should == %w(limit offset)
+    subject.request_parameters.map(&:name).should == %w(name email)
   end
 
   context "without request parameters" do

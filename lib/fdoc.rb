@@ -39,7 +39,7 @@ module Fdoc
   class MissingAttributeError < Error; end
 
   class DocumentationError < Error; end
-  class UnknownParameterError < DocumentationError; end
+  class UndocumentedParameterError < DocumentationError; end
   class MissingRequiredParameterError < DocumentationError; end
 end
 
@@ -47,6 +47,6 @@ require 'method_checklist'
 require 'resource_checklist'
 require 'node'
 require 'resource'
-require 'action'
+require 'method'
 require 'parameter'
 require 'response_code'
