@@ -5,7 +5,8 @@ class Fdoc::Method < Fdoc::Node
 
   def initialize(data)
     super
-    @request_parameters = (raw["Request Parameters"] || []).map { |param_data| Fdoc::Parameter.new(param_data) }
+    @request_parameters = (raw["Request Parameters"] || []).map { |param_data| Fdoc::RequestParameter.new(param_data) }
+    @response_parameters = (raw["Response Parameters"] || []).map { |param_data| Fdoc::ResponseParameter.new(param_data) }
     @response_codes = raw["Response Codes"].map { |response_data| Fdoc::ResponseCode.new(response_data) }
   end
 

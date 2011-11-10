@@ -80,6 +80,14 @@ describe Fdoc::Method do
     subject.request_parameters.map(&:name).should == %w(name email)
   end
 
+  it "creates ResponseParameters" do
+    subject.response_parameters.each { |param| param.should be_an_instance_of(Fdoc::ResponseParameter) }
+  end
+
+  it "creates RequestParameters" do
+    subject.request_parameters.each { |param| param.should be_an_instance_of(Fdoc::RequestParameter) }
+  end
+
   context "without request parameters" do
     before { action_data.delete "Request Parameters" }
 
@@ -154,10 +162,7 @@ EOS
 
   context "without required" do
     let(:required) { nil }
-
-    it "raises an error" do
-      expect { subject }.to raise_exception(Fdoc::MissingAttributeError)
-    end
+    its(:required?) { should be_nil }
   end
 
   context "without description" do
@@ -178,6 +183,46 @@ EOS
   context "without values" do
     let(:values) { nil }
     its(:values) { should be_nil }
+  end
+end
+
+describe Fdoc::RequestParameter do
+  subject { described_class.new(parameter_data) }
+  let(:parameter_data) { YAML.load(parameter_yaml) }
+  let(:parameter_yaml) { <<-EOS
+#{"Name: #{name}" if name}
+#{"Type: #{type}" if type}
+#{"Required: #{required}" if required}
+#{"Description: #{description}" if description}
+#{"Example: #{example}" if example}
+#{"Default: #{default}" if default}
+#{"Values: #{values}" if values}
+EOS
+  }
+
+  let(:name) { "name" }
+  let(:type) { "String" }
+  let(:required) { true }
+  let(:description) { "A brief description" }
+  let(:example) { "string" }
+  let(:default) { "McLovin"}
+  let(:values) { "An alphanumeric string"}
+
+  its(:name) { should == name }
+  its(:type) { should == type }
+  its(:required?) { should == required }
+  its(:description) { should == description }
+  its(:example) { should == example }
+  its(:default) { should == default }
+  its(:values) { should == values }
+
+
+  context "without required" do
+    let(:required) { nil }
+
+    it "raises an error" do
+      expect { subject }.to raise_exception(Fdoc::MissingAttributeError)
+    end
   end
 end
 

@@ -12,8 +12,14 @@ Request Parameters:
         Required: No
         Description: The email of the member to add
         Example: "mpower@example.com"
+Response Parameters:
+    -   Name: success
+        Type: Boolean
+    -   Name: member_id
+        Type: String
+        Description: The unique identifier for the newly-created member
 Response Codes:
-    -   Status: 200 OK
+    -   Status: 201 Created
         Successful: Yes
         Description: Returns the member just added
         Sample Output: {

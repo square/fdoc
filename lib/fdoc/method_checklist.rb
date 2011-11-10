@@ -3,7 +3,7 @@ class Fdoc::MethodChecklist
     @method = method
   end
 
-  def consume_request_parameters(params, from_info=nil)
+  def consume_request_parameters(params)
     params = stringify_keys(params)
 
     @method.required_request_parameters.each do |parameter|
@@ -12,10 +12,18 @@ class Fdoc::MethodChecklist
       end
     end
 
-    params.each do |param_name, value|
-      unless @method.request_parameters.map(&:name).include?(param_name)
-        raise Fdoc::UndocumentedParameterError, "Extra parameter: #{param_name}"
-      end
+    validate_documented(params, @method.request_parameters)
+    true
+  end
+
+  def consume_response_parameters(params)
+    validate_documented(params, @method.response_parameters)
+    true
+  end
+
+  def consume_response_code(rails_response)
+    unless @method.response_codes.map(&:status).include?(rails_response)
+      raise Fdoc::UndocumentedResponseCodeError, "Received code: #{rails_response}"
     end
     true
   end
@@ -31,6 +39,14 @@ class Fdoc::MethodChecklist
     end
 
     result
+  end
+
+  def validate_documented(test, definition)
+    test.each do |param_name, value|
+      unless definition.map(&:name).include?(param_name)
+        raise Fdoc::UndocumentedParameterError, "Extra parameter: #{param_name}"
+      end
+    end
   end
   # params.each { |param_name, value|
   #   if @optional_params_used.has_key? param_name

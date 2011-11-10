@@ -8,8 +8,9 @@ class Fdoc::Node
   end
 
   def self.required_keys(*args)
-    return @required_keys || [] if args.empty?
-    @required_keys = args
+    @required_keys ||= []
+    return @required_keys if args.empty?
+    (@required_keys << args).flatten!
   end
 
   def assert_required_keys

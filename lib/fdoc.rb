@@ -41,6 +41,7 @@ module Fdoc
   class DocumentationError < Error; end
   class UndocumentedParameterError < DocumentationError; end
   class MissingRequiredParameterError < DocumentationError; end
+  class UndocumentedResponseCodeError < DocumentationError; end
 end
 
 require 'method_checklist'
@@ -50,3 +51,5 @@ require 'resource'
 require 'method'
 require 'parameter'
 require 'response_code'
+require 'request_parameter'
+require 'response_parameter'
