@@ -20,6 +20,14 @@ class Fdoc::Resource < Fdoc::Node
     raw["Controller"]
   end
   
+  def base_path
+    raw["Base Path"]
+  end
+
+  def abstract
+    raw["Abstract"]
+  end
+
   def action(action_name)
     actions.detect { |a| a.name == action_name }
   end

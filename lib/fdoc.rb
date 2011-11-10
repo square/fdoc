@@ -29,8 +29,8 @@ module Fdoc
   def self.compile(fdoc_path)
     template_path = File.expand_path(File.dirname(__FILE__) + "/templates/resource.erb")
 
-    template = ERB.new(File.read(template_path))
-    p = Fdoc::Page.new(YAML.load_file(fdoc_path))
+    resource = Fdoc::Resource.build_from_file(template_path)
+    p = Fdoc::Page.new(resource)
 
     template.result(p.get_binding)
   end
