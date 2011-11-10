@@ -1,18 +1,18 @@
 class Fdoc::Action < Fdoc::Node
-  
-  attr_reader :raw, :parameters, :responses
-  required_keys "Responses", "Verb", "Name"
-  
+
+  attr_reader :raw, :request_parameters, :response_parameters, :response_codes
+  required_keys "Response Codes", "Verb", "Name"
+
   def initialize(data)
     super
-    @parameters = (raw["Parameters"] || []).map { |param_data| Fdoc::Parameter.new(param_data) }
-    @responses = (raw["Responses"] || []).map { |response_data| Fdoc::Response.new(response_data) }
+    @request_parameters = (raw["Request Parameters"] || []).map { |param_data| Fdoc::Parameter.new(param_data) }
+    @response_codes = raw["Response Codes"].map { |response_data| Fdoc::ResponseCode.new(response_data) }
   end
 
   def name
     raw["Name"]
   end
-  
+
   def verb
     raw["Verb"]
   end
@@ -20,20 +20,21 @@ class Fdoc::Action < Fdoc::Node
   def description
     raw["Description"]
   end
-  
-  def required_parameters
-    @parameters.select { |p| p.required? }
+
+  def required_request_parameters
+    @request_parameters.select { |p| p.required? }
   end
 
-  def optional_parameters
-    @parameters.select { |p| !p.required? }
+  def optional_request_parameters
+    @request_parameters.select { |p| !p.required? }
   end
 
-  def success_responses
-    @responses.select { |r| r.successful? }
+  def successful_response_codes
+    @response_codes.select { |r| r.successful? }
   end
-  
-  def failure_responses
-    @responses.select { |r| !r.successful? }
+
+  def failure_response_codes
+    @response_codes.select { |r| !r.successful? }
   end
+
 end

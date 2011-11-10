@@ -44,34 +44,34 @@ TODOs
 
 Documentation across services
 - one services that pulls from other services (w/ service autodiscovery?)
-- mechanism 
+- mechanism
 
 Selling Points
 - Agree on one machine-readable documentation format, implement it everywhere
   - If we choose to move to another format or update the format, there will be a clear path
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
 Hierarchy
 
 
 Everything is a Node (hash -> object thing)
 Nodes
+- name
 - can be deprecated
 - can have required keys
 - usually have a description
 
 
 
-Parameters 
- > have a name
+Request Parameters
  > (can?) have a type
  > (can) have a description
  > (can) have values
@@ -80,8 +80,7 @@ Resources
  > have Methods ("Actions")
     > have a Verb
     > have Request Parameters (which are Parameters)
-       > have a required property
-    > have Response Parameters
+    > have Response Parameters (which are Parameters)
     > have Response Codes
-    
+
 

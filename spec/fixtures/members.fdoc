@@ -7,7 +7,7 @@ Methods:
     -   Name: list
         Verb: GET
         Description: The list of members.
-        Parameters:
+        Request Parameters:
             -   Name: limit
                 Type: Integer
                 Required: No
@@ -18,7 +18,7 @@ Methods:
                 Required: No
                 Default: 0
                 Description: Offsets the results returned, used for paging.
-        Responses:
+        Response Codes:
             -   Status: 200 OK
                 Successful: Yes
                 Description: A list of current members
@@ -33,7 +33,7 @@ Methods:
     -   Name: add
         Verb: PUT
         Description: Add a new member
-        Parameters:
+        Request Parameters:
             -   Name: name
                 Type: String
                 Required: Yes
@@ -44,7 +44,7 @@ Methods:
                 Required: No
                 Description: The email of the member to add
                 Example: "mpower@example.com"
-        Responses:
+        Response Codes:
             -   Status: 200 OK
                 Successful: Yes
                 Description: Returns the member just added

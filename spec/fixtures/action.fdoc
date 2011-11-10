@@ -1,7 +1,7 @@
 Name: list
 Verb: GET
 Description: The list of members.
-Parameters:
+Request Parameters:
     -   Name: limit
         Type: Integer
         Required: No
@@ -12,7 +12,7 @@ Parameters:
         Required: No
         Default: 0
         Description: Offsets the results returned, used for paging.
-Responses:
+Response Codes:
     -   Status: 200 OK
         Successful: Yes
         Description: A list of current members
