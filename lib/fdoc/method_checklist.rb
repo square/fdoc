@@ -8,22 +8,22 @@ class Fdoc::MethodChecklist
 
     @method.required_request_parameters.each do |parameter|
       unless params.has_key? parameter.name
-        raise Fdoc::MissingRequiredParameterError, "Looking for parameter: #{parameter.name}"
+        raise Fdoc::MissingRequiredParameterError, "Looking for request parameter '#{parameter.name}' in #{@method.verb} #{@method.name}"
       end
     end
 
-    validate_documented(params, @method.request_parameters)
+    validate_documented(params, @method.request_parameters, "request")
     true
   end
 
   def consume_response_parameters(params)
-    validate_documented(params, @method.response_parameters)
+    validate_documented(params, @method.response_parameters, "response")
     true
   end
 
   def consume_response_code(rails_response)
     unless @method.response_codes.map(&:status).include?(rails_response)
-      raise Fdoc::UndocumentedResponseCodeError, "Received code: #{rails_response}"
+      raise Fdoc::UndocumentedResponseCodeError, "Received code '#{rails_response}' in #{@method.verb} #{@method.name}"
     end
     true
   end
@@ -41,10 +41,10 @@ class Fdoc::MethodChecklist
     result
   end
 
-  def validate_documented(test, definition)
+  def validate_documented(test, definition, request_or_response)
     test.each do |param_name, value|
       unless definition.map(&:name).include?(param_name)
-        raise Fdoc::UndocumentedParameterError, "Extra parameter: #{param_name}"
+        raise Fdoc::UndocumentedParameterError, "Extra #{request_or_response} parameter '#{param_name}' in #{@method.verb} #{@method.name}"
       end
     end
   end

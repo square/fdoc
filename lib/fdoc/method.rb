@@ -37,5 +37,4 @@ class Fdoc::Method < Fdoc::Node
   def failure_response_codes
     @response_codes.select { |r| !r.successful? }
   end
-
 end
