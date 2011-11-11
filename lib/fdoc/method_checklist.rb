@@ -17,10 +17,21 @@ class Fdoc::MethodChecklist
   end
 
   def consume_response(params, rails_response, successful = true)
-    response_codes =  @method.response_codes.select { |rc| rc.status == rails_response && successful == rc.successful? }
+    response_codes =  @method.response_codes.select { |rc| rc.status == rails_response }
 
     if response_codes.empty?
       raise Fdoc::UndocumentedResponseCodeError, "Received code '#{rails_response}' in #{@method.verb} #{@method.name}"
+    end
+
+    response_codes = response_codes.select { |rc| successful == rc.successful? }
+
+    if response_codes.empty?
+      if successful
+        message = "as a successful result, but it was documented as failed."
+      else
+        message = "as a failed result, but it was documented as successful."
+      end
+      raise Fdoc::UndocumentedResponseCodeError, "Received code '#{rails_response}' in #{@method.verb} #{@method.name} #{message}"
     end
 
     validate_documented(params, @method.response_parameters, "response") if successful
