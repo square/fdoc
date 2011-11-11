@@ -3,7 +3,7 @@ class Fdoc::MethodChecklist
     @method = method
   end
 
-  def consume_request_parameters(params)
+  def consume_request(params)
     params = stringify_keys(params)
 
     @method.required_request_parameters.each do |parameter|

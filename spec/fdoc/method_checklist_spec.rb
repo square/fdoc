@@ -6,8 +6,8 @@ describe Fdoc::MethodChecklist do
   let(:method_data)  { YAML.load_file(fixture_file) }
   let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc" }
 
-  describe "#consume_request_parameters" do
-    subject { described_class.new(mthod).consume_request_parameters(request_parameters) }
+  describe "#consume_request" do
+    subject { described_class.new(mthod).consume_request(request_parameters) }
     let(:valid_request_parameters) { {"name" => "Captain Smellypants", "email" => "smelly@pants.com"} }
 
     context "valid request parameters" do
