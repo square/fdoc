@@ -15,7 +15,7 @@ class Fdoc::Node
 
   def assert_required_keys
     self.class.required_keys.each do |key|
-      raise Fdoc::MissingAttributeError, "Required key not present: #{key}" if raw[key] == nil
+      raise Fdoc::MissingAttributeError, "Required key not present: #{key}\n Missing from: #{raw.inspect}" if raw[key] == nil
     end
   end
 end
