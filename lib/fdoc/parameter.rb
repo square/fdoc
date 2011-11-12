@@ -1,6 +1,10 @@
 class Fdoc::Parameter  < Fdoc::Node
   required_keys "Name", "Type"
 
+  def required?
+    raw["Required"]
+  end
+
   def name
     raw["Name"]
   end
@@ -9,10 +13,10 @@ class Fdoc::Parameter  < Fdoc::Node
     raw["Type"]
   end
 
-  def required?
-    raw["Required"]
+  def values
+    raw["Values"]
   end
-
+  
   def default
     raw["Default"]
   end
@@ -23,12 +27,5 @@ class Fdoc::Parameter  < Fdoc::Node
 
   def example
     raw["Example"]
-  end
-
-  # TODO: don't document this here, document it in a real place
-  # this is where you describe limits on the values
-  # could be possible values (like for an enum), or some description about the range.
-  def values
-    raw["Values"]
   end
 end

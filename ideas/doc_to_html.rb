@@ -20,7 +20,8 @@ class Page
 end
 
 template = ERB.new(File.read(template_location))
-p = Page.new(YAML.load_file(fdoc_input))
+resource = Fdoc::Resource.build_from_file(fdoc_input)
+p = Page.new(resource)
 
 File.open(html_output, "w") { |f| f.write(template.result(p.get_binding)) }
 

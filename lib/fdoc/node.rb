@@ -18,4 +18,8 @@ class Fdoc::Node
       raise Fdoc::MissingAttributeError, "Required key not present: #{key}\n Missing from: #{raw.inspect}" if raw[key] == nil
     end
   end
+  
+  def deprecated?
+    @raw["Deprecated"]
+  end
 end

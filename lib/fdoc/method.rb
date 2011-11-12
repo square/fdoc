@@ -30,6 +30,14 @@ class Fdoc::Method < Fdoc::Node
     @request_parameters.select { |p| !p.required? }
   end
 
+  def required_response_parameters
+    @response_parameters.select { |p| p.required? }
+  end
+
+  def optional_response_parameters
+    @response_parameters.select { |p| !p.required? }
+  end
+  
   def successful_response_codes
     @response_codes.select { |r| r.successful? }
   end

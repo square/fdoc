@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>API Documentation</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+
+  <body>
+    <div id="page">
+      <h1>API Documentation</h1>
+        
+      <h2>Resources</h2>
+        
+      <ul>
+        <% @resources.each |resource| do %>
+          <li>
+            <%= "<a href=\"#{resource.name}\">#{resource.name}</a>" %>
+              <ul>
+                <% resource.methods.each |method| do %>
+                  <li><%= "<a href=\"#{resource.name}##{method.name}\">#{method.verb} #{resource.name}/#{method.name}</a>" %>
+                <% end %>
+              </ul>
+            </li>
+        <% end %>
+      </ul>
+    </div><!-- #page -->
+  </body>
+</html>
