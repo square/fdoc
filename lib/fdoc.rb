@@ -42,6 +42,7 @@ module Fdoc
   class UndocumentedParameterError < DocumentationError; end
   class MissingRequiredParameterError < DocumentationError; end
   class UndocumentedResponseCodeError < DocumentationError; end
+  class UndocumentedMethodError < DocumentationError; end
 end
 
 require 'method_checklist'
