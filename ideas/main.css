@@ -5,43 +5,26 @@ body {
 	padding: 0;
 }
 
-tt, kbd {
-	font-family: Monaco, monospace;
-	font-size: 80%;
-}
+tt, kbd { font-family: Monaco, monospace; font-size: 80%; }
 
-a {
+a { 
 	color: inherit;
 	background: #ccc;
 	text-decoration: none;
 }
 a:hover { background: #ddd; }
+li { list-style: square; }
 
-li {
-	list-style: square;
-}
+h1, h2, h3, h4, h5, h6 { margin: .5em 0; }
+p { padding: 0; margin: .25em 0;}
 
-#header {
-    background: #666;
-    padding: 12pt;
-}
+#nav { background: #333; padding: 12pt; }
+#nav .item { color: #ccc; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif; }
 
-#header .item {
-    color: #ccc;
-    font-family: Georgia, serif;
-}
-
-#header .item:after {
-    content: " >";
-}
-
-#header .item:last-child:after {
-    content: "";
-}
-
-#header .item a {
-    background: transparent;
-}
+#nav .item:after { content: " \BB"; /* » */ }
+#nav .item:last-child:after { content: ""; }
+#nav .item:last-child { font-weight: bold; }
+#nav .item a { background: transparent; }
 
 #page {
     background: white;
@@ -50,7 +33,22 @@ li {
 	padding: 12pt;
 }
 
-#toc {
-    padding-bottom: 2em;
+#header {
+    background: #888;
+    margin: -12pt -12pt 12pt -12pt; padding: 12pt;
 }
+h3 { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
+
+#toc { padding-bottom: 2em; }
+
+h3 { font-size: 110%; }
+h4 { font-size: 105%; }
+h5 { font-size: 105%; font-weight: normal; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif;}
+
+
+.method .verb {font-weight: bold;}
+.method .base-path {color: #555; font-weight: normal;}
+.method .name {font-weight: bold;}
+
+.status-code .primary-key {font-weight: bold;}
 
