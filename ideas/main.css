@@ -1,6 +1,8 @@
 body {
-	background: #eeeeee;
+	background: #eee;
 	font: 12pt/16pt sans-serif;
+	margin: 0;
+	padding: 0;
 }
 
 tt, kbd {
@@ -19,8 +21,36 @@ li {
 	list-style: square;
 }
 
+#header {
+    background: #666;
+    padding: 12pt;
+}
+
+#header .item {
+    color: #ccc;
+    font-family: Georgia, serif;
+}
+
+#header .item:after {
+    content: " >";
+}
+
+#header .item:last-child:after {
+    content: "";
+}
+
+#header .item a {
+    background: transparent;
+}
+
 #page {
+    background: white;
 	width: 600pt;
-	margin: 0 auto;
+	margin: 12pt auto;
+	padding: 12pt;
+}
+
+#toc {
+    padding-bottom: 2em;
 }
 

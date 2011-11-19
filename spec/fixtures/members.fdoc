@@ -18,18 +18,13 @@ Methods:
                 Required: No
                 Default: 0
                 Description: Offsets the results returned, used for paging.
+        Response Parameters:
+            -   Name: members
+                Type: Array
         Response Codes:
             -   Status: 200 OK
                 Successful: Yes
                 Description: A list of current members
-                Sample Output: {
-                    "members": [{
-                        "name": "Fake Babette",
-                        "email": "fbabette@example.com"
-                    }, {
-                        "name": "Joe Nonexistent"
-                    }]
-            }
     -   Name: add
         Verb: PUT
         Description: Add a new member

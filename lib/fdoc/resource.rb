@@ -24,8 +24,8 @@ class Fdoc::Resource < Fdoc::Node
     raw["Base Path"]
   end
 
-  def abstract
-    raw["Abstract"]
+  def description
+    raw["Description"]
   end
 
   def action(action_name)

@@ -1,5 +1,6 @@
 require 'yaml'
 require 'erb'
+require '/Users/margolis/Development/fdoc/lib/fdoc'
 
 
 if ARGV.length < 2

@@ -5,9 +5,14 @@
   </head>
 
   <body>
+    <div id="header">
+      <span class="item"><a href="#">Square API</a></span>
+      <span class="item">Members</span>
+    </div>
+    
     <div id="page">
       <h1><%= @resource.base_path %></h1>
-      <p><%= @resource.abstract %></p>
+      <p><%= @resource.description %></p>
 
       <h2>Methods</h2>
       <p>Jump to a method</p>
