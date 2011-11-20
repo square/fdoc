@@ -12,6 +12,9 @@ Request Parameters:
         Required: No
         Description: The email of the member to add
         Example: "mpower@example.com"
+    -   Name: address
+        Required: Yes
+        Description: A mailing address
 Response Parameters:
     -   Name: success
         Type: Boolean

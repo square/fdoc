@@ -6,11 +6,12 @@ class Fdoc::MethodChecklist
   def consume_request(params)
     params = stringify_keys(params)
 
-    @method.required_request_parameters.each do |parameter|
-      unless params.has_key? parameter.name
-        raise Fdoc::MissingRequiredParameterError, "Looking for request parameter '#{parameter.name}' in #{@method.verb} #{@method.name}"
+    (@method.required_request_parameters.map(&:name) - params.keys).tap {|missing_params|
+      unless missing_params.empty?
+        raise Fdoc::MissingRequiredParameterError,
+          "Missing request parameters '#{missing_params.join(', ')}' in #{@method.verb} #{@method.name}"
       end
-    end
+    }
 
     validate_documented(params, @method.request_parameters, "request")
     true
