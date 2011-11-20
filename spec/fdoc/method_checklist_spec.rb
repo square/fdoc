@@ -28,7 +28,7 @@ describe Fdoc::MethodChecklist do
 
       it "raises a MissingRequiredParameterError listing all of the missing parameters" do
         expect { subject }.to raise_exception Fdoc::MissingRequiredParameterError,
-                                              /name.*address/
+                                              /address.*name/
       end
     end
 

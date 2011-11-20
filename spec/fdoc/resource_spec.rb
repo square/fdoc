@@ -76,8 +76,8 @@ describe Fdoc::Method do
   end
 
   it "contains ordered request parameters" do
-    subject.request_parameters.should have(2).items
-    subject.request_parameters.map(&:name).should == %w(name email)
+    subject.request_parameters.should have(3).items
+    subject.request_parameters.map(&:name).should == %w(name email address)
   end
 
   it "creates ResponseParameters" do
