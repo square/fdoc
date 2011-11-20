@@ -9,7 +9,7 @@ class Fdoc::MethodChecklist
     (@method.required_request_parameters.map(&:name) - params.keys).tap {|missing_params|
       unless missing_params.empty?
         raise Fdoc::MissingRequiredParameterError,
-          "Missing request parameters '#{missing_params.join(', ')}' in #{@method.verb} #{@method.name}"
+          "Missing request parameters '#{missing_params.sort.join(', ')}' in #{@method.verb} #{@method.name}"
       end
     }
 
@@ -53,11 +53,12 @@ class Fdoc::MethodChecklist
   end
 
   def validate_documented(test, definition, request_or_response)
-    test.each do |param_name, value|
-      unless definition.map(&:name).include?(param_name)
-        raise Fdoc::UndocumentedParameterError, "Extra #{request_or_response} parameter '#{param_name}' in #{@method.verb} #{@method.name}"
+    (test.keys - definition.map(&:name)).tap {|missing_params|
+      unless missing_params.empty?
+        raise Fdoc::UndocumentedParameterError,
+          "Extra #{request_or_response} parameter '#{missing_params.sort.join(', ')}' in #{@method.verb} #{@method.name}"
       end
-    end
+    }
   end
   # params.each { |param_name, value|
   #   if @optional_params_used.has_key? param_name

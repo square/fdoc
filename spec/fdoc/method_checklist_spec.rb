@@ -33,10 +33,12 @@ describe Fdoc::MethodChecklist do
     end
 
     context "an undocumented parameter is present" do
-      let(:request_parameters) { valid_request_parameters.merge({"age" => 100}) }
+      let(:request_parameters) { valid_request_parameters.merge({"age" => 100, "gender" => :male}) }
 
       it "raises an UndocumentedParameterError" do
-        expect { subject }.to raise_exception(Fdoc::UndocumentedParameterError)
+        expect { subject }.to raise_exception Fdoc::UndocumentedParameterError,
+                                              /age.*gender/
+
       end
     end
   end
