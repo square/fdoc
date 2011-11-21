@@ -8,29 +8,37 @@ describe Fdoc::MethodChecklist do
 
   describe "#consume_request" do
     subject { described_class.new(mthod).consume_request(request_parameters) }
-    let(:valid_request_parameters) { {"name" => "Captain Smellypants", "email" => "smelly@pants.com"} }
+    let(:valid_request_parameters) { {"name" => "Captain Smellypants",
+                                      "email" => "smelly@pants.com",
+                                      "address" => "Stinkville"} }
 
     context "valid request parameters" do
       let(:request_parameters) { valid_request_parameters }
 
-      it "returns true" do
-        subject.should == true
-      end
+      it { should == true }
     end
 
-    context "a required request parameter is missing" do
-      let(:request_parameters) { valid_request_parameters.delete("name"); valid_request_parameters }
+    context "when required parameters are missing" do
+      let(:request_parameters) do
+        valid_request_parameters.tap { |params|
+          params.delete('name')
+          params.delete('address')
+        }
+      end
 
-      it "raises a MissingRequiredParameterError" do
-        expect { subject }.to raise_exception(Fdoc::MissingRequiredParameterError)
+      it "raises a MissingRequiredParameterError listing all of the missing parameters" do
+        expect { subject }.to raise_exception Fdoc::MissingRequiredParameterError,
+                                              /address.*name/
       end
     end
 
     context "an undocumented parameter is present" do
-      let(:request_parameters) { valid_request_parameters.merge({"age" => 100}) }
+      let(:request_parameters) { valid_request_parameters.merge({"age" => 100, "gender" => :male}) }
 
       it "raises an UndocumentedParameterError" do
-        expect { subject }.to raise_exception(Fdoc::UndocumentedParameterError)
+        expect { subject }.to raise_exception Fdoc::UndocumentedParameterError,
+                                              /age.*gender/
+
       end
     end
   end

@@ -4,5 +4,6 @@ $:.unshift("#{spec_dir}/fixtures")
 
 require 'rspec'
 require 'fdoc'
+require 'yaml'
 
 FIXTURE_PATH = "#{spec_dir}/fixtures"
