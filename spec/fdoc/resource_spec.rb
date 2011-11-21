@@ -61,7 +61,7 @@ end
 describe Fdoc::Method do
   subject { described_class.new(action_data) }
   let(:action_data) { YAML.load_file(fixture_file) }
-  let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc" }
+  let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc.part" }
 
   it "contains the name" do
     subject.name.should == "add"
@@ -228,7 +228,7 @@ end
 describe Fdoc::ResponseCode do
   subject { described_class.new(response_data) }
   let(:response_data) { YAML.load_file(fixture_file) }
-  let(:fixture_file) { "#{FIXTURE_PATH}/response_code.fdoc" }
+  let(:fixture_file) { "#{FIXTURE_PATH}/response_code.fdoc.part" }
 
   its(:status) { should == "200 OK" }
   its(:successful?) { should == true }

@@ -4,7 +4,7 @@ require "#{path}/../spec_helper"
 describe Fdoc::MethodChecklist do
   let(:mthod)        { Fdoc::Method.new(method_data) }
   let(:method_data)  { YAML.load_file(fixture_file) }
-  let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc" }
+  let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc.part" }
 
   describe "#consume_request" do
     subject { described_class.new(mthod).consume_request(request_parameters) }
