@@ -5,21 +5,28 @@
   </head>
 
   <body>
+    <div id="nav">
+      <span class="item"><a href="index.html">Square API</a></span>
+    </div>
+    
     <div id="page">
-      <h1>API Documentation</h1>
-        
+      <div id="header">
+       <h1>API Documentation</h1>
+      </div>
+      
       <h2>Resources</h2>
         
       <ul>
-        <% @resources.each |resource| do %>
+        <% @resources.each do |resource| %>
           <li>
-            <%= "<a href=\"#{resource.name}\">#{resource.name}</a>" %>
+            <% resource_file = "#{resource.name}.html" %>
+            <%= "<a href=\"#{resource_file}\">#{resource.name}</a>" %>
               <ul>
-                <% resource.methods.each |method| do %>
-                  <li><%= "<a href=\"#{resource.name}##{method.name}\">#{method.verb} #{resource.name}/#{method.name}</a>" %>
-                <% end %>
-              </ul>
-            </li>
+                <% resource.actions.each do |mthod| %>
+                  <li><%= "<a href=\"#{resource_file}##{mthod.name}\" class=\"method\"><span class=\"verb\">#{mthod.verb}</span> <span class=\"base-path\">#{resource.base_path}</span><span class=\"name\">/#{mthod.name}</span></a>" %>
+                <% end%>
+              <ul>
+          </li>
         <% end %>
       </ul>
     </div><!-- #page -->

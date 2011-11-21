@@ -5,20 +5,30 @@
   </head>
 
   <body>
+    <div id="nav">
+      <span class="item"><a href="index.html">Square API</a></span>
+      <span class="item"><%= @resource.name.capitalize %></span>
+    </div>
+    
     <div id="page">
-      <h1><%= @resource.base_path %></h1>
-      <p><%= @resource.abstract %></p>
+      <div id="header">
+       <h1><%= @resource.name.capitalize %></h1>
+       <span class="base-path"><%= @resource.base_path %></span>
+      </div>
+
+      <p><%= @resource.description %></p>
 
       <h2>Methods</h2>
       <p>Jump to a method</p>
       <ul id="toc">
         <% @resource.actions.each do |mthod| %>
-          <li><%= "<a href=\"##{mthod.name}\">#{mthod.verb} #{@resource.base_path}/#{mthod.name}</a>" %></li>
+          <li><%= "<a href=\"##{mthod.name}\" class=\"method\"><span class=\"verb\">#{mthod.verb}</span> <span class=\"base-path\">#{@resource.base_path}</span><span class=\"name\">/#{mthod.name}</span></a>" %></li>
         <% end %>
       </ul>
 
       <% @resource.actions.each do |mthod| %>
-        <%= "<h3 id=\"#{mthod.name}\">#{mthod.verb} #{@resource.base_path}/#{mthod.name}</h3>" %>
+        <a href="#" class="back-to-top">Back to top</a>
+        <%= "<h3 id=\"#{mthod.name}\" class=\"method\"><span class=\"verb\">#{mthod.verb}</span> <span class=\"base-path\">#{@resource.base_path}</span><span class=\"name\">/#{mthod.name}</span></h3>" %>
 
 
         <% ["Request", "Response"].each do |parameter_type| %>
@@ -30,7 +40,10 @@
                 <h5><%= required %></h5>
                 <ul>
                   <% parameters.each do |parameter| %>
-                    <li><tt><%= parameter.name %></tt>
+                    <li class="parameter"><tt class="primary-key"><%= parameter.name %></tt>
+                      <% if parameter.description %>
+                        <p><%= parameter.description %></p>
+                      <% end %>
                       <ul>
                         <% # TODO: break out special values, don't just iterate? '%>
                         <% parameter.raw.each do |attribute, value| %>
@@ -44,13 +57,21 @@
             <% end %>
           <% end %>
         <% end %>
-                
+        
         <h4>Response Codes</h4>
-
-        <% mthod.response_codes.each do |response_code| %>
-          <h5><%= response_code.status %></h5>
+        <% ["Successful", "Failure"].each do |success_status| %>
+          <% response_codes = mthod.method("#{success_status.downcase}_response_codes").call %>
+          <% if response_codes.length > 0 %>
+            <h5><%= "#{success_status} Response Codes" %></h4>
+            <% response_codes.each do |response_code| %>
+              <ul>
+                <li class="status-code"><span class="primary-key"><%= response_code.status %></span>
+                  <p><%= response_code.description %></p>
+                </li>
+              </ul>
+            <% end %>
+          <% end %>
         <% end %>
-
       <% end %>
     </div> <!-- #page -->
   </body>
