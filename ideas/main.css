@@ -23,7 +23,7 @@ h4 { font-size: 105%; }
 h5 { font-size: 105%; font-weight: normal; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif;}
 
 
-#nav { background: #333; padding: 12pt; }
+#nav { background: #333; padding: 12pt; height: 1.2em; }
 #nav .item { color: #ccc; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif; }
 
 #nav .item:after { content: " \BB"; /* » */ }
