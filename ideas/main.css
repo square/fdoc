@@ -15,8 +15,13 @@ a {
 a:hover { background: #ddd; }
 li { list-style: square; }
 
-h1, h2, h3, h4, h5, h6 { margin: .5em 0; }
 p { padding: 0; margin: .25em 0;}
+
+h1, h2, h3, h4, h5, h6 { margin: .5em 0; }
+h3 { font-size: 110%; }
+h4 { font-size: 105%; }
+h5 { font-size: 105%; font-weight: normal; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif;}
+
 
 #nav { background: #333; padding: 12pt; }
 #nav .item { color: #ccc; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif; }
@@ -37,18 +42,15 @@ p { padding: 0; margin: .25em 0;}
     background: #888;
     margin: -12pt -12pt 12pt -12pt; padding: 12pt;
 }
-h3 { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
-
 #toc { padding-bottom: 2em; }
 
-h3 { font-size: 110%; }
-h4 { font-size: 105%; }
-h5 { font-size: 105%; font-weight: normal; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif;}
-
-
+h3.method { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
 .method .verb {font-weight: bold;}
 .method .base-path {color: #555; font-weight: normal;}
 .method .name {font-weight: bold;}
 
-.status-code .primary-key {font-weight: bold;}
+a.back-to-top {display: block; float: right; background: transparent; margin: 6pt; padding: 6pt; line-height: 110%; }
+a.back-to-top:hover, a.back-to-top:active { background: #AAA; }
+a.back-to-top:after { content: " \2191"; }
 
+.status-code .primary-key {font-weight: bold;}

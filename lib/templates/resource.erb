@@ -6,7 +6,7 @@
 
   <body>
     <div id="nav">
-      <span class="item"><a href="#">Square API</a></span>
+      <span class="item"><a href="index.html">Square API</a></span>
       <span class="item"><%= @resource.name.capitalize %></span>
     </div>
     
@@ -27,6 +27,7 @@
       </ul>
 
       <% @resource.actions.each do |mthod| %>
+        <a href="#" class="back-to-top">Back to top</a>
         <%= "<h3 id=\"#{mthod.name}\" class=\"method\"><span class=\"verb\">#{mthod.verb}</span> <span class=\"base-path\">#{@resource.base_path}</span><span class=\"name\">/#{mthod.name}</span></h3>" %>
 
 

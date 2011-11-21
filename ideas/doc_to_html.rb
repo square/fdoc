@@ -3,14 +3,17 @@ require 'erb'
 require '/Users/margolis/Development/fdoc/lib/fdoc'
 
 
-if ARGV.length < 2
-  abort "Usage: ruby doc_to_html.rb [fdoc_input] [html_output] (template=resource.erb)"
-end
+class DirectoryPage
+  def initialize(resources)
+    @resources = resources
+  end
 
-fdoc_input, html_output, template_location = ARGV[0..2]
-template_location ||= 'resource.erb'
+  def get_binding
+    binding
+  end
+end  
 
-class Page
+class ResourcePage
   def initialize(resource)
     @resource = resource
   end
@@ -20,9 +23,28 @@ class Page
   end
 end
 
-template = ERB.new(File.read(template_location))
-resource = Fdoc::Resource.build_from_file(fdoc_input)
-p = Page.new(resource)
 
-File.open(html_output, "w") { |f| f.write(template.result(p.get_binding)) }
+if ARGV.length < 3
+  abort "Usage: ruby doc_to_html.rb [fdoc_directory] [html_directory] [template_directory]"
+end
+
+fdoc_directory, html_directory, template_directory = ARGV[0..2]
+
+directory_template = ERB.new(File.read(template_directory + "/directory.erb"))
+resource_template = ERB.new(File.read(template_directory + "/resource.erb"))
+
+resources = []
+
+Dir.foreach(fdoc_directory) do |file|
+  next unless file.end_with? ".fdoc"
+  resource = Fdoc::Resource.build_from_file(fdoc_directory + "/#{file}")
+  resources << resource 
+  
+  p = ResourcePage.new(resource)
+  File.open(html_directory + "/#{file.gsub(/fdoc/, 'html')}", "w") { |f| f.write(resource_template.result(p.get_binding)) }
+end
+
+
+d = DirectoryPage.new(resources)
+File.open(html_directory + "/index.html", "w") { |f| f.write(directory_template.result(d.get_binding)) }
 

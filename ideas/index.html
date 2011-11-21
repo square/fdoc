@@ -17,17 +17,19 @@
       <h2>Resources</h2>
         
       <ul>
-        <% @resources.each do |resource| %>
+        
           <li>
-            <% resource_file = "#{resource.name}.html" %>
-            <%= "<a href=\"#{resource_file}\">#{resource.name}</a>" %>
+            
+            <a href="members.html">members</a>
               <ul>
-                <% resource.actions.each do |mthod| %>
-                  <li><%= "<a href=\"#{resource_file}##{mthod.name}\">#{mthod.verb} #{resource.name}/#{mthod.name}</a>" %>
-                <% end%>
+                
+                  <li><a href="members.html#list">GET members/list</a>
+                
+                  <li><a href="members.html#add">PUT members/add</a>
+                
               <ul>
           </li>
-        <% end %>
+        
       </ul>
     </div><!-- #page -->
   </body>
