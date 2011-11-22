@@ -3,12 +3,34 @@ $:.unshift(lib_dir)
 
 module Fdoc
   class Page
-    def initialize(resource)
-      @resource = resource
-    end
-
     def get_binding
       binding
+    end
+
+    def index_path
+      "/#{@base_path}"
+    end
+
+    def css_path
+      "/#{@base_path}/main.css"
+    end
+  end
+  
+  class DirectoryPage < Page
+    def initialize(resources, base_path)
+      @resources = resources
+      @base_path = base_path
+    end
+    
+    def resource_path(resource)
+      "/#{@base_path}/#{resource.name}"
+    end    
+  end  
+
+  class ResourcePage < Page
+    def initialize(resource, base_path)
+      @resource = resource
+      @base_path = base_path
     end
   end
 
@@ -26,13 +48,35 @@ module Fdoc
     @resource_checklists[controller].dup
   end
 
-  def self.compile(fdoc_path)
-    template_path = File.expand_path(File.dirname(__FILE__) + "/templates/resource.erb")
+  def self.template_path(template, file_type = "erb")
+    File.expand_path(File.dirname(__FILE__) + "/templates/#{template}.#{file_type}")
+  end
 
-    resource = Fdoc::Resource.build_from_file(template_path)
-    p = Fdoc::Page.new(resource)
+  def self.compile_index(fdoc_directory, base_path)
+    directory_template = ERB.new(File.read(template_path(:directory)))
 
-    template.result(p.get_binding)
+    resources = []
+
+    Dir.foreach(fdoc_directory) do |file|
+      next unless file.end_with? ".fdoc"
+      resource = Fdoc::Resource.build_from_file(fdoc_directory + "/#{file}")
+      resources << resource
+    end
+
+    d = Fdoc::DirectoryPage.new(resources, base_path)
+    directory_template.result(d.get_binding)
+  end
+
+  def self.compile(fdoc_path, base_path)
+    resource_template = ERB.new(File.read(template_path(:resource)))
+    resource = Fdoc::Resource.build_from_file(fdoc_path)
+    p = Fdoc::ResourcePage.new(resource, base_path)
+
+    resource_template.result(p.get_binding)
+  end
+  
+  def self.css
+    File.read(template_path(:main, :css))
   end
 
   class Error < StandardError; end

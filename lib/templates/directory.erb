@@ -1,12 +1,12 @@
 <html>
   <head>
     <title>API Documentation</title>
-    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="<%= css_path %>" />
   </head>
 
   <body>
     <div id="nav">
-      <span class="item"><a href="index.html">Square API</a></span>
+      <span class="item"><a href="<%= index_path %>">Square API</a></span>
     </div>
     
     <div id="page">
@@ -19,11 +19,10 @@
       <ul>
         <% @resources.each do |resource| %>
           <li>
-            <% resource_file = "#{resource.name}.html" %>
-            <%= "<a href=\"#{resource_file}\">#{resource.name}</a>" %>
+            <%= "<a href=\"#{resource_path(resource)}\">#{resource.name}</a>" %>
               <ul>
                 <% resource.actions.each do |mthod| %>
-                  <li><%= "<a href=\"#{resource_file}##{mthod.name}\" class=\"method\"><span class=\"verb\">#{mthod.verb}</span> <span class=\"base-path\">#{resource.base_path}</span><span class=\"name\">/#{mthod.name}</span></a>" %>
+                  <li><%= "<a href=\"#{resource_path(resource)}##{mthod.name}\" class=\"method\"><span class=\"verb\">#{mthod.verb}</span> <span class=\"base-path\">#{resource.base_path}</span><span class=\"name\">/#{mthod.name}</span></a>" %>
                 <% end%>
               </ul>
           </li>
