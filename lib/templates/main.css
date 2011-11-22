@@ -5,7 +5,8 @@ body {
 	padding: 0;
 }
 
-tt, kbd { font-family: Monaco, monospace; font-size: 80%; }
+tt, kbd, code { font-family: Monaco, monospace; font-size: 80%; }
+code { padding: 6pt; background: #eee;}
 
 a { 
 	color: inherit;
@@ -54,3 +55,5 @@ a.back-to-top:hover, a.back-to-top:active { background: #AAA; }
 a.back-to-top:after { content: " \2191"; }
 
 .status-code .primary-key {font-weight: bold;}
+
+span.deprecated {color: #f33;}

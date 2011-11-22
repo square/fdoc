@@ -51,7 +51,8 @@
                 <h5><%= required %></h5>
                 <ul>
                   <% parameters.each do |parameter| %>
-                    <li class="parameter"><tt class="primary-key"><%= parameter.name %></tt>
+                    <%= Fdoc::ParameterPresenter.new(parameter).as_html %>
+                    <!-- <li class="parameter"><tt class="primary-key"><%= parameter.name %></tt>
                       <% if parameter.description %>
                         <p><%= parameter.description %></p>
                       <% end %>
@@ -61,7 +62,7 @@
                           <li><%= "#{attribute}: #{value}" %></li>
                         <% end %>
                       </ul>
-                    </li>
+                    </li> -->
                   <% end %>
                 </ul>
               <% end %>
