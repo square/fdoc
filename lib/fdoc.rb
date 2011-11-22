@@ -29,8 +29,11 @@ module Fdoc
     
     def resource_path(resource)
       path = "#{@base_path}/#{resource.name}"
-      path += ".html" if @options[:html]
-      path = "/" + path
+      if @options[:html]
+        path += ".html"
+      else
+        path = "/" + path
+      end
       path
     end    
   end  
