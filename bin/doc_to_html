@@ -5,17 +5,21 @@ require 'yaml'
 require File.expand_path(File.dirname(__FILE__) + "/../lib/fdoc")
 
 if ARGV.length < 2
-  abort "Usage: ruby doc_to_html.rb [fdoc_directory] [html_directory]"
+  abort "Usage: ruby doc_to_html.rb [fdoc_directory] [html_directory] (url_base_path)"
 end
 
-fdoc_directory, html_directory = ARGV[0..1]
+fdoc_directory, html_directory, base_path = ARGV[0..2]
 html_directory = File.expand_path(html_directory)
 
-File.open(html_directory + "/index.html", "w") { |f| f.write(Fdoc.compile_index(fdoc_directory, "/#{html_directory}", :html => true)) }
+if !base_path
+  base_path = html_directory
+end
+
+File.open(html_directory + "/index.html", "w") { |f| f.write(Fdoc.compile_index(fdoc_directory, base_path, :html => true)) }
 
 Dir.foreach(fdoc_directory) do |file|
   next unless file.end_with? ".fdoc"
-  File.open(html_directory + "/#{file.gsub(/fdoc/, 'html')}", "w") { |f| f.write(Fdoc.compile(fdoc_directory + "/#{file}", html_directory, :html => true)) }
+  File.open(html_directory + "/#{file.gsub(/fdoc/, 'html')}", "w") { |f| f.write(Fdoc.compile(fdoc_directory + "/#{file}", base_path, :html => true)) }
 end
 
 File.open(html_directory + "/main.css", "w") { |f| f.write(Fdoc.css) }
