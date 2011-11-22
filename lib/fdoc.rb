@@ -17,6 +17,7 @@ module Fdoc
       path = "#{@base_path}/main.css"
       path = "/" + path unless @options[:html]
       path
+    end
   end
   
   class DirectoryPage < Page
