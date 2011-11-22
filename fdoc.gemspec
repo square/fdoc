@@ -7,13 +7,13 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.rubygems_version = "1.3.7"
 
-  s.authors = ["Matt Wilson", "Zach Margolis"]
+  s.authors = ["Matt Wilson", "Zach Margolis", "Sean Sorrell"]
   s.email = "support@squareup.com"
 
   s.date = "2011-11-07"
-  # s.description = "A library for connecting to the Fidelius API."
-  # s.summary = "A library for connecting to the Fidelius API."
-  # s.homepage = "http://github.com/square/fidelius-client"
+  s.description = "A tool for documenting API endpoints."
+  s.summary = "A tool for documenting API endpoints."
+  s.homepage = "http://github.com/square/fdoc"
 
   s.rdoc_options = ["--charset=UTF-8"]
   s.extra_rdoc_files = [
