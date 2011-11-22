@@ -8,12 +8,15 @@ module Fdoc
     end
 
     def index_path
-      "/#{@base_path}"
+      path = @base_path
+      path = "/" + path unless @options[:html]
+      path
     end
 
     def css_path
-      "/#{@base_path}/main.css"
-    end
+      path = "#{@base_path}/main.css"
+      path = "/" + path unless @options[:html]
+      path
   end
   
   class DirectoryPage < Page
