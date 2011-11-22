@@ -17,20 +17,24 @@ module Fdoc
   end
   
   class DirectoryPage < Page
-    def initialize(resources, base_path)
+    def initialize(resources, base_path, options = {})
       @resources = resources
       @base_path = base_path
+      @options = options
     end
     
     def resource_path(resource)
-      "/#{@base_path}/#{resource.name}"
+      path = "/#{@base_path}/#{resource.name}"
+      path += ".html" if @options[:html]
+      path
     end    
   end  
 
   class ResourcePage < Page
-    def initialize(resource, base_path)
+    def initialize(resource, base_path, options = {})
       @resource = resource
       @base_path = base_path
+      @options = options
     end
   end
 
@@ -52,7 +56,7 @@ module Fdoc
     File.expand_path(File.dirname(__FILE__) + "/templates/#{template}.#{file_type}")
   end
 
-  def self.compile_index(fdoc_directory, base_path)
+  def self.compile_index(fdoc_directory, base_path, options = {})
     directory_template = ERB.new(File.read(template_path(:directory)))
 
     resources = []
@@ -63,14 +67,14 @@ module Fdoc
       resources << resource
     end
 
-    d = Fdoc::DirectoryPage.new(resources, base_path)
+    d = Fdoc::DirectoryPage.new(resources, base_path, options)
     directory_template.result(d.get_binding)
   end
 
-  def self.compile(fdoc_path, base_path)
+  def self.compile(fdoc_path, base_path, options = {})
     resource_template = ERB.new(File.read(template_path(:resource)))
     resource = Fdoc::Resource.build_from_file(fdoc_path)
-    p = Fdoc::ResourcePage.new(resource, base_path)
+    p = Fdoc::ResourcePage.new(resource, base_path, options)
 
     resource_template.result(p.get_binding)
   end
