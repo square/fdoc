@@ -52,17 +52,6 @@
                 <ul>
                   <% parameters.each do |parameter| %>
                     <%= Fdoc::ParameterPresenter.new(parameter).as_html %>
-                    <!-- <li class="parameter"><tt class="primary-key"><%= parameter.name %></tt>
-                      <% if parameter.description %>
-                        <p><%= parameter.description %></p>
-                      <% end %>
-                      <ul>
-                        <% # TODO: break out special values, don't just iterate? '%>
-                        <% parameter.raw.each do |attribute, value| %>
-                          <li><%= "#{attribute}: #{value}" %></li>
-                        <% end %>
-                      </ul>
-                    </li> -->
                   <% end %>
                 </ul>
               <% end %>
