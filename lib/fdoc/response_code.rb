@@ -1,19 +1,11 @@
 class Fdoc::ResponseCode < Fdoc::Node
   required_keys "Status", "Successful"
 
-  def status
-    raw["Status"]
-  end
+  key_method_map ({
+    "Status" => :status,
+    "Successful" => :successful?,
+    "Sample Output" => :sample_output,
+    "Description" => :description
+  })
 
-  def successful?
-    raw["Successful"]
-  end
-
-  def sample_output
-    raw["Sample Output"]
-  end
-
-  def description
-    raw["Description"]
-  end
 end
