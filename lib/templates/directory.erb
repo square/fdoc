@@ -16,14 +16,14 @@
 
       <h2>Resources</h2>
 
-      <ul>
+      <ul class="resources">
         <% @resources.each do |resource| %>
-          <li>
+          <li class="resource">
             <a href="<%= "#{resource_path(resource)}##{resource.name}" %>" class="method"><%= resource.name %></a>
               <ul>
                 <% resource.actions.each do |mthod| %>
                   <li>
-                    <a href="<%= "#{resource_path(resource)}##{mthod.name}" %>" class="method">
+                    <a href="<%= "#{resource_path(resource)}##{mthod.name}" %>" class="method-name">
                       <span class="verb"><%= mthod.verb.strip %></span>
                       <span class="base-path"><%= resource.base_path.strip %></span>
                       <span class="name">/<%= mthod.name.strip %></span>

@@ -22,11 +22,12 @@ class Fdoc::ParameterPresenter < Fdoc::Presenter
     return unless node.values and node.type
     
     if node.type.downcase == "enum"
-      return "#<tt>&quot;{node.values.join(\"&quot;, &quot\")}&quot;</tt>"
+      return "<tt>&quot;#{node.values.join("&quot;</tt>, <tt>&quot")}&quot;</tt>"
     end
   end
   
   def example_as_html
-    "<tt>#{node.example}</tt>"
+    return unless node.example
+    "<tt>#{node.example.to_s.gsub(/\"/, "X")}</tt>"
   end
 end

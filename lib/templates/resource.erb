@@ -23,22 +23,23 @@
       <ul id="toc">
         <% @resource.actions.each do |mthod| %>
           <li>
-            <a href='#<%= mthod.name %>' class='method'>
-              <span class='verb'><%= mthod.verb.strip %></span>
-              <span class='base-path'><%= @resource.base_path.strip %></span>
-              <span class='name'>/<%= mthod.name.strip %></span>
+            <a href="#<%= mthod.name %>" class="method-name">
+              <span class="verb"><%= mthod.verb.strip %></span>
+              <span class="base-path"><%= @resource.base_path.strip %></span>
+              <span class="name">/<%= mthod.name.strip %></span>
             </a>
           </li>
         <% end %>
       </ul>
 
       <% @resource.actions.each do |mthod| %>
+        <div class="method">
         <a href="#" class="back-to-top">Back to top</a>
 
-        <h3 id='<%= mthod.name %>' class='method'>
-          <span class='verb'><%= mthod.verb.strip %></span>
-          <span class='base-path'><%= @resource.base_path.strip %></span>
-          <span class='name'>/<%= mthod.name.strip %></span>
+        <h3 id="<%= mthod.name %>" class="method-name">
+          <span class="verb"><%= mthod.verb.strip %></span>
+          <span class="base-path"><%= @resource.base_path.strip %></span>
+          <span class="name">/<%= mthod.name.strip %></span>
         </h3>
 
         <% ["Request", "Response"].each do |parameter_type| %>
@@ -73,6 +74,7 @@
             <% end %>
           <% end %>
         <% end %>
+        </div>
       <% end %>
     </div> <!-- #page -->
   </body>
