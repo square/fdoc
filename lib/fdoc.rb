@@ -101,12 +101,12 @@ module Fdoc
   class UndocumentedMethodError < DocumentationError; end
 end
 
-require 'method_checklist'
-require 'resource_checklist'
 require 'node'
-require 'resource'
-require 'method'
 require 'parameter'
-require 'response_code'
 require 'request_parameter'
 require 'response_parameter'
+require 'response_code'
+require 'method'
+require 'resource'
+require 'method_checklist'
+require 'resource_checklist'

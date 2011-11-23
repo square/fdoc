@@ -2,15 +2,26 @@ class Fdoc::Node
 
   attr_reader :raw
   
-  def self.key_method_map(map)
+  def self.key_method_map(*args)
     @key_method_map ||= {}
-    return @key_method_map if map.empty?
+    return @key_method_map if args.empty?
+    map = args[0]
     map.each do |key, method_name|
       define_method method_name do
         raw[key]
       end
     end
     @key_method_map = @key_method_map.merge map
+  end
+
+  def self.key_child_map(*args)
+    @key_child_map ||= {}
+    return @key_child_map if args.empty?
+    map = args[0]
+    map.each do |key, child_arr|
+      method_name, _ = child_arr
+      attr_accessor method_name
+    end
   end
   
   key_method_map({
@@ -20,6 +31,12 @@ class Fdoc::Node
   def initialize(data)
     @raw = data
     assert_required_keys
+    
+    self.class.key_child_map.each do |key, child_arr|
+      method_name, child_class = child_arr
+      setter = (method_name + "=").to_sym
+      call(setter, (raw[key] || []).map{ |data| child_class.new(data) })
+    end
   end
 
   def as_hash
@@ -28,8 +45,14 @@ class Fdoc::Node
       attribute = send(method_name)
       if attribute.kind_of? Fdoc::Node
         hash[key] = attribute.as_hash
-      else
+      elsif attribute
         hash[key] = attribute
+      end
+    end
+    self.class.key_child_map.each do |key, child_arr|
+      method_name, child_class = child_arr
+      if attribute = send(method_name)
+        hash[key] = attribute.map { |child| child.as_hash }
       end
     end
     hash
