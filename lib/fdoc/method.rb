@@ -22,7 +22,7 @@ class Fdoc::Method < Fdoc::Node
   end
 
   def response_code_for(status, successful)
-    response_codes.find {|r| r.status == status and r.succesful? == succesful}
+    response_codes.find {|r| r.status == status and r.successful? == successful}
   end
 
   def required_request_parameters

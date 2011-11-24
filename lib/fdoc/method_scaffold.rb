@@ -1,4 +1,7 @@
 class Fdoc::MethodScaffold
+  
+  attr_reader :scaffolded_method
+  
   def initialize(method_name)
     @scaffolded_method = Fdoc::Method.new(:partial_data => {})
     @scaffolded_method.name = method_name.to_s
@@ -23,8 +26,8 @@ class Fdoc::MethodScaffold
 
     unless @scaffolded_method.response_code_for(rails_response, successful)
       rc = Fdoc::ResponseCode.new(:partial_data => {})
-      rc.response_code = rails_response
-      rc.succesful = successful
+      rc.status = rails_response
+      rc.successful = successful
       @scaffolded_method.response_codes << rc
     end
   end
@@ -32,7 +35,7 @@ class Fdoc::MethodScaffold
   def scaffold_param(name, value, param_class)
     param = param_class.new(:partial_data => {})
     param.name = name
-    param.type = "#{value.class.to_s}?"
+    param.type = guess_type(value)
     param.example = value
     param.description = "???"
 
@@ -40,5 +43,15 @@ class Fdoc::MethodScaffold
       param.required = "???"
     end
     param
+  end
+  
+  def guess_type(value)
+    case value.class.to_s
+      # use more standard types
+      when "Fixnum"
+        "Integer"
+      else
+        value.class.to_s
+    end
   end
 end

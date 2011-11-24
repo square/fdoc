@@ -32,7 +32,6 @@ class Fdoc::Node
     map.each do |key, child_arr|
       method_name, _ = child_arr
       attr_accessor method_name
-      puts defined?("#{method_name}=")
     end
   end
 
