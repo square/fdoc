@@ -12,7 +12,7 @@ class Fdoc::Node
         raw[key]
       end
 
-      define_method "#{method_name.gsub(/\?$/, //)}=".to_sym do |val|
+      define_method method_name.to_s.gsub(/\?$/, '').to_sym do |val|
         raw[key] = val
       end
     end
@@ -65,6 +65,7 @@ class Fdoc::Node
       send(setter, Array(raw[key]).map{ |child_data| child_class.new(child_data)})
     end
   end
+
 
   def as_hash
     hash = {}
