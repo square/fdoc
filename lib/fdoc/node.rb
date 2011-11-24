@@ -2,36 +2,58 @@ class Fdoc::Node
 
   attr_reader :raw
 
-  def self.key_method_map(*args)
-    @key_method_map ||= {}
-    return @key_method_map if args.empty?
-    map = args[0]
+  @@key_method_maps = {}
+  @@key_child_maps = {}
+
+  def self.map_keys_to_methods(map)
+    @@key_method_maps[self.to_s] = map
     map.each do |key, method_name|
       define_method method_name do
         raw[key]
       end
+
+      define_method "#{method_name}=".to_sym do |val|
+        raw[key] = val
+      end
     end
-    @key_method_map = @key_method_map.merge map
   end
 
-  def self.key_child_map(*args)
-    @key_child_map ||= {}
-    return @key_child_map if args.empty?
-    map = args[0]
+  def self.key_method_map
+    @@key_method_maps[self.to_s] ||= {}
+    key_method_map = @@key_method_maps[self.to_s]
+    if superclass.respond_to? :key_method_map
+      return key_method_map.merge superclass.send(:key_method_map)
+    end
+    key_method_map
+  end
+
+  def self.map_keys_to_children(map)
+    @@key_child_maps[self.to_s] = map
     map.each do |key, child_arr|
       method_name, _ = child_arr
+      p method_name
       attr_accessor method_name
+      puts defined?("#{method_name}=")
     end
-    @key_child_map.merge! map
   end
 
-  key_method_map({
+  def self.key_child_map
+    @@key_child_maps[self.to_s] ||= {}
+    key_child_map = @@key_child_maps[self.to_s]
+
+    if superclass.respond_to? :key_child_map
+      return key_child_map.merge superclass.send(:key_child_map)
+    end
+    key_child_map
+  end
+
+  map_keys_to_methods({
     "Deprecated" => :deprecated?
   })
 
-  def initialize(data)
+  def initialize(data=nil)
     @raw = data || {}
-    assert_required_keys
+    assert_required_keys unless data.has_key?(:partial_data)
 
     self.class.key_child_map.each do |key, child_arr|
       method_name, child_class = child_arr
@@ -44,16 +66,16 @@ class Fdoc::Node
     hash = {}
     self.class.key_method_map.each do |key, method_name|
       attribute = send(method_name)
-      if attribute.kind_of? Fdoc::Node
-        hash[key] = attribute.as_hash
-      elsif attribute
+      unless attribute.nil?
         hash[key] = attribute
       end
     end
-    self.class.key_child_map.each do |key, child_arr|
-      method_name, child_class = child_arr
-      if attribute = send(method_name)
-        hash[key] = attribute.map { |child| child.as_hash }
+
+    self.class.key_child_map.each do |key, child_args|
+      method_name, child_class = child_args
+      child_array = send(method_name)
+      unless child_array.empty?
+        hash[key] = child_array.map { |child| child.as_hash }
       end
     end
     hash

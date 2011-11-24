@@ -1,6 +1,6 @@
 class Fdoc::Parameter  < Fdoc::Node
   required_keys "Name", "Type"
-  key_method_map ({
+  map_keys_to_methods ({
     "Name" => :name,
     "Type" => :type,
     "Values" => :values,

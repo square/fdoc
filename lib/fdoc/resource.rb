@@ -1,13 +1,13 @@
 class Fdoc::Resource < Fdoc::Node
 
   required_keys "Controller", "Resource Name", "Methods"
-  key_method_map ({
+  map_keys_to_methods ({
     "Resource Name" => :name,
     "Controller" => :controller,
     "Base Path" => :base_path,
     "Description" => :description
   })
-  key_child_map ({
+  map_keys_to_children ({
     "Methods" => [:actions, Fdoc::Method]
   })
 
@@ -15,7 +15,7 @@ class Fdoc::Resource < Fdoc::Node
     new YAML.load_file(fdoc_path)
   end
 
-  def action(action_name)
+  def action_named(action_name)
     actions.detect { |a| a.name == action_name }
   end
 end
