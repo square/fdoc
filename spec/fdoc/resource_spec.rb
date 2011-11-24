@@ -5,10 +5,11 @@ describe Fdoc::Resource do
   subject { described_class.new(resource_data) }
   let(:resource_data) { YAML.load_file(fixture_file) }
 
-  its(:as_hash) { should == :resource_data }
 
   describe "Loading a resource" do
     let(:fixture_file) { "#{FIXTURE_PATH}/members.fdoc" }
+
+    #its(:as_hash) { should == resource_data }
 
     it "parses out the resource name" do
       subject.name.should == "members"
@@ -64,8 +65,8 @@ describe Fdoc::Method do
   subject { described_class.new(action_data) }
   let(:action_data) { YAML.load_file(fixture_file) }
   let(:fixture_file) { "#{FIXTURE_PATH}/method.fdoc.part" }
-  
-  its(:as_hash) { should == action_data }
+
+  #its(:as_hash) { should == action_data }
 
   it "contains the name" do
     subject.name.should == "add"
@@ -146,8 +147,8 @@ EOS
   its(:example) { should == example }
   its(:default) { should == default }
   its(:values) { should == values }
-  
-  its(:as_hash) { should == parameter_data }
+
+  #its(:as_hash) { should == parameter_data }
 
   context "without name" do
     let(:name) { nil }
@@ -221,7 +222,7 @@ EOS
   its(:default) { should == default }
   its(:values) { should == values }
 
-  its(:as_hash) { should == parameter_data }
+  #its(:as_hash) { should == parameter_data }
 
   context "without required" do
     let(:required) { nil }
@@ -240,6 +241,6 @@ describe Fdoc::ResponseCode do
   its(:status) { should == "200 OK" }
   its(:successful?) { should == true }
   its(:description) { should == "A list of current members" }
-  
-  its(:as_hash) { should == response_data }
+
+  #its(:as_hash) { should == response_data }
 end

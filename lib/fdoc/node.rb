@@ -1,7 +1,7 @@
 class Fdoc::Node
 
   attr_reader :raw
-  
+
   def self.key_method_map(*args)
     @key_method_map ||= {}
     return @key_method_map if args.empty?
@@ -22,20 +22,21 @@ class Fdoc::Node
       method_name, _ = child_arr
       attr_accessor method_name
     end
+    @key_child_map.merge! map
   end
-  
+
   key_method_map({
     "Deprecated" => :deprecated?
   })
 
   def initialize(data)
-    @raw = data
+    @raw = data || {}
     assert_required_keys
-    
+
     self.class.key_child_map.each do |key, child_arr|
       method_name, child_class = child_arr
-      setter = (method_name + "=").to_sym
-      call(setter, (raw[key] || []).map{ |data| child_class.new(data) })
+      setter = ("#{method_name}=").to_sym
+      send(setter, Array(raw[key]).map{ |child_data| child_class.new(child_data)})
     end
   end
 
