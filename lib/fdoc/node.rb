@@ -12,7 +12,7 @@ class Fdoc::Node
         raw[key]
       end
 
-      define_method "#{method_name}=".to_sym do |val|
+      define_method "#{method_name.gsub(/\?$/, //)}=".to_sym do |val|
         raw[key] = val
       end
     end
@@ -51,9 +51,13 @@ class Fdoc::Node
     "Deprecated" => :deprecated?
   })
 
-  def initialize(data=nil)
-    @raw = data || {}
-    assert_required_keys unless data.has_key?(:partial_data)
+  def initialize(data={})
+    if partial_data = data[:partial_data]
+      @raw = partial_data
+    else
+      @raw = data
+      assert_required_keys
+    end
 
     self.class.key_child_map.each do |key, child_arr|
       method_name, child_class = child_arr

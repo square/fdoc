@@ -4,19 +4,16 @@ class Fdoc::MethodScaffold
   end
 
   def scaffold_param(name, value, param_class)
-    data = {}
-    data["Name"] => name
-    data["Type"] = value.class.to_s + "?"
-    data["Example"] = value
-    data["Description"] = "???"
-
-    data.description = "???"
+    param = param_class.new(:partial_data => {})
+    param.name = name
+    param.type = "#{value.class.to_s}?"
+    param.example = value
+    param.description = "???"
 
     if param_class == Fdoc::RequestParameter
-      data["Required"] = "???"
+      param.required = "???"
     end
-
-    param_class.new(:partial_data => data)
+    param
   end
 
   def scaffold_request(params)
@@ -35,10 +32,10 @@ class Fdoc::MethodScaffold
     end
 
     unless @scaffolded_method.response_code_for(rails_response, successful)
-      data = {}
-      data["Response Code"] = rails_response
-      data["Successful"] = successful
-      @scaffolded_method.response_codes << Fdoc::ResponseCode.new(:partial_data => data)
+      rc = Fdoc::ResponseCode.new(:partial_data => {})
+      rc.response_code = rails_response
+      rc.succesful = successful
+      @scaffolded_method.response_codes << rc
     end
   end
 end
