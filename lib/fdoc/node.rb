@@ -12,7 +12,7 @@ class Fdoc::Node
         raw[key]
       end
 
-      define_method method_name.to_s.gsub(/\?$/, '').to_sym do |val|
+      define_method "#{method_name.to_s.gsub(/\?$/, '')}=".to_sym do |val|
         raw[key] = val
       end
     end
@@ -31,7 +31,6 @@ class Fdoc::Node
     @@key_child_maps[self.to_s] = map
     map.each do |key, child_arr|
       method_name, _ = child_arr
-      p method_name
       attr_accessor method_name
       puts defined?("#{method_name}=")
     end
