@@ -21,6 +21,20 @@ describe Fdoc::ResourceScaffold do
     end
   end
   
+  describe "::create_or_load" do
+    context "when a scaffold file does not exist" do
+      it "should create a new scaffold file" do
+        pending "figuring out a good way to test this"
+      end
+    end
+    
+    context "when a scaffold file already exists" do
+      it "should load the existing file" do
+        pending "figuring out a good way to test this"
+      end
+    end
+  end
+  
   describe "#write_to_directory" do
     it "should write to a YAML file in a given directory" do
       pending "figuring out a good way to test this"
