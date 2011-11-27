@@ -46,12 +46,11 @@ class Fdoc::MethodScaffold
   end
   
   def guess_type(value)
-    case value.class.to_s
-      # use more standard types
-      when "Fixnum"
-        "Integer"
-      else
-        value.class.to_s
-    end
+    in_type = value.class.to_s
+    type_map = {
+      "Fixnum" => "Integer",
+      "Hash" => "Dictionary"
+    }    
+    return type_map[in_type] || in_type
   end
 end
