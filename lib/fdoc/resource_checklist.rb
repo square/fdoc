@@ -16,8 +16,4 @@ class Fdoc::ResourceChecklist
     raise UndocumentedMethodError, "Undocumented method named #{methodname}" unless action
     Fdoc::MethodChecklist.new(action)
   end
-
-  def method_scaffold_for(methodname)
-    Fdoc::MethodScaffold.new(methodname.to_s)
-  end
 end

@@ -26,7 +26,7 @@ class Fdoc::ResourceScaffold
 
   def add_method_scaffold(action)
     method_scaffold = Fdoc::MethodScaffold.new(action || "???")
-    @scaffolded_resource.actions << method_scaffold
+    @scaffolded_resource.actions << method_scaffold.scaffolded_method
     method_scaffold
   end
 

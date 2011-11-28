@@ -47,6 +47,16 @@ module Fdoc
   end
 
   def self.load(path = 'docs/fdoc')
+    @resources = {}
+    
+    Dir.foreach(path) do |file|
+      next unless file.end_with? ".fdoc"
+      resource = Resource.build_from_file(path + "/#{file}")
+      @resources[resource.controller] = resource
+    end
+    
+    
+    # deprecate this shizzz
     @resource_checklists = {}
 
     Dir.foreach(path) do |file|
@@ -54,10 +64,23 @@ module Fdoc
       resource_checklist = ResourceChecklist.build_from_file(path + "/#{file}")
       @resource_checklists[resource_checklist.controller] = resource_checklist
     end
+    # to here
   end
 
+  def self.checklist_for(controller, methodname)
+    return nil unless resource = @resources[controller]
+    method = resource.action_named(methodname.to_s)
+    raise UndocumentedMethodError, "Undocumented method named #{methodname}" unless method
+    MethodChecklist.new(method)
+  end
+  
+  def self.scaffold_for(controller, action)
+    
+  end
+
+  # deprecate this guy
   def self.resource_for(controller)
-    @resource_checklists[controller].dup
+    @resource_checklists[controller]
   end
 
   def self.template_path(template, file_type = "erb")
