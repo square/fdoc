@@ -2,36 +2,14 @@ path = File.expand_path(File.dirname(__FILE__))
 require "#{path}/../spec_helper"
 
 describe Fdoc::ResourceScaffold do
-  subject { described_class.new(controller_name) }
+  subject { described_class }
   let(:controller_name) { "Api::MessageController" }
   let(:resource_name) { "message" }
 
-  describe "#initialize" do
+  describe "::scaffold_resource" do
     it "should try to guess a resource name based on the controller name" do
-      subject.scaffolded_resource.name.should == resource_name
-    end
-  end
-  
-  describe "#add_method_scaffold" do
-    let(:action) { "clear" }
-    
-    it "should create a method scaffold" do
-      s = subject.add_method_scaffold(action)
-      s.should be_a_kind_of(Fdoc::MethodScaffold)
-    end
-  end
-  
-  describe "::create_or_load" do
-    context "when a scaffold file does not exist" do
-      it "should create a new scaffold file" do
-        pending "figuring out a good way to test this"
-      end
-    end
-    
-    context "when a scaffold file already exists" do
-      it "should load the existing file" do
-        pending "figuring out a good way to test this"
-      end
+      resource = subject.scaffold_resource(controller_name)
+      resource.name.should == resource_name
     end
   end
   

@@ -2,11 +2,16 @@ class Fdoc::MethodScaffold
   
   attr_reader :scaffolded_method
   
-  def initialize(method_name)
-    @scaffolded_method = Fdoc::Method.new(:partial_data => {})
-    @scaffolded_method.name = method_name.to_s
-    @scaffolded_method.verb = "???"
-    @scaffolded_method.description = "???"
+  def initialize(method_name_or_method)
+    if method_name_or_method.kind_of? Fdoc::Method
+      @scaffolded_method = method_name_or_method
+    elsif method_name_or_method.kind_of? String
+      method_name = method_name_or_method
+      @scaffolded_method = Fdoc::Method.new(:partial_data => {})
+      @scaffolded_method.name = method_name.to_s
+      @scaffolded_method.verb = "???"
+      @scaffolded_method.description = "???"
+    end
   end
 
   def scaffold_request(params)
