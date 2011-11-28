@@ -8,18 +8,19 @@ class Fdoc::ResourceScaffold
     scaffolded_resource  
   end
 
-  def self.write_to_directory(path = "/tmp/")
-    File.open(File.join(path, scaffold_filename(@scaffolded_resource.name)), 'w') do |f|
-      YAML.dump(@scaffolded_resource.as_hash, f)
+  def self.write_to_directory(resource, path = "/tmp/")
+    filename = "#{resource.name}.fdoc"
+    if File.exist? File.join(path, filename)
+      filename = "#{resource.name}.fdoc.scaffold"
+    end
+    
+    File.open(File.join(path, filename), 'w') do |f|
+      YAML.dump(resource.as_hash, f)
     end
   end
   
   def self.guess_resource_name(controller_name)
     camel_case_resource = controller_name.split(':').last.match(/(.*)(?:Controller?)/)[1]
     snake_case_resource = camel_case_resource.gsub(/^([A-Z])/) {|m| m.downcase}.gsub(/([A-Z])/) {|m| "_#{m.downcase}" }
-  end
-  
-  def self.scaffold_filename(resource_name)
-    "#{resource_name}.fdoc.scaffold"
   end
 end
