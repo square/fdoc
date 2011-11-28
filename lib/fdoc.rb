@@ -54,17 +54,6 @@ module Fdoc
       resource = Resource.build_from_file(path + "/#{file}")
       @resources[resource.controller] = resource
     end
-    
-    
-    # deprecate this shizzz
-    @resource_checklists = {}
-
-    Dir.foreach(path) do |file|
-      next unless file.end_with? ".fdoc"
-      resource_checklist = ResourceChecklist.build_from_file(path + "/#{file}")
-      @resource_checklists[resource_checklist.controller] = resource_checklist
-    end
-    # to here
   end
 
   def self.checklist_for(controller, methodname)
@@ -84,11 +73,6 @@ module Fdoc
       @resources[controller] = resource 
     end
     scaffold
-  end
-  
-  # deprecate this guy
-  def self.resource_for(controller)
-    @resource_checklists[controller]
   end
 
   def self.template_path(template, file_type = "erb")
@@ -139,6 +123,5 @@ require 'response_code'
 require 'method'
 require 'resource'
 require 'method_checklist'
-require 'resource_checklist'
 require 'resource_scaffold'
 require 'method_scaffold'
