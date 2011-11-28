@@ -60,14 +60,4 @@ class Fdoc::MethodChecklist
       end
     }
   end
-  # params.each { |param_name, value|
-  #   if @optional_params_used.has_key? param_name
-  #     next # already used, just continue
-  #   elsif @optional_params_unused.has_key? param_name
-  #     # first use: move the parameter from unused to used
-  #     @optional_params_used[param_name] = @optional_params_unused[param_name]
-  #     @optional_params_unused.delete param_name
-  #   else
-  #   end
-  # }
 end
