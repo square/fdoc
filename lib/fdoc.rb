@@ -62,17 +62,25 @@ module Fdoc
     raise UndocumentedMethodError, "Undocumented method named #{methodname}" unless method
     MethodChecklist.new(method)
   end
-  
+
   def self.scaffold_for(controller, methodname)
-    if resource = @resources[controller]
-      scaffold = MethodScaffold.new(resource.action_named(methodname))
-    else
+    unless resource = @resources[controller]
       resource = ResourceScaffold.scaffold_resource(controller)
+      @resources[controller] = resource
+    end
+
+    if method = resource.action_named(methodname)
+      scaffold = MethodScaffold.new(method)
+    else
       scaffold = MethodScaffold.new(methodname)
       resource.actions << scaffold.scaffolded_method
-      @resources[controller] = resource 
     end
+
     scaffold
+  end
+
+  def self.resource_for(controller)
+    @resources[controller]
   end
 
   def self.template_path(template, file_type = "erb")

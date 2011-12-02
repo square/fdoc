@@ -8,9 +8,9 @@ class Fdoc::ResourceScaffold
     scaffolded_resource  
   end
 
-  def self.write_to_directory(resource, path = "/tmp/")
+  def self.write_to_directory(resource, path = "docs/fdoc")
     filename = "#{resource.name}.fdoc"
-    if File.exist? File.join(path, filename)
+    unless File.exist? File.join(path, filename)
       filename = "#{resource.name}.fdoc.scaffold"
     end
     

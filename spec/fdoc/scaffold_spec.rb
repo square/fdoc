@@ -39,7 +39,17 @@ describe Fdoc::MethodScaffold do
       it "creates placeholder parameters for each parameter it receives" do
         subject.scaffolded_method.should have(request_parameters.count).request_parameters
       end
-      
+
+      it "merges known parameters with new ones" do
+        subject
+        subject.scaffolded_method.should have(3).request_parameters
+
+        new_request_parameters = { "id" => 54321, "email" => "captain@pants.com", "phone" => "5551234567" }
+        subject.scaffold_request(new_request_parameters)
+        subject.scaffolded_method.should have(4).request_parameters
+        subject.scaffolded_method.request_parameter_named("id").example.should == 12345
+      end
+
       it "should attempt to infer the types of the parameters" do
         subject.scaffolded_method.request_parameter_named("id").type.should == "Integer"
         subject.scaffolded_method.request_parameter_named("email").type.should == "String"
