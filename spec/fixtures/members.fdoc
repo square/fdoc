@@ -1,8 +1,7 @@
 Resource Name: members
 Base Path: https://api.example.com/members
-Abstract: Lists members of an organization
-Controller: Api::PeopleController
-
+Description: Lists members of an organization
+Controller: Api::MembersController
 Methods:
     -   Name: list
         Verb: GET

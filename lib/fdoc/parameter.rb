@@ -1,31 +1,13 @@
 class Fdoc::Parameter  < Fdoc::Node
   required_keys "Name", "Type"
+  map_keys_to_methods ({
+    "Name" => :name,
+    "Type" => :type,
+    "Values" => :values,
+    "Default" => :default,
+    "Description" => :description,
+    "Required" => :required?,
+    "Example" => :example
+  })
 
-  def required?
-    raw["Required"]
-  end
-
-  def name
-    raw["Name"]
-  end
-
-  def type
-    raw["Type"]
-  end
-
-  def values
-    raw["Values"]
-  end
-  
-  def default
-    raw["Default"]
-  end
-
-  def description
-    raw["Description"]
-  end
-
-  def example
-    raw["Example"]
-  end
 end

@@ -1,25 +1,28 @@
 class Fdoc::Method < Fdoc::Node
 
-  attr_reader :raw, :request_parameters, :response_parameters, :response_codes
   required_keys "Response Codes", "Verb", "Name"
+  map_keys_to_methods({
+    "Name" => :name,
+    "Verb" => :verb,
+    "Description" => :description
+  })
 
-  def initialize(data)
-    super
-    @request_parameters = (raw["Request Parameters"] || []).map { |param_data| Fdoc::RequestParameter.new(param_data) }
-    @response_parameters = (raw["Response Parameters"] || []).map { |param_data| Fdoc::ResponseParameter.new(param_data) }
-    @response_codes = raw["Response Codes"].map { |response_data| Fdoc::ResponseCode.new(response_data) }
+  map_keys_to_children({
+    "Request Parameters" => [:request_parameters, Fdoc::RequestParameter],
+    "Response Parameters" => [:response_parameters, Fdoc::ResponseParameter],
+    "Response Codes" => [:response_codes, Fdoc::ResponseCode]
+  })
+
+  def request_parameter_named(name)
+    request_parameters.find {|p| p.name == name}
   end
 
-  def name
-    raw["Name"]
+  def response_parameter_named(name)
+    response_parameters.find {|p| p.name == name}
   end
 
-  def verb
-    raw["Verb"]
-  end
-
-  def description
-    raw["Description"]
+  def response_code_for(status, successful)
+    response_codes.find {|r| r.status == status and r.successful? == successful}
   end
 
   def required_request_parameters
@@ -37,7 +40,7 @@ class Fdoc::Method < Fdoc::Node
   def optional_response_parameters
     @response_parameters.select { |p| !p.required? }
   end
-  
+
   def successful_response_codes
     @response_codes.select { |r| r.successful? }
   end

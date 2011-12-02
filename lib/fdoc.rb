@@ -3,17 +3,40 @@ $:.unshift(lib_dir)
 
 module Fdoc
   def self.load(path = 'docs/fdoc')
-    @resource_checklists = {}
-
+    @resources = {}
+    
     Dir.foreach(path) do |file|
-      next if file == '.' || file == '..'
-      resource_checklist = ResourceChecklist.build_from_file(path + "/#{file}")
-      @resource_checklists[resource_checklist.controller] = resource_checklist
+      next unless file.end_with? ".fdoc"
+      resource = Resource.build_from_file(path + "/#{file}")
+      @resources[resource.controller] = resource
     end
   end
 
+  def self.checklist_for(controller, methodname)
+    return nil unless resource = @resources[controller]
+    method = resource.action_named(methodname.to_s)
+    raise UndocumentedMethodError, "Undocumented method named #{methodname}" unless method
+    MethodChecklist.new(method)
+  end
+
+  def self.scaffold_for(controller, methodname)
+    unless resource = @resources[controller]
+      resource = ResourceScaffold.scaffold_resource(controller)
+      @resources[controller] = resource
+    end
+
+    if method = resource.action_named(methodname)
+      scaffold = MethodScaffold.new(method)
+    else
+      scaffold = MethodScaffold.new(methodname)
+      resource.actions << scaffold.scaffolded_method
+    end
+
+    scaffold
+  end
+
   def self.resource_for(controller)
-    @resource_checklists[controller].dup
+    @resources[controller]
   end
 
   def self.template_path(template, file_type = "erb")
@@ -21,8 +44,6 @@ module Fdoc
   end
 
   def self.compile_index(fdoc_directory, base_path, options = {})
-    directory_template = ERB.new(File.read(template_path(:directory)))
-
     resources = []
 
     Dir.foreach(fdoc_directory) do |file|
@@ -31,6 +52,7 @@ module Fdoc
       resources << resource
     end
 
+    directory_template = ERB.new(File.read(template_path(:directory)))
     d = Fdoc::DirectoryPage.new(resources, base_path, options)
     directory_template.result(d.get_binding)
   end
@@ -57,13 +79,14 @@ module Fdoc
   class UndocumentedMethodError < DocumentationError; end
 end
 
-require 'method_checklist'
-require 'resource_checklist'
 require 'node'
-require 'resource'
-require 'method'
 require 'parameter'
-require 'response_code'
 require 'request_parameter'
 require 'response_parameter'
 require 'page'
+require 'response_code'
+require 'method'
+require 'resource'
+require 'method_checklist'
+require 'resource_scaffold'
+require 'method_scaffold'
