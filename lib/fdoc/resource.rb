@@ -16,6 +16,6 @@ class Fdoc::Resource < Fdoc::Node
   end
 
   def action_named(action_name)
-    actions.detect { |a| a.name == action_name }
+    actions.detect { |a| a.name == action_name.to_s }
   end
 end

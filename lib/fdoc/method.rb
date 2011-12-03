@@ -14,11 +14,11 @@ class Fdoc::Method < Fdoc::Node
   })
 
   def request_parameter_named(name)
-    request_parameters.find {|p| p.name == name}
+    request_parameters.find {|p| p.name == name.to_s}
   end
 
   def response_parameter_named(name)
-    response_parameters.find {|p| p.name == name}
+    response_parameters.find {|p| p.name == name.to_s}
   end
 
   def response_code_for(status, successful)

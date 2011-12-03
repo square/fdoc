@@ -4,7 +4,7 @@ $:.unshift(lib_dir)
 module Fdoc
   def self.load(path = 'docs/fdoc')
     @resources = {}
-    
+
     Dir.foreach(path) do |file|
       next unless file.end_with? ".fdoc"
       resource = Resource.build_from_file(path + "/#{file}")
@@ -64,7 +64,7 @@ module Fdoc
 
     resource_template.result(p.get_binding)
   end
-  
+
   def self.css
     File.read(template_path(:main, :css))
   end
