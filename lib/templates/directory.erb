@@ -8,22 +8,28 @@
     <div id="nav">
       <span class="item"><a href="<%= index_path %>">Square API</a></span>
     </div>
-    
+
     <div id="page">
       <div id="header">
        <h1>API Documentation</h1>
       </div>
-      
+
       <h2>Resources</h2>
-        
+
       <ul>
         <% @resources.each do |resource| %>
           <li>
-            <%= "<a href=\"#{resource_path(resource)}\">#{resource.name}</a>" %>
+            <a href="<%= "#{resource_path(resource)}##{resource.name}" %>" class="method"><%= resource.name %></a>
               <ul>
                 <% resource.actions.each do |mthod| %>
-                  <li><%= "<a href=\"#{resource_path(resource)}##{mthod.name}\" class=\"method\"><span class=\"verb\">#{mthod.verb}</span> <span class=\"base-path\">#{resource.base_path}</span><span class=\"name\">/#{mthod.name}</span></a>" %>
-                <% end%>
+                  <li>
+                    <a href="<%= "#{resource_path(resource)}##{mthod.name}" %>" class="method">
+                      <span class="verb"><%= mthod.verb.strip %></span>
+                      <span class="base-path"><%= resource.base_path.strip %></span>
+                      <span class="name">/<%= mthod.name.strip %></span>
+                      <%=  %>
+                    </a>
+                <% end %>
               </ul>
           </li>
         <% end %>
