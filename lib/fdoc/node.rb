@@ -1,3 +1,24 @@
+=begin
+
+Fdoc::Node is probably the strangest, most confusing class in all of fdoc, but it bundles together a lot of nicesness for the rest of the project.
+
+The purpose of the class is to simply and standardize mapping objects from their dictionary representations (which in thise case are YAML/JSON). Every node object is created from a dictionary, and every node object's #as_hash should map this object directly back to its dictionary.
+
+Fdoc::Node is basically an abstract class, it is too simple to have any real meaning. Meaningful subclasses (such as Fdoc::Method) can specify their properties and children via class methods.  
+
+- required_keys
+  For a subclass, setting required_keys will mean that, in order to be a valid instance of this subclass, these keys must be specified in the dictionary representation
+  
+- map_keys_to_methods
+  For a subclass, this defines simple accessors for keys in the dictionary representation. 
+  To read this for a class, use key_method_map
+
+- map_keys_to_children
+  Similar to map_keys_to_methods, but instead of providing a simple read/write interface to an attribute, these map to new objects, which defines a parent-child relationship.
+  To read this for a class, use key_child_map
+
+=end
+
 class Fdoc::Node
 
   attr_reader :raw
