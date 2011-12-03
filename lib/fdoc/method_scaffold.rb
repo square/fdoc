@@ -1,7 +1,7 @@
 class Fdoc::MethodScaffold
-  
+
   attr_reader :scaffolded_method
-  
+
   def initialize(method_name_or_method)
     if method_name_or_method.kind_of? Fdoc::Method
       @scaffolded_method = method_name_or_method
@@ -33,6 +33,7 @@ class Fdoc::MethodScaffold
       rc = Fdoc::ResponseCode.new(:partial_data => {})
       rc.status = rails_response
       rc.successful = successful
+      rc.description = "???"
       @scaffolded_method.response_codes << rc
     end
   end
