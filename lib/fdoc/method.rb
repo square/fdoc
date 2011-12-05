@@ -1,10 +1,9 @@
-class Fdoc::Method < Fdoc::Node
+class Fdoc::Method < Fdoc::DocNode
 
   required_keys "Response Codes", "Verb", "Name"
   map_keys_to_methods({
     "Name" => :name,
-    "Verb" => :verb,
-    "Description" => :description
+    "Verb" => :verb
   })
 
   map_keys_to_children({

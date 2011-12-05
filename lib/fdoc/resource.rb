@@ -1,11 +1,10 @@
-class Fdoc::Resource < Fdoc::Node
+class Fdoc::Resource < Fdoc::DocNode
 
   required_keys "Controller", "Resource Name", "Methods"
   map_keys_to_methods ({
     "Resource Name" => :name,
     "Controller" => :controller,
     "Base Path" => :base_path,
-    "Description" => :description
   })
   map_keys_to_children ({
     "Methods" => [:actions, Fdoc::Method]

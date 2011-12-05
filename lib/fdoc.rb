@@ -80,6 +80,7 @@ module Fdoc
 end
 
 require 'node'
+require 'doc_node'
 require 'parameter'
 require 'request_parameter'
 require 'response_parameter'
