@@ -46,8 +46,8 @@
             <% ["Required", "Optional"].each do |required| %>
               <% parameters = mthod.send("#{required.downcase}_#{parameter_type.downcase}_parameters") %>
 
-              <% if parameters.length > 0%>
-                <h5><%= required %></h5>
+              <% if parameters.length > 0 %>
+                <%= "<h5>#{required}</h5>" unless parameter_type == "Response" %>
                 <ul>
                   <% parameters.each do |parameter| %>
                     <%= Fdoc::ParameterPresenter.new(parameter).as_html %>
