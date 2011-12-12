@@ -10,7 +10,6 @@ class Fdoc::ParameterPresenter < Fdoc::Presenter
           <%= "<li>Type: #{node.type}</li>" if node.type %>
           <%= "<li>Values: #{values_as_html}</li>" if node.values %>
           <%= "<li>Default: <tt>#{node.default}</tt></li>" if node.default %>
-          <%= "<li>Description: #{node.description}</li>" if node.description %>
           <%= "<li>Example: #{example_as_html}</li>" if node.example %>          
         </ul>
       </li>
@@ -28,6 +27,10 @@ class Fdoc::ParameterPresenter < Fdoc::Presenter
   
   def example_as_html
     return unless node.example
-    "<tt>#{node.example.to_s.gsub(/\"/, "X")}</tt>"
+    "<tt>" +
+    "#{"&quot;" if node.example.kind_of? String}" +
+    "#{node.example.to_s.gsub(/\"/, "&quot;")}" +
+    "#{"&quot;" if node.example.kind_of? String}" +
+    "</tt>"
   end
 end

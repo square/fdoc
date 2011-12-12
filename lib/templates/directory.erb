@@ -25,9 +25,7 @@
                   <li>
                     <a href="<%= "#{resource_path(resource)}##{mthod.name}" %>" class="method-name">
                       <span class="verb"><%= mthod.verb.strip %></span>
-                      <span class="base-path"><%= resource.base_path.strip %></span>
-                      <span class="name">/<%= mthod.name.strip %></span>
-                      <%=  %>
+                      <span class="base-path"><%= resource.base_path.strip %></span><span class="name">/<%= mthod.name.strip %></span>
                     </a>
                 <% end %>
               </ul>
