@@ -20,15 +20,14 @@
         <% @resources.each do |resource| %>
           <li class="resource">
             <a href="<%= "#{resource_path(resource)}##{resource.name}" %>" class="method"><%= resource.name %></a>
-              <ul>
-                <% resource.actions.each do |mthod| %>
-                  <li>
-                    <a href="<%= "#{resource_path(resource)}##{mthod.name}" %>" class="method-name">
-                      <span class="verb"><%= mthod.verb.strip %></span>
-                      <span class="base-path"><%= resource.base_path.strip %></span><span class="name">/<%= mthod.name.strip %></span>
-                    </a>
-                <% end %>
-              </ul>
+            <ul>
+              <% resource.actions.each do |mthod| %>
+                <li>
+                  <a href="<%= "#{resource_path(resource)}##{mthod.name}" %>" class="method-name">
+                    <%= Fdoc::MethodPresenter.new(mthod, resource).name_as_html %>
+                  </a>
+              <% end %>
+            </ul>
           </li>
         <% end %>
       </ul>
