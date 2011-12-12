@@ -17,6 +17,7 @@ Methods:
                 Required: No
                 Default: 0
                 Description: Offsets the results returned, used for paging.
+                Deprecated: Yes
         Response Parameters:
             -   Name: members
                 Type: Array

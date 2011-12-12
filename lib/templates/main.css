@@ -1,11 +1,12 @@
 body {
 	background: #eee;
-	font: 12pt/16pt sans-serif;
+	font: 11pt/15pt sans-serif;
 	margin: 0;
 	padding: 0;
 }
 
-tt, kbd { font-family: Monaco, monospace; font-size: 80%; }
+tt, kbd, code { font-family: Monaco, monospace; font-size: 80%; background: #eee; padding: .2em; border: 1pt solid #ddd;}
+code { padding: 6pt; background: #eee;}
 
 a { 
 	color: inherit;
@@ -44,13 +45,21 @@ h5 { font-size: 105%; font-weight: normal; font-family: "HelveticaNeue-Light", "
 }
 #toc { padding-bottom: 2em; }
 
-h3.method { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
-.method .verb {font-weight: bold;}
-.method .base-path {color: #555; font-weight: normal;}
-.method .name {font-weight: bold;}
+span.deprecated {color: #f33;}
 
-a.back-to-top {display: block; float: right; background: transparent; margin: 6pt; padding: 6pt; line-height: 110%; }
+.method-name .verb {font-weight: bold;}
+.method-name .base-path {font-weight: normal;}
+.method-name .name {font-weight: bold;}
+
+/* resource page styles */
+
+h3.method-name { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
+.method > p.description { padding-top: 1.25em; }
+
+a.back-to-top { text-decoration: none; display: block; float: right; background: transparent; margin: 6pt; padding: 6pt; line-height: 110%; }
 a.back-to-top:hover, a.back-to-top:active { background: #AAA; }
 a.back-to-top:after { content: " \2191"; }
+
+li.parameter { margin-bottom: 1.5em;}
 
 .status-code .primary-key {font-weight: bold;}
