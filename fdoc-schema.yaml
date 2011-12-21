@@ -1,6 +1,7 @@
 type: object
 title: resource
 description: Describes a resource, often linked to an API controller in Rails
+additionalProperties: No
 properties:
     type: array
     properties:
@@ -27,7 +28,7 @@ properties:
                     id:
                         type: string
                         required: yes
-        methods:
+        actions:
             type: array
             items: 
                 type: object
@@ -65,3 +66,10 @@ properties:
                                     type: boolean
                                     description: |
                                         Describes if the client can interpret this response as successful.
+        scaffold:
+            type: boolean
+            default: no
+            required: no
+            description: |
+                Flags this resource as a scaffold or not. If the resource is a scaffold, it will not be validated against,
+                but it can serve as a bucket for 

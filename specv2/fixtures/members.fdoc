@@ -4,17 +4,18 @@ description: Provides access to the members of Example company.
 controller: Api::MembersController
 types:
     -   id: member
+        title: member
         description: Representation of a member
         type: Object
         properties:
             name:
                 description: Member's name
                 type: string
-                required: Yes
+                required: yes
             email:
                 description: Member's email
                 type: string
-                required: No
+                required: no
             member_since:
                 description: The date the member joined
                 type: date-time
@@ -25,12 +26,12 @@ actions:
         requestParameters:
             limit:
                 type: integer
-                required: Nos
+                required: no
                 default: 50
                 description: Limits the number of results returned, used for paging.
             offset:
                 type: integer
-                required: No
+                required: no
                 default: 0
                 description: Offsets the results returned, used for paging.
         responseParameters:
@@ -40,7 +41,7 @@ actions:
                     $ref: member
         responseCodes:
             -   status: 200 OK
-                successful: Yes
+                successful: yes
                 description: A list of current members
     -   name: add
         verb: PUT
@@ -48,18 +49,18 @@ actions:
         requestParameters:
             name:
                 type: string
-                required: Yes
+                required: yes
                 description: The name of the member to add, must be unique.
                 example: Max Power
             email:
                 type: string
-                required: No
+                required: no
                 description: The email of the member to add
                 example: mpower@example.com
         responseCodes:
             -   status: 200 OK
-                successful: Yes
+                successful: yes
                 description: Returns the member just added
             -   status: 400 Bad Request
-                successful: No
+                successful: no
                 description: Member already exists
