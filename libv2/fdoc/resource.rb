@@ -1,7 +1,5 @@
 module Fdoc
   class Resource
-    attr_reader :actions
-    
     def initialize(resource_hash)
       @resource = resource_hash
     end
@@ -12,29 +10,34 @@ module Fdoc
 
     def write_to_file(filename)
     end
-
     
     def action_for(verb, action_name, options = {:scaffold => false})
-      action_hash = @resource["actions"].find { |a| a["verb"] == verb and a["name"] == action_name }
-      if action_hash
-        return Action.new(action_hash)
+      if action = actions.map { |hash| Fdoc::Action.new hash }.find { |a| a.verb == verb and a.name == action_name }
+        if (action.scaffold? || false) == options[:scaffold] 
+          return action
+        elsif action.scaffold? and not options[:scaffold]
+          return nil
+        elsif options[:scaffold] and not action.scaffold?
+          raise Fdoc::ActionAlreadyExistsError, "Action for #{verb} #{action_name} already exists, can't scaffold"
+        end
       elsif options[:scaffold]
-        (@resource["actions"] ||=[]) << action_hash = {
+        actions << {
           "name" => action_name,
           "verb" => verb,
-          "description" => "???"
+          "description" => "???",
+          "scaffold" => true
         }
         
-        action["name"] = action
-        action["verb"] = verb
-        action["description"] = "???"
-        
-        return Action.new(action)
+        Fdoc::Action.new actions.last
+      else
+        nil
       end
     end
 
+    # properties. should probably be generated.
+
     def actions
-      @resource["actions"]
+      @resource["actions"] ||= []
     end
     
     def controller

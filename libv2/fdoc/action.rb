@@ -7,8 +7,6 @@ module Fdoc
     def consume_request(params, headers = {})
       parameters_schema = @action["requestParameters"].dup
       
-      
-      
       JSON::Validator.validate(parameters_schema, headers)
       # validates the parameters against requestParameters
       # validates the headers against requestHeaders
@@ -31,6 +29,20 @@ module Fdoc
 
     def scaffold_response(params, rails_response, successful = true)
       # attempts to fill out an fdoc based on the response
+    end
+    
+    # properties. should probably be generate
+    
+    def name
+      @action["name"]
+    end
+    
+    def verb
+      @action["verb"]
+    end
+    
+    def scaffold?
+      @action["scaffold"]
     end
   end
 end

@@ -66,10 +66,17 @@ properties:
                                     type: boolean
                                     description: |
                                         Describes if the client can interpret this response as successful.
+                    scaffold:
+                        type: boolean
+                        default: no
+                        required: no
+                        description: |
+                            Flags this action as as a scaffold. If the action is a scaffold, it will not
+                            be validated againt.
         scaffold:
             type: boolean
             default: no
             required: no
             description: |
-                Flags this resource as a scaffold or not. If the resource is a scaffold, it will not be validated against,
-                but it can serve as a bucket for 
+                Flags this resource as a scaffold. If the resource is a scaffold, it will
+                not be validated against.

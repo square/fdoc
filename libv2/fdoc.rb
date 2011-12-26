@@ -25,6 +25,15 @@ module Fdoc
   end
   
   def self.scaffold_for(controller_name)
+    resource = @resources[controller_name]
+    if resource
+      if not resource.scaffold?
+        raise ResourceAlreadyExistsError, "Resource for #{controller_name} already exists, can't scaffold"
+      else
+        resource
+      end
+    end
+    
     camel_case_resource = controller_name.split(':').last.match(/(.*)(?:Controller?)/)[1]
     snake_case_resource = camel_case_resource.gsub(/^([A-Z])/) { |m| m.downcase}.gsub(/([A-Z])/) {|m| "_#{m.downcase}" }
 
@@ -45,6 +54,10 @@ module Fdoc
     # creates an HTML page for an individual fdoc file
     # uses an ERB template, outputs a string
   end
+  
+  class Error < StandardError; end
+  class ResourceAlreadyExistsError < Error; end
+  class ActionAlreadyExistsError < Error; end
 end
 
 require 'resource'
