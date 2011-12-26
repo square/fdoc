@@ -15,6 +15,10 @@ module Fdoc
     @resources = {}
   end
   
+  def self.schema
+    YAML.load_file("../fdoc-schema.yaml")
+  end
+  
   def self.resource_for(controller_name)
     resource = @resources[controller_name]
     unless resource.nil? or resource.scaffold?
@@ -56,8 +60,12 @@ module Fdoc
   end
   
   class Error < StandardError; end
+  
   class ResourceAlreadyExistsError < Error; end
   class ActionAlreadyExistsError < Error; end
+  
+  class DocumentationError < Error; end
+  class UndocumentedResponseCode < Error; end
 end
 
 require 'resource'

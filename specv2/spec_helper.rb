@@ -6,5 +6,6 @@ require 'rspec'
 require 'fdoc'
 require 'yaml'
 require 'json'
+require 'json-schema'
 
 FIXTURES_PATH = "#{spec_dir}/fixtures"

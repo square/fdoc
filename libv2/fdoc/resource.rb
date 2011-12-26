@@ -9,6 +9,7 @@ module Fdoc
     end
 
     def write_to_file(filename)
+      File.open(filename, "w") { |f| f.write(YAML.dump(@resource)) }
     end
     
     def action_for(verb, action_name, options = {:scaffold => false})
@@ -29,8 +30,6 @@ module Fdoc
         }
         
         Fdoc::Action.new actions.last
-      else
-        nil
       end
     end
 

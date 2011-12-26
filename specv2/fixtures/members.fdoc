@@ -6,7 +6,7 @@ types:
     -   id: member
         title: member
         description: Representation of a member
-        type: Object
+        type: object
         properties:
             name:
                 description: Member's name
@@ -24,25 +24,46 @@ actions:
         verb: GET
         description: The list of members.
         requestParameters:
-            limit:
-                type: integer
-                required: no
-                default: 50
-                description: Limits the number of results returned, used for paging.
-            offset:
-                type: integer
-                required: no
-                default: 0
-                description: Offsets the results returned, used for paging.
+            type: object
+            properties:
+                limit:
+                    type: integer
+                    required: no
+                    default: 50
+                    description: Limits the number of results returned, used for paging.
+                offset:
+                    type: integer
+                    required: no
+                    default: 0
+                    description: Offsets the results returned, used for paging.
         responseParameters:
-            members:
-                type: array
-                items:
-                    $ref: member
+            type: object
+            properties:
+                members:
+                    type: array
+                    items:
+                        title: member
+                        description: Representation of a member
+                        type: object
+                        properties:
+                            name:
+                                description: Member's name
+                                type: string
+                                required: yes
+                            email:
+                                description: Member's email
+                                type: string
+                                required: no
+                            member_since:
+                                description: The date the member joined
+                                type: date-time
         responseCodes:
             -   status: 200 OK
                 successful: yes
                 description: A list of current members
+            -   status: 400 Bad Request
+                successful: no
+                description: Indicates malformed parameters
     -   name: add
         verb: PUT
         description: Add a new member

@@ -11,6 +11,10 @@ describe Fdoc::Resource do
         it "should return an Action object wrapping the specified action" do
           subject.action_for("GET", "list").should be_kind_of Fdoc::Action
         end
+        
+        it "should not return a scaffold" do
+          subject.action_for("GET", "list").scaffold?.should be_false
+        end
       end
       
       context "when an action does not exist" do
@@ -30,8 +34,10 @@ describe Fdoc::Resource do
       end
       
       context "when an action does not exist" do
-        it "creates a scaffold for that method"do
-          subject.action_for("POST", "nonexistent", options).should be_kind_of Fdoc::Action
+        it "creates a scaffold for that method" do
+          action = subject.action_for("POST", "nonexistent", options)
+          action.should be_kind_of Fdoc::Action
+          action.scaffold?.should be_true
         end
       end
     end

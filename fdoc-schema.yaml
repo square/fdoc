@@ -3,7 +3,7 @@ title: resource
 description: Describes a resource, often linked to an API controller in Rails
 additionalProperties: No
 properties:
-    type: array
+    type: object
     properties:
         resourceName:
             type: string
