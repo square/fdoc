@@ -14,35 +14,31 @@ High-quality documentation is extremely useful, but maintaining it is often a pa
 
 ### Usage
 
-Fdoc creates an object graph based on `.fdoc` files in a directory when it is loaded (`Fdoc::load`), representing the source of truth.
+Fdoc creates an object graph based on `.fdoc` files in a directory when it is loaded (`Fdoc::load`), representing the source of truth. The format is specified as a [JSON schema](http://json-schema.org/), in `fdoc-schema.yaml`.
 
-The `MethodChecklist` class is the verifier of this source of truth, by wrapping around an individual method on an endpoint. Use `MethodChecklist#consume_request` and `#consume_request`, and it will return `true` if input data matches expectations, or raise some sort of `DocumentationError` if there is an incongruency. The intention is that this checklist is run in a spec environment in a project, to intercept usage of an endpoint.
+The `Action` class is the verifier of this source of truth, by wrapping around an individual method on an endpoint. Use `#consume_request` and `#consume_request`, and it will return `true` if input data matches expectations, or raise some sort of error if there is an incongruency. The intention is that this checklist is run in a spec environment in a project, to intercept usage of an endpoint.
 
-Alternatively, to help create documentation, the `MethodScaffold` class can help create documentation. Its `#scaffold_request` and `#scaffold_response` take the exact same arguments as those of the checklist, but will absorb all incoming parameters and update the object graph. To write this object graph to disk, use `ResourceScaffold::write_to_directory`
+Alternatively, to help create documentation, the `Action` class can help create documentation. Its `#scaffold_request` and `#scaffold_response` take the exact same arguments as those their verifying equivalents, but will absorb all incoming parameters and update the object graph. To write this object graph to disk, use `Fdoc::Resource::write_to_directory`
 
 ### Hierarchy
 
-In fdoc, the top level object in a graph is a Resource -- there is a one-to-one relation between Resources and individual `.fdoc` files. Resources typically represent groups of API endpoints (such as `/members`).
+In fdoc, the top level object in a graph is a Resource -- there is typically a one-to-one relation between Resources and individual `.fdoc` files. Resources typically represent groups of API endpoints (such as `/members`).
 
-Resources can have multiple Methods, such as `GET list` or `POST add` (these are sometimes referred to as actions, because both `method` and `methods` would clash with built-in Ruby methods, natch). Methods represent individual endpoints and are essentially the atomic unit of testing and are often identified by their (`verb`, `name`) tuple.
+Resources can have multiple Actions, such as `GET list` or `POST add`. Methods represent individual endpoints and are essentially the atomic unit of testing and are often identified by their `(verb, name)` tuple.
 
-Methods have:
+Actions have:
 
-- Request Parameters
-    - Which must specify if they are required or not.
-- Response Parameters
-- Response Codes
-    - Which must specify if they are successful or not.
+- Request Parameters: a schema describing the expected format of a request.
+
+- Response Parameters: a schema describing the expected format of a response.
+
+- Response Codes: Response code-success pairings that enumerate possible responses.
+
+In addition to all of the JSON schema attributes, like `description`, ``
 
 ### Feedback
 
-Feedback from fdoc comes in the form of `DocumentationError`s thrown by `MethodChecklist`'s `#consume_request` and `#consume_request`.
+Since fdoc is built on top of JSON schemas, all the hard work of verifiying that inputs conform their respective schemas is done by a [JSON schema gem](https://github.com/hoxworth/json-schema). 
 
-- `MissingRequiredParameterError`
-    - If a method's request parameter is marked as required, fdoc will expect that key in every single request, so missing that key is an error. Unfortunately, the `Required` property is a simple boolean, there is not yet a way to specify that a parameter is conditionally required. The temporary fix is to specify `Required: No` and describe clearly in the `Description` field how to use the field.
-- `UndocumentedParameterError`
-    - An undocumented parameter is an unknown key. This is an error because it indicates new functionality must have been added, but not documented.
-- `UndocumentedResponseCodeError`
-    - An unknown response code is also an unknown key. This is an error because because it indicates that a new result must have been added, but not documented.
-- `UndocumentedMethodError`
-    - See above.
+To make feedback more valuable, the request and response consumption methods will modify schemas to set `additionalProperties` to `false` unless specified. This gives the desired behavior of throwing an error when a new property is detected in the schema to verify, indicating the documentation needs updating.
+
