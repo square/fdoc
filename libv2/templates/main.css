@@ -1,0 +1,65 @@
+body {
+	background: #eee;
+	font: 11pt/15pt sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+tt, kbd, code { font-family: Monaco, monospace; font-size: 80%; background: #eee; padding: .2em; border: 1pt solid #ddd;}
+code { padding: 6pt; background: #eee;}
+
+a { 
+	color: inherit;
+	background: #ccc;
+	text-decoration: none;
+}
+a:hover { background: #ddd; }
+li { list-style: square; }
+
+p { padding: 0; margin: .25em 0;}
+
+h1, h2, h3, h4, h5, h6 { margin: .5em 0; }
+h3 { font-size: 110%; }
+h4 { font-size: 105%; }
+h5 { font-size: 105%; font-weight: normal; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif;}
+
+
+#nav { background: #333; padding: 12pt; height: 1.2em; }
+#nav .item { color: #ccc; font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif; }
+
+#nav .item:after { content: " \BB"; /* » */ }
+#nav .item:last-child:after { content: ""; }
+#nav .item:last-child { font-weight: bold; }
+#nav .item a { background: transparent; }
+
+#page {
+    background: white;
+	width: 600pt;
+	margin: 12pt auto;
+	padding: 12pt;
+}
+
+#header {
+    background: #888;
+    margin: -12pt -12pt 12pt -12pt; padding: 12pt;
+}
+#toc { padding-bottom: 2em; }
+
+span.deprecated {color: #f33;}
+
+.action-name .verb {font-weight: bold;}
+.action-name .base-path {font-weight: normal;}
+.action-name .name {font-weight: bold;}
+
+/* resource page styles */
+
+h3.action-name { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
+.action > p.description { padding-top: 1.25em; }
+
+a.back-to-top { text-decoration: none; display: block; float: right; background: transparent; margin: 6pt; padding: 6pt; line-height: 110%; }
+a.back-to-top:hover, a.back-to-top:active { background: #AAA; }
+a.back-to-top:after { content: " \2191"; }
+
+li.parameter { margin-bottom: 1.5em;}
+
+.status-code .primary-key {font-weight: bold;}

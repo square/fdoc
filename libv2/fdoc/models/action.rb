@@ -108,7 +108,7 @@ module Fdoc
     end
     
     # properties. should probably be generated
-    
+        
     def name
       @action["name"]
     end

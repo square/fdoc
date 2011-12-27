@@ -19,6 +19,10 @@ module Fdoc
     YAML.load_file("../fdoc-schema.yaml")
   end
   
+  def self.resources
+    @resources.values
+  end
+  
   def self.resource_for(controller_name)
     resource = @resources[controller_name]
     unless resource.nil? or resource.scaffold?
@@ -49,14 +53,26 @@ module Fdoc
     })
   end
   
-  def self.compile_index(fdoc_directory, base_path, options = {})
-    # creates an HTML index page that links to pages for fdocs in a given folder
-    # uses an ERB template, outputs a string
+  def self.template_path(template, file_type = "erb")
+    File.expand_path(File.dirname(__FILE__) + "/templates/#{template}.#{file_type}")
   end
   
-  def self.compile(fdoc_path, base_path, options = {})
-    # creates an HTML page for an individual fdoc file
-    # uses an ERB template, outputs a string
+  def self.compile_index(base_path, options = {})
+    directory_template = ERB.new(File.read(template_path(:directory)))
+    d = HTMLPresenter.new(self, base_path, options)
+    directory_template.result(d.get_binding)  
+  end
+  
+  def self.compile(resource_name, base_path, options = {})
+    resource = resources.find { |r| r.name == resource_name }
+    
+    resource_template = ERB.new(File.read(template_path(:resource)))
+    r = ResourcePresenter.new(resource, base_path, options)
+    resource_template.result(r.get_binding)
+  end
+  
+  def self.css
+    File.read(template_path(:main, :css))
   end
   
   class Error < StandardError; end
@@ -68,5 +84,10 @@ module Fdoc
   class UndocumentedResponseCode < Error; end
 end
 
-require 'resource'
-require 'action'
+require 'models/resource'
+require 'models/action'
+require 'presenters/html_presenter'
+require 'presenters/resource_presenter'
+require 'presenters/action_presenter'
+require 'presenters/parameter_presenter'
+require 'presenters/response_code_presenter'

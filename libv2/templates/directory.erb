@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>API Documentation</title>
+    <link rel="stylesheet" href="<%= css_path %>" />
+  </head>
+
+  <body>
+    <div id="nav">
+      <span class="item"><a href="<%= index_path %>">Square API</a></span>
+    </div>
+
+    <div id="page">
+      <div id="header">
+       <h1>API Documentation</h1>
+      </div>
+
+      <h2>Resources</h2>
+
+      <ul class="resources">
+        <% presented.resources.each do |resource| %>
+          <% resource_presenter = Fdoc::ResourcePresenter.new(resource, @base_path, options) %>
+          <li class="resource">
+            <a href="<%= "#{resource_presenter.resource_path}" %>" class="resource"><%= resource.name %></a>
+            <ul>
+              <% resource.actions.each do |action_hash| %>
+                <% action = Action.new(action_hash) %>
+                <li>
+                  <a href="<%= "#{resource_presenter.resource_path}##{action.name}" %>" class="action-name">
+                    <%= Fdoc::ActionPresenter.new(action, resource.base_path, @base_path, options).name_as_html %>
+                  </a>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div><!-- #page -->
+  </body>
+</html>

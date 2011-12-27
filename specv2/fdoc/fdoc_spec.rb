@@ -41,8 +41,22 @@ describe Fdoc do
   end
   
   describe "#compile" do
+    it "returns a valid HTML string" do
+      html = Fdoc.compile("members", "/docs")
+      html.should be_kind_of String
+      
+      parser = LibXML::XML::HTMLParser.string(html)
+      parser.parse.should be_kind_of LibXML::XML::Document
+    end
   end
 
   describe "#compile_index" do
+    it "returns a valid HTML string" do
+      html = Fdoc.compile_index("/docs")
+      html.should be_kind_of String
+      
+      parser = LibXML::XML::HTMLParser.string(html)
+      parser.parse.should be_kind_of LibXML::XML::Document
+    end
   end  
 end

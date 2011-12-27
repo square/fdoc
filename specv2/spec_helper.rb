@@ -7,5 +7,7 @@ require 'fdoc'
 require 'yaml'
 require 'json'
 require 'json-schema'
+require 'libxml'
+require 'erb'
 
 FIXTURES_PATH = "#{spec_dir}/fixtures"

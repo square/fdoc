@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'erb'
+require File.expand_path(File.join(File.dirname(__FILE__), "../libv2/fdoc"))
+
+if ARGV.length < 2
+  abort "Usage: doc_to_html [fdoc_directory] [html_directory] (url_base_path)"
+end
+
+fdoc_directory, html_directory, base_path = ARGV[0..2]
+html_directory = File.expand_path(html_directory)
+
+if !base_path
+  base_path = html_directory
+end
+
+Fdoc.load(fdoc_directory)
+
+File.open(File.join(html_directory,  "index.html"), "w") { |f| f.write(Fdoc.compile_index(base_path, :html => true)) }
+
+Fdoc.resources.each do |resource|
+  filename = File.join(html_directory, "#{resource.name}.html")
+  File.open(filename, "w") { |f| f.write(Fdoc.compile(resource.name, base_path, :html => true)) }
+end
+
+File.open(File.join(html_directory, "main.css"), "w") { |f| f.write(Fdoc.css) }

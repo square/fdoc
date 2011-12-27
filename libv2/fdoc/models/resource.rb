@@ -50,5 +50,13 @@ module Fdoc
     def name
       @resource["resourceName"]
     end
+    
+    def description
+      @resource["description"]
+    end
+    
+    def base_path
+      @resource["basePath"]
+    end
   end
 end
