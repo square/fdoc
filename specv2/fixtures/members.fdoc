@@ -50,13 +50,16 @@ actions:
                                 description: Member's name
                                 type: string
                                 required: yes
+                                example: Captain Smellypants
                             email:
                                 description: Member's email
                                 type: string
                                 required: no
+                                example: smelly@pants.com
                             member_since:
                                 description: The date the member joined
                                 type: date-time
+                                example: 2012-01-01T13:00:00Z
         responseCodes:
             -   status: 200 OK
                 successful: yes

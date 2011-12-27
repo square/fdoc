@@ -33,7 +33,7 @@
       </ul>
 
       <% resource.actions.each do |action_hash| %>
-        <% action_presenter = Fdoc::ActionPresenter.new(Action.new(action_hash), @base_path, options) %>
+        <% action_presenter = Fdoc::ActionPresenter.new(Action.new(action_hash), resource.base_path, @base_path, options) %>
         <div class="action">
         <a href="#" class="back-to-top">Back to top</a>
 
@@ -45,8 +45,8 @@
           <h4>Request Parameters</h4>
           <% ["Required", "Optional"].each do |required| %>
             <% parameters = action_presenter.send("#{required.downcase}_request_parameters") %>
-
             <% if parameters.length > 0 %>
+              <h5><%= required %></h5>
               <ul>
                 <% parameters.each do |key, value| %>
                   <%= Fdoc::ParameterPresenter.new(key, value, @base_path, options).as_html %>
@@ -58,9 +58,11 @@
         
         <% if action_presenter.response_parameters.length > 0 %>
           <h4>Response Parameters</h4>
-          <% action_presenter.response_parameters.each do |key, value| %>
-            <%= Fdoc::ParameterPresenter.new(key, value, @base_path, options).as_html %>
-          <% end %>
+          <ul>
+            <% action_presenter.response_parameters.each do |key, value| %>          
+              <%= Fdoc::ParameterPresenter.new(key, value, @base_path, options).as_html %>
+            <% end %>
+          </ul>
         <% end %>
 
         <h4>Response Codes</h4>

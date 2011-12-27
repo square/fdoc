@@ -102,7 +102,8 @@ module Fdoc
       type_map = {
         "Fixnum" => "integer",
         "Float" => "number",
-        "Hash" => "object"
+        "Hash" => "object",
+        "Time" => "date-time"
       }
       type_map[in_type] || in_type.downcase
     end

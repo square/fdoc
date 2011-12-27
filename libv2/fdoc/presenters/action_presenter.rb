@@ -23,15 +23,15 @@ module Fdoc
     end
     
     def required_request_parameters
-      (request_parameters["properties"] || []).select { |key, value| value["required"] }
+      (request_parameters["properties"] || {}).select { |key, value| value["required"] }
     end
   
     def optional_request_parameters
-      (request_parameters["properties"] || []).select { |key, value| not value["required"] }
+      (request_parameters["properties"] || {}).select { |key, value| not value["required"] }
     end
   
     def response_parameters
-      action.response_parameters
+      action.response_parameters["properties"] || {}
     end
   
     def successful_response_codes
