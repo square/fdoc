@@ -4,7 +4,7 @@ module Fdoc
     def initialize(name, details, base_path, options = {})
       super nil, base_path, options
       @name = name
-      @details = details
+      @details = (details || {})
     end
     
     def as_html

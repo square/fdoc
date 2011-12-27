@@ -1,82 +1,75 @@
 type: object
 title: resource
 description: Describes a resource, often linked to an API controller in Rails
-additionalProperties: No
+additionalProperties: no
 properties:
-    type: object
-    properties:
-        resourceName:
-            type: string
-            required: Yes
-        basePath:
-            type: string
-            description: The base URL for the resource
-            required: Yes
-        controller:
-            type: string
-            description: The class name corresponding to the Rails controller for this resource
-            required: Yes
-        types:
-            type: array
+    resourceName:
+        type: string
+        required: Yes
+    basePath:
+        type: string
+        description: The base URL for the resource
+        required: Yes
+    controller:
+        type: string
+        description: The class name corresponding to the Rails controller for this resource
+        required: Yes
+    description:
+        type: string
+    types:
+        type: array
+        description: |
+            An array of JSON schemas, defining types. For example, a members controller could
+            define a member object schema to share between its actions.
+    actions:
+        type: array
+        items: 
+            type: object
             description: |
-                An array of JSON schemas, defining types. For example, a members controller could
-                define a member object schema to share between its methods. Types should have
-                an id so they can be easily referenced
-            items:
-                type: object
-                properties:
-                    id:
-                        type: string
-                        required: yes
-        actions:
-            type: array
-            items: 
-                type: object
-                description: |
-                    A method object is identified by its name-verb pair, such as 'GET members'
-                properties:
-                    name:
-                        type: string
-                        required: yes
-                    verb:
-                        type: string
-                        required: yes
-                        description: The HTTP method for this action, such as GET or POST
-                    requestParameters:
+                An action object is identified by its name-verb pair, such as 'GET members'
+            properties:
+                name:
+                    type: string
+                    required: yes
+                verb:
+                    type: string
+                    required: yes
+                    description: The HTTP method for this action, such as GET or POST
+                requestParameters:
+                    type: object
+                    description: A schema for the request parameters
+                requestHeaders:
+                    type: object
+                    description: A dictionary of key-value pairs describing the headers handled by this method.
+                responseParameters:
+                    type: object
+                    description: A schema for the response parameters
+                responseCodes:
+                    type: array
+                    required: yes
+                    items:
                         type: object
-                        description: A schema for the request parameters
-                    requestHeaders:
-                        type: object
-                        description: A dictionary of key-value pairs describing the headers handled by this method.
-                    responseParameters:
-                        type: object
-                        description: A schema for the response parameters
-                    responseCodes:
-                        type: array
-                        required: yes
-                        items:
-                            type: object
-                            description: |
-                                A status code is defined by its HTTP status code and whether or not it was successful
-                            properties:
-                                status:
-                                    type: string
-                                    description: An HTTP status code, such as 200 OK or 201 Created
-                                successful:
-                                    type: boolean
-                                    description: |
-                                        Describes if the client can interpret this response as successful.
-                    scaffold:
-                        type: boolean
-                        default: no
-                        required: no
                         description: |
-                            Flags this action as as a scaffold. If the action is a scaffold, it will not
-                            be validated againt.
-        scaffold:
-            type: boolean
-            default: no
-            required: no
-            description: |
-                Flags this resource as a scaffold. If the resource is a scaffold, it will
-                not be validated against.
+                            A status code is defined by its HTTP status code and whether or not it was successful
+                        properties:
+                            status:
+                                type: string
+                                description: An HTTP status code, such as 200 OK or 201 Created
+                            successful:
+                                type: boolean
+                                description: |
+                                    Describes if the client can interpret this response as successful.
+                scaffold:
+                    type: boolean
+                    default: no
+                    required: no
+                    description: |
+                        Flags this action as as a scaffold. If the action is a scaffold, it will not
+                        be validated againt.
+    scaffold:
+        type: boolean
+        default: no
+        required: no
+        description: |
+            Flags this resource as a scaffold. If the resource is a scaffold, it will
+            not be validated against.

@@ -58,5 +58,11 @@ describe Fdoc do
       parser = LibXML::XML::HTMLParser.string(html)
       parser.parse.should be_kind_of LibXML::XML::Document
     end
-  end  
+  end
+  
+  describe "::schema" do
+    it "loads and returns the fdoc schema" do
+      Fdoc.schema.should == YAML.load_file(File.join(File.dirname(__FILE__), "../../fdoc-schema.yaml"))
+    end
+  end
 end

@@ -8,7 +8,7 @@ module Fdoc
       # may need to dive down and replace $refs with
       # the appropriate types from its resource (parent)
       parameters_schema = set_additional_properties_false_on(request_parameters.dup)
-      JSON::Validator.validate!(parameters_schema, params)
+      JSON::Validator.validate!(parameters_schema, stringify_keys(params))
     end
 
     def consume_response(params, rails_response, successful = true)
@@ -17,7 +17,7 @@ module Fdoc
         raise UndocumentedResponseCode, "Undocumented response: #{rails_response}, successful = #{successful.to_s}"
       elsif successful
         response_schema = set_additional_properties_false_on(response_parameters.dup)
-        JSON::Validator.validate!(response_schema, params, :validate_schema => false)
+        JSON::Validator.validate!(response_schema, stringify_keys(params), :validate_schema => false)
       else
         true
       end
@@ -43,6 +43,17 @@ module Fdoc
       else
         value
       end
+    end
+    
+    def stringify_keys(value)
+      return value unless value.is_a?(Hash)
+      result =  {}
+
+      value.each do |k, v|
+        result[k.to_s] = stringify_keys(v)
+      end
+
+      result
     end
 
     def scaffold_request(params)
@@ -103,7 +114,9 @@ module Fdoc
         "Fixnum" => "integer",
         "Float" => "number",
         "Hash" => "object",
-        "Time" => "date-time"
+        "Time" => "date-time",
+        "TrueClass" => "boolean",
+        "FalseClass" => "boolean",
       }
       type_map[in_type] || in_type.downcase
     end

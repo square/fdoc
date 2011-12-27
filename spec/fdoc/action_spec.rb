@@ -102,6 +102,16 @@ describe Fdoc::Action do
           subject.request_parameters["properties"]["max_connections"]["example"].should == 20          
           subject.request_parameters["properties"]["root_node"]["type"].should == "string"          
         end
+        
+        it "infers boolean types" do
+          bool_params = {
+            "with_cheese" => false,
+            "hold_the_lettuce" => true
+          }
+          subject.scaffold_request(bool_params)
+          subject.request_parameters["properties"]["with_cheese"]["type"].should == "boolean"
+          subject.request_parameters["properties"]["hold_the_lettuce"]["type"].should == "boolean"
+        end
       end
       
       context "when the action is not a scaffold" do

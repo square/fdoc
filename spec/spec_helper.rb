@@ -1,5 +1,5 @@
 spec_dir = File.expand_path(File.dirname(__FILE__))
-$:.unshift("#{spec_dir}/../libv2/")
+$:.unshift("#{spec_dir}/../lib/")
 $:.unshift("#{spec_dir}/fixtures")
 
 require 'rspec'

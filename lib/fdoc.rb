@@ -6,7 +6,7 @@ module Fdoc
     @resources = {}
     Dir.foreach(path) do |file|
       next unless file.end_with? ".fdoc"
-      resource = Resource.build_from_file(File.join(path, "/#{file}"))
+      resource = Resource.build_from_file(File.join(path, file))
       @resources[resource.controller] = resource
     end
   end
@@ -16,7 +16,7 @@ module Fdoc
   end
   
   def self.schema
-    YAML.load_file("../fdoc-schema.yaml")
+    @schema ||= YAML.load_file(File.join(File.dirname(__FILE__), "../fdoc-schema.yaml"))
   end
   
   def self.resources
@@ -45,10 +45,11 @@ module Fdoc
     camel_case_resource = controller_name.split(':').last.match(/(.*)(?:Controller?)/)[1]
     snake_case_resource = camel_case_resource.gsub(/^([A-Z])/) { |m| m.downcase}.gsub(/([A-Z])/) {|m| "_#{m.downcase}" }
 
-    @resources[controller_name] = Resource.new ({
+    @resources[controller_name] = Resource.new({
       "controller" => controller_name,
       "resourceName" => snake_case_resource,
       "description" => "???",
+      "basePath" => "https://???/#{snake_case_resource}",
       "scaffold" => true
     })
   end
@@ -83,6 +84,8 @@ module Fdoc
   class DocumentationError < Error; end
   class UndocumentedResponseCode < Error; end
 end
+
+require 'json-schema'
 
 require 'models/resource'
 require 'models/action'
