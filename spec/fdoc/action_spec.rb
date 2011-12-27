@@ -84,17 +84,22 @@ describe Fdoc::Action do
     
     
     describe "#scaffold_request" do
-      before(:all) do
+      request_params = {
+        "depth" => 5,
+        "max_connections" => 20,
+        "root_node" => "41EAF42"
+      }
+
+      before(:each) do
         subject.request_parameters.should be_empty
+      end
+      
+      after(:each) do
+        subject.instance_variable_set(:"@action", {})
       end
       
       context "when the action is a scaffold" do
         it "creates properties for top-level keys, and populates them with examples" do
-          request_params = {
-            "depth" => 5,
-            "max_connections" => 20,
-            "root_node" => "41EAF42"
-          }
           subject.scaffold_request(request_params)
           subject.request_parameters["type"].should == "object"
           subject.request_parameters["properties"].should have(3).keys
@@ -109,8 +114,15 @@ describe Fdoc::Action do
             "hold_the_lettuce" => true
           }
           subject.scaffold_request(bool_params)
+          subject.request_parameters["properties"].should have(2).keys
           subject.request_parameters["properties"]["with_cheese"]["type"].should == "boolean"
           subject.request_parameters["properties"]["hold_the_lettuce"]["type"].should == "boolean"
+        end
+        
+        it "produces a valid JSON schema for the response" do
+          subject.scaffold_request(request_params)
+          subject.request_parameters["properties"].should have(3).keys
+          JSON::Validator.validate!(subject.request_parameters, request_params).should be_true
         end
       end
       
@@ -200,6 +212,11 @@ describe Fdoc::Action do
           subject.response_parameters["properties"]["nodes"]["items"]["type"].should == "object"
           subject.response_parameters["properties"]["nodes"]["items"]["properties"].keys.sort.should == [
             "id", "linked_to","name"]
+        end
+        
+        it "produces a valid JSON schema for the response" do
+          subject.scaffold_response(response_params, "200 OK")
+          JSON::Validator.validate!(subject.response_parameters, response_params).should be_true
         end
       end
     
