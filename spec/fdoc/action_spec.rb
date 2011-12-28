@@ -101,7 +101,7 @@ describe Fdoc::Action do
       context "when the action is a scaffold" do
         it "creates properties for top-level keys, and populates them with examples" do
           subject.scaffold_request(request_params)
-          subject.request_parameters["type"].should == "object"
+          subject.request_parameters["type"].should == nil
           subject.request_parameters["properties"].should have(3).keys
           subject.request_parameters["properties"]["depth"]["type"].should == "integer"          
           subject.request_parameters["properties"]["max_connections"]["example"].should == 20          
@@ -191,7 +191,7 @@ describe Fdoc::Action do
 
         it "creates properties for top-level keys, and populates them with examples" do
           subject.scaffold_response(response_params, "200 OK")
-          subject.response_parameters["type"].should == "object"
+          subject.response_parameters["type"].should == nil
           subject.response_parameters["properties"].keys.sort.should == ["nodes", "root_node", "std_dev", "version"]
 
           subject.response_parameters["properties"]["nodes"]["type"].should == "array"

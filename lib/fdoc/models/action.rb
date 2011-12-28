@@ -61,7 +61,7 @@ module Fdoc
         raise Fdoc::ActionAlreadyExistsError, "Action for #{verb} #{name} is not a scaffold, can't scaffold request"
       end
       
-      scaffold_schema(request_parameters, params)
+      scaffold_schema(request_parameters, params, {:root_object => true})
     end
 
     def scaffold_response(params, rails_response, successful = true)
@@ -70,7 +70,7 @@ module Fdoc
       end
       
       if successful
-        scaffold_schema(response_parameters, params)
+        scaffold_schema(response_parameters, params, {:root_object => true})
       end
 
       if not response_codes.find { |rc| rc["status"] == rails_response and rc["successful"] == successful }
@@ -82,9 +82,9 @@ module Fdoc
       end
     end
     
-    def scaffold_schema(schema, params)
+    def scaffold_schema(schema, params, options = {:root_object => false})
       if params.kind_of? Hash
-        schema["type"] ||= "object"
+        schema["type"] ||= "object" unless options[:root_object]
         schema["properties"] ||= {}
       
         params.each do |key, value|
@@ -104,8 +104,11 @@ module Fdoc
         schema["type"] ||= guess_type(params)
         schema["example"] ||= value
       end
-      schema["description"] ||= "???"
-      schema["required"] ||= "???"
+      
+      unless options[:root_object]
+        schema["description"] ||= "???"
+        schema["required"] ||= "???"
+      end
     end
     
     def guess_type(value)
@@ -117,6 +120,7 @@ module Fdoc
         "Time" => "date-time",
         "TrueClass" => "boolean",
         "FalseClass" => "boolean",
+        "NilClass" => nil,
       }
       type_map[in_type] || in_type.downcase
     end

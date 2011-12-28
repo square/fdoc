@@ -33,12 +33,11 @@ module Fdoc
   end
   
   def self.scaffold_for(controller_name)
-    resource = @resources[controller_name]
-    if resource
+    if resource = @resources[controller_name]
       if not resource.scaffold?
         raise ResourceAlreadyExistsError, "Resource for #{controller_name} already exists, can't scaffold"
       else
-        resource
+        return resource
       end
     end
     
