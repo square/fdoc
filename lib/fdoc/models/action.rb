@@ -1,5 +1,4 @@
 class Fdoc::Action
-  include Fdoc
   def initialize(action_hash)
     @action = action_hash
   end
@@ -14,35 +13,13 @@ class Fdoc::Action
   def consume_response(params, rails_response, successful = true)
     # validates the existence of the HTTP respose/succesful combo
     if not response_codes.find { |rc| rc["status"] == rails_response && rc["successful"] == successful }
-      raise UndocumentedResponseCode,
+      raise Fdoc::UndocumentedResponseCode,
         "Undocumented response: #{rails_response}, successful = #{successful.to_s}"
     elsif successful
       response_schema = set_additional_properties_false_on(response_parameters.dup)
       JSON::Validator.validate!(response_schema, stringify_keys(params), :validate_schema => false)
     else
       true
-    end
-  end
-
-  def set_additional_properties_false_on(value)
-    # default additionalProperties on objects to false
-    if value.kind_of? Hash
-      copy = value.dup
-      if value["type"] == "object"
-        copy["additionalProperties"] ||= false
-      end
-      value.each do |key, hash_val|
-        unless key == "additionalProperties"
-          copy[key] = set_additional_properties_false_on(hash_val)
-        end
-      end
-      copy
-    elsif value.kind_of? Array
-      copy = value.map do |arr_val|
-        set_additional_properties_false_on(arr_val)
-      end
-    else
-      value
     end
   end
 
@@ -84,6 +61,34 @@ class Fdoc::Action
       }
     end
   end
+
+  # properties. should probably be generated
+
+  def name
+    @action["name"]
+  end
+
+  def verb
+    @action["verb"]
+  end
+
+  def scaffold?
+    @action["scaffold"]
+  end
+
+  def request_parameters
+    @action["requestParameters"] ||= {}
+  end
+
+  def response_parameters
+    @action["responseParameters"] ||= {}
+  end
+
+  def response_codes
+    @action["responseCodes"] ||= []
+  end
+
+  private
 
   def scaffold_schema(schema, params, options = {:root_object => false})
     if params.kind_of? Hash
@@ -128,29 +133,25 @@ class Fdoc::Action
     type_map[in_type] || in_type.downcase
   end
 
-  # properties. should probably be generated
-
-  def name
-    @action["name"]
-  end
-
-  def verb
-    @action["verb"]
-  end
-
-  def scaffold?
-    @action["scaffold"]
-  end
-
-  def request_parameters
-    @action["requestParameters"] ||= {}
-  end
-
-  def response_parameters
-    @action["responseParameters"] ||= {}
-  end
-
-  def response_codes
-    @action["responseCodes"] ||= []
+  def set_additional_properties_false_on(value)
+    # default additionalProperties on objects to false
+    if value.kind_of? Hash
+      copy = value.dup
+      if value["type"] == "object"
+        copy["additionalProperties"] ||= false
+      end
+      value.each do |key, hash_val|
+        unless key == "additionalProperties"
+          copy[key] = set_additional_properties_false_on(hash_val)
+        end
+      end
+      copy
+    elsif value.kind_of? Array
+      copy = value.map do |arr_val|
+        set_additional_properties_false_on(arr_val)
+      end
+    else
+      value
+    end
   end
 end
