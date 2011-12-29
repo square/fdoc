@@ -55,11 +55,11 @@
             <% end %>
           <% end %>
         <% end %>
-        
+
         <% if action_presenter.response_parameters.length > 0 %>
           <h4>Response Parameters</h4>
           <ul>
-            <% action_presenter.response_parameters.each do |key, value| %>          
+            <% action_presenter.response_parameters.each do |key, value| %>
               <%= Fdoc::ParameterPresenter.new(key, value, @base_path, options).as_html %>
             <% end %>
           </ul>

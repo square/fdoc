@@ -3,7 +3,7 @@ module Fdoc
     def resource
       presented
     end
-    
+
     def resource_path
       path = "#{@base_path}/#{resource.name}"
       if options[:html]
@@ -12,6 +12,6 @@ module Fdoc
         path = "/" + path
       end
       path
-    end    
+    end
   end
 end

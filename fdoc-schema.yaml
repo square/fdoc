@@ -23,7 +23,7 @@ properties:
             define a member object schema to share between its actions.
     actions:
         type: array
-        items: 
+        items:
             type: object
             description: |
                 An action object is identified by its name-verb pair, such as 'GET members'

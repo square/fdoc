@@ -8,7 +8,7 @@ body {
 tt, kbd, code { font-family: Monaco, monospace; font-size: 80%; background: #eee; padding: .2em; border: 1pt solid #ddd;}
 code { padding: 6pt; background: #eee;}
 
-a { 
+a {
 	color: inherit;
 	background: #ccc;
 	text-decoration: none;
