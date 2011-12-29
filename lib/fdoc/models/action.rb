@@ -59,7 +59,8 @@ class Fdoc::Action
 
   def scaffold_request(params)
     unless scaffold?
-      raise Fdoc::ActionAlreadyExistsError, "Action for #{verb} #{name} is not a scaffold, can't scaffold request"
+      raise Fdoc::ActionAlreadyExistsError,
+        "Action for #{verb} #{name} is not a scaffold, can't scaffold request"
     end
 
     scaffold_schema(request_parameters, params, {:root_object => true})
@@ -67,7 +68,8 @@ class Fdoc::Action
 
   def scaffold_response(params, rails_response, successful = true)
     unless scaffold?
-      raise Fdoc::ActionAlreadyExistsError, "Action for #{verb} #{name} is not a scaffold, can't scaffold request"
+      raise Fdoc::ActionAlreadyExistsError,
+        "Action for #{verb} #{name} is not a scaffold, can't scaffold request"
     end
 
     if successful
