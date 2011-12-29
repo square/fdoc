@@ -8,40 +8,42 @@ module Fdoc
     end
 
     def as_html
-      html = "<li class=\"#{css_classname}\">\n"
-      html += "  <tt>#{@name}</tt>\n" if @name
-      html += "  <span class=\"deprecated\">(deprecated)</span>\n" if deprecated?
-      html += "  <p>#{description}</p>\n" if description
-      html += "  <ul>\n"
+      html = StringIO.new
+      html << "<li class=\"#{css_classname}\">\n"
+      html << " <tt>#{@name}</tt>\n" if @name
+      html << " <span class=\"deprecated\">(deprecated)</span>\n" if deprecated?
+      html << " <p>#{description}</p>\n" if description
+      html << " <ul>\n"
 
       if (!type or type == "object") and title
-        html += "    <li>Type: #{title}</li>\n"
+        html << "    <li>Type: #{title}</li>\n"
       elsif type  and not properties
-        html += "    <li>Type: #{type}</li>\n" if type
+        html << "    <li>Type: #{type}</li>\n" if type
       end
 
-      html += "    <li>Example: #{literal_as_html(example)}</li>\n" if example
-      html += "    <li>Required: #{required? ? "yes" : "no"}</li>\n"
-      html += "    <li>Default: #{literal_as_html(default)}</li>\n" if default
+      html << "    <li>Example: #{literal_as_html(example)}</li>\n" if example
+      html << "    <li>Required: #{required? ? "yes" : "no"}</li>\n"
+      html << "    <li>Default: #{literal_as_html(default)}</li>\n" if default
 
       (@details.keys - FORMATTED_KEYS).each do |additional_key|
         human_case = additional_key.gsub(/^[a-z]/) { |m| m.upcase }.gsub(/[a-z]([A-Z])/) { |m| " " + m }
-        html += "   <li>#{human_case}: #{@details[additional_key]}</li>\n"
+        html << "   <li>#{human_case}: #{@details[additional_key]}</li>\n"
       end
 
       if properties
         properties.each do |name, properties|
-          html += ParameterPresenter.new(name, properties, @base_path, @options).as_html
+          html << ParameterPresenter.new(name, properties, @base_path, @options).as_html
         end
       end
 
       if items
-        html += "    <li>Items:<ul>\n"
-        html += ParameterPresenter.new(nil, items, @base_path, @options).as_html
-        html += "    </ul></li>\n"
+        html << "    <li>Items:<ul>\n"
+        html << ParameterPresenter.new(nil, items, @base_path, @options).as_html
+        html << "    </ul></li>\n"
       end
-      html += "  </ul>"
-      html+= "</li>"
+      html << "  </ul>"
+      html << "</li>"
+      html.string
     end
 
     def css_classname
