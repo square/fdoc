@@ -1,5 +1,4 @@
-lib_dir = File.expand_path(File.dirname(__FILE__) + "/fdoc")
-$:.unshift(lib_dir)
+require 'json-schema'
 
 module Fdoc
   def self.load(path = "docs/fdoc")
@@ -84,12 +83,11 @@ module Fdoc
   class UndocumentedResponseCode < Error; end
 end
 
-require 'json-schema'
-
-require 'models/resource'
-require 'models/action'
-require 'presenters/html_presenter'
-require 'presenters/resource_presenter'
-require 'presenters/action_presenter'
-require 'presenters/parameter_presenter'
-require 'presenters/response_code_presenter'
+require 'fdoc'
+require 'fdoc/models/resource'
+require 'fdoc/models/action'
+require 'fdoc/presenters/html_presenter'
+require 'fdoc/presenters/resource_presenter'
+require 'fdoc/presenters/action_presenter'
+require 'fdoc/presenters/parameter_presenter'
+require 'fdoc/presenters/response_code_presenter'
