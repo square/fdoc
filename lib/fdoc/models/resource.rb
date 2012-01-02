@@ -16,7 +16,7 @@ class Fdoc::Resource
   end
 
   def action_for(verb, action_name, options = {:scaffold => false})
-    action = nice_actions.find { |a| a.verb == verb && a.name == action_name }
+    action = actions.map {|a| Fdoc::Action.new a }.find { |a| a.verb == verb && a.name == action_name }
     if action
       if options[:scaffold] && !action.scaffold?
         raise Fdoc::ActionAlreadyExistsError,
@@ -63,9 +63,5 @@ class Fdoc::Resource
   private
   def validate!
     JSON::Validator.validate!(Fdoc.schema, @resource)
-  end
-
-  def nice_actions
-    actions.map {|a| Fdoc::Action.new a }
   end
 end
