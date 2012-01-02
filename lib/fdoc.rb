@@ -1,4 +1,5 @@
 require 'json-schema'
+SCHEMA_FILE = File.join(File.dirname(__FILE__), "../fdoc-schema.yaml")
 
 module Fdoc
   class << self
@@ -16,7 +17,7 @@ module Fdoc
     end
 
     def schema
-      @schema ||= YAML.load_file(File.join(File.dirname(__FILE__), "../fdoc-schema.yaml"))
+      @schema ||= YAML.load_file(SCHEMA_FILE)
     end
 
     def resources
