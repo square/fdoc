@@ -40,7 +40,7 @@ class Fdoc::Action
         "Action for #{verb} #{name} is not a scaffold, can't scaffold request"
     end
 
-    scaffold_schema(request_parameters, params, {:root_object => true})
+    scaffold_schema(request_parameters, stringify_keys(params), {:root_object => true})
   end
 
   def scaffold_response(params, rails_response, successful = true)
@@ -50,7 +50,7 @@ class Fdoc::Action
     end
 
     if successful
-      scaffold_schema(response_parameters, params, {:root_object => true})
+      scaffold_schema(response_parameters, stringify_keys(params), {:root_object => true})
     end
 
     if not response_codes.find { |rc| rc["status"] == rails_response and rc["successful"] == successful }

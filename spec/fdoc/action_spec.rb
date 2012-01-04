@@ -117,6 +117,19 @@ describe Fdoc::Action do
           subject.request_parameters["properties"]["with_cheese"]["type"].should == "boolean"
           subject.request_parameters["properties"]["hold_the_lettuce"]["type"].should == "boolean"
         end
+        
+        it "uses strings (not symbols) as keys" do
+          mixed_params = {
+            :with_symbol => false,
+            "with_string" => true
+          }
+          subject.scaffold_request(mixed_params)
+          subject.request_parameters["properties"].should have(2).keys
+          subject.request_parameters["properties"].should have_key "with_symbol"
+          subject.request_parameters["properties"].should_not have_key :with_symbol
+          subject.request_parameters["properties"].should have_key "with_string"
+          subject.request_parameters["properties"].should_not have_key :with_string          
+        end
 
         it "produces a valid JSON schema for the response" do
           subject.scaffold_request(request_params)
@@ -211,6 +224,19 @@ describe Fdoc::Action do
           subject.response_parameters["properties"]["nodes"]["items"]["type"].should == "object"
           subject.response_parameters["properties"]["nodes"]["items"]["properties"].keys.sort.should == [
             "id", "linked_to","name"]
+        end
+        
+        it "uses strings (not symbols) as keys" do
+          mixed_params = {
+            :with_symbol => false,
+            "with_string" => true
+          }
+          subject.scaffold_response(mixed_params, "200 OK")
+          subject.response_parameters["properties"].should have(2).keys
+          subject.response_parameters["properties"].should have_key "with_symbol"
+          subject.response_parameters["properties"].should_not have_key :with_symbol
+          subject.response_parameters["properties"].should have_key "with_string"
+          subject.response_parameters["properties"].should_not have_key :with_string          
         end
 
         it "produces a valid JSON schema for the response" do
