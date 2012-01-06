@@ -16,6 +16,12 @@ describe Fdoc::Resource do
         end
       end
 
+      context "when a scaffold exists" do
+        it "should return nil" do
+          subject.action_for("POST", "draft").should be_nil
+        end
+      end
+
       context "when an action does not exist" do
         it "should return nil" do
           subject.action_for("POST", "nonexistent").should be_nil

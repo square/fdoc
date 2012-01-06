@@ -88,3 +88,10 @@ actions:
             -   status: 400 Bad Request
                 successful: no
                 description: Member already exists
+    -   name: draft
+        scaffold: yes
+        verb: POST
+        description: Hypothetical endpoint, for testing scaffolding
+        responseCodes:
+            -   status: 200 OK
+                successful: yes
