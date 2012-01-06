@@ -8,7 +8,7 @@ body {
 tt, kbd, code { font-family: Monaco, monospace; font-size: 80%; background: #eee; padding: .2em; border: 1pt solid #ddd;}
 code { padding: 6pt; background: #eee;}
 
-a { 
+a {
 	color: inherit;
 	background: #ccc;
 	text-decoration: none;
@@ -47,14 +47,14 @@ h5 { font-size: 105%; font-weight: normal; font-family: "HelveticaNeue-Light", "
 
 span.deprecated {color: #f33;}
 
-.method-name .verb {font-weight: bold;}
-.method-name .base-path {font-weight: normal;}
-.method-name .name {font-weight: bold;}
+.action-name .verb {font-weight: bold;}
+.action-name .base-path {font-weight: normal;}
+.action-name .name {font-weight: bold;}
 
 /* resource page styles */
 
-h3.method-name { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
-.method > p.description { padding-top: 1.25em; }
+h3.action-name { background: #ddd; margin: 0 -12pt; padding: 12pt 24pt;}
+.action > p.description { padding-top: 1.25em; }
 
 a.back-to-top { text-decoration: none; display: block; float: right; background: transparent; margin: 6pt; padding: 6pt; line-height: 110%; }
 a.back-to-top:hover, a.back-to-top:active { background: #AAA; }

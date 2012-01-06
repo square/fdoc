@@ -1,69 +1,77 @@
 <html>
   <head>
-    <title><%= "API Documentation: #{@resource.name}" %></title>
+    <title><%= "API Documentation: #{resource.name}" %></title>
     <link rel="stylesheet" href="<%= css_path %>" />
   </head>
 
   <body>
     <div id="nav">
       <span class="item"><a href="<%= index_path %>">Square API</a></span>
-      <span class="item"><%= @resource.name.capitalize %></span>
+      <span class="item"><%= resource.name.capitalize %></span>
     </div>
 
     <div id="page">
       <div id="header">
-       <h1><%= @resource.name.capitalize %></h1>
-       <span class="base-path"><%= @resource.base_path %></span>
+       <h1><%= resource.name.capitalize %></h1>
+       <span class="base-path"><%= resource.base_path %></span>
       </div>
 
-      <p><%= @resource.description %></p>
+      <p><%= resource.description %></p>
 
-      <h2>Methods</h2>
-      <p>Jump to a method</p>
+      <h2>Action</h2>
+      <p>Jump to an action</p>
       <ul id="toc">
-        <% @resource.actions.each do |mthod| %>
+        <% resource.actions.each do |action_hash| %>
+          <% action = Action.new(action_hash) %>
           <li>
-            <a href="#<%= mthod.name %>" class="method-name">
-              <span class="verb"><%= mthod.verb.strip %></span>
-              <span class="base-path"><%= @resource.base_path.strip %></span><span class="name">/<%= mthod.name.strip %></span>
+            <a href="#<%= action.name %>" class="action-name">
+              <span class="verb"><%= action.verb.strip %></span>
+              <span class="base-path"><%= resource.base_path.strip %></span><span class="name">/<%= action.name.strip %></span>
             </a>
           </li>
         <% end %>
       </ul>
 
-      <% @resource.actions.each do |mthod| %>
-        <div class="method">
+      <% resource.actions.each do |action_hash| %>
+        <% action_presenter = Fdoc::ActionPresenter.new(Action.new(action_hash), resource.base_path, @base_path, options) %>
+        <div class="action">
         <a href="#" class="back-to-top">Back to top</a>
 
-        <h3 id="<%= mthod.name %>" class="method-name">
-          <span class="verb"><%= mthod.verb.strip %></span>
-          <span class="base-path"><%= @resource.base_path.strip %></span><span class="name">/<%= mthod.name.strip %></span>
+        <h3 id="<%= action_presenter.html_id %>" class="action-name">
+          <%= action_presenter.name_as_html %>
         </h3>
 
-        <% ["Request", "Response"].each do |parameter_type| %>
-          <% if mthod.method("#{parameter_type.downcase}_parameters").call.length > 0 %>
-            <h4><%= "#{parameter_type} Parameters" %></h4>
-            <% ["Required", "Optional"].each do |required| %>
-              <% parameters = mthod.send("#{required.downcase}_#{parameter_type.downcase}_parameters") %>
-
-              <% if parameters.length > 0 %>
-                <%= "<h5>#{required}</h5>" unless parameter_type == "Response" %>
-                <ul>
-                  <% parameters.each do |parameter| %>
-                    <%= Fdoc::ParameterPresenter.new(parameter).as_html %>
-                  <% end %>
-                </ul>
-              <% end %>
+        <% if action_presenter.request_parameters.length > 0 %>
+          <h4>Request Parameters</h4>
+          <% ["Required", "Optional"].each do |required| %>
+            <% parameters = action_presenter.send("#{required.downcase}_request_parameters") %>
+            <% if parameters.length > 0 %>
+              <h5><%= required %></h5>
+              <ul>
+                <% parameters.each do |key, value| %>
+                  <%= Fdoc::ParameterPresenter.new(key, value, @base_path, options).as_html %>
+                <% end %>
+              </ul>
             <% end %>
           <% end %>
         <% end %>
 
+        <% if action_presenter.response_parameters.length > 0 %>
+          <h4>Response Parameters</h4>
+          <ul>
+            <% action_presenter.response_parameters.each do |key, value| %>
+              <%= Fdoc::ParameterPresenter.new(key, value, @base_path, options).as_html %>
+            <% end %>
+          </ul>
+        <% end %>
+
         <h4>Response Codes</h4>
         <% ["Successful", "Failure"].each do |success_status| %>
-          <% response_codes = mthod.method("#{success_status.downcase}_response_codes").call %>
+          <% response_codes = action_presenter.send("#{success_status.downcase}_response_codes") %>
           <% if response_codes.length > 0 %>
-            <h5><%= "#{success_status} Response Codes" %></h4>
-            <% response_codes.each do |response_code| %>
+            <h5><%= "#{success_status} Response Codes" %></h5>
+            <% response_codes.each do |response_code_hash| %>
+            <% response_code = Fdoc::ResponseCodePresenter.new(response_code_hash, @base_path, options) %>
               <ul>
                 <li class="status-code"><span class="primary-key"><%= response_code.status %></span>
                   <p><%= response_code.description %></p>

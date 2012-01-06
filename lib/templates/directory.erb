@@ -17,15 +17,18 @@
       <h2>Resources</h2>
 
       <ul class="resources">
-        <% @resources.each do |resource| %>
+        <% presented.resources.each do |resource| %>
+          <% resource_presenter = Fdoc::ResourcePresenter.new(resource, @base_path, options) %>
           <li class="resource">
-            <a href="<%= "#{resource_path(resource)}##{resource.name}" %>" class="method"><%= resource.name %></a>
+            <a href="<%= "#{resource_presenter.resource_path}" %>" class="resource"><%= resource.name %></a>
             <ul>
-              <% resource.actions.each do |mthod| %>
+              <% resource.actions.each do |action_hash| %>
+                <% action = Action.new(action_hash) %>
                 <li>
-                  <a href="<%= "#{resource_path(resource)}##{mthod.name}" %>" class="method-name">
-                    <%= Fdoc::MethodPresenter.new(mthod, resource).name_as_html %>
+                  <a href="<%= "#{resource_presenter.resource_path}##{action.name}" %>" class="action-name">
+                    <%= Fdoc::ActionPresenter.new(action, resource.base_path, @base_path, options).name_as_html %>
                   </a>
+                </li>
               <% end %>
             </ul>
           </li>

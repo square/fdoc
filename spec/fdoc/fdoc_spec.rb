@@ -1,73 +1,68 @@
 path = File.expand_path(File.dirname(__FILE__))
-require "#{path}/../spec_helper"
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
 
 describe Fdoc do
-  subject { described_class }
-  
-  let(:known_method) { "list" }
-  let(:unknown_method) { "remove" }
-  let(:controller) { "Api::MembersController" }
-  let(:unknown_controller) { "Api::UnknownController" }
-  
-  before { subject.load(FIXTURE_PATH)  }
-  
-  describe "#checklist_for" do
-    context "when a controller has not been documented" do
-      it "returns nil" do
-        subject.checklist_for(unknown_controller, known_method).should be_nil
+  before(:each) do
+    Fdoc.load(FIXTURES_PATH)
+  end
+
+  after(:each) do
+    Fdoc.clear
+  end
+
+  describe "#resource_for" do
+    context "when a there is a resource for that controller" do
+      it "should return a Resource object wrapping that file" do
+        Fdoc.resource_for("Api::MembersController").should be_kind_of Fdoc::Resource
       end
     end
-    
-    context "when a controller has been documented" do
-      context "when a method does exist" do
-        it "returns a checklist for that method" do
-          subject.checklist_for(controller, known_method).should be_kind_of Fdoc::MethodChecklist
-        end
-      end
 
-      context "when a method does not exist" do
-        it "raises an UndocumentedMethodError" do
-          expect { subject.checklist_for(controller, unknown_method) }.to raise_exception(Fdoc::UndocumentedMethodError)
-        end
+    context "when there is not a resource for that controller" do
+      it "should return nil" do
+        Fdoc.resource_for("Api::UnknownController").should be_nil
       end
     end
   end
 
-
   describe "#scaffold_for" do
-    context "when a controller has not been documented" do
-      it "scaffolds the controller" do
-        subject.checklist_for(unknown_controller, known_method).should be_nil
-        subject.scaffold_for(unknown_controller, known_method).should be_kind_of Fdoc::MethodScaffold
-        subject.checklist_for(unknown_controller, known_method).should_not be_nil
-      end
-
-      context "but it has been scaffolded once already" do
-        it "should return a MethodScaffold wrapping the existing method" do
-          first_scaffold = subject.scaffold_for(unknown_controller, known_method)
-          first_scaffold.scaffold_request({"time" => "the future"})
-          second_scaffold = subject.scaffold_for(unknown_controller, known_method)
-          second_scaffold.scaffold_request({"date" => "yesterday"})
-          second_scaffold.scaffolded_method.should == first_scaffold.scaffolded_method
-          second_scaffold.scaffolded_method.should have(2).request_parameters
-        end
-      end
+    it "should create resource object for that controller and add it to the module" do
+      Fdoc.resource_for("Api::SillyGooseController").should be_nil
+      Fdoc.scaffold_for("Api::SillyGooseController").should be_kind_of Fdoc::Resource
     end
 
-    context "when a controller has been documented" do
-      context "when a method or scaffold does not exist" do
-        it "scaffolds the method" do
-          expect { subject.checklist_for(controller, unknown_method) }.to raise_exception(Fdoc::UndocumentedMethodError)
-          subject.scaffold_for(controller, unknown_method).should be_kind_of Fdoc::MethodScaffold
-        end
-      end
+    it "should attempt to guess the resource name based on the controller name" do
+      Fdoc.scaffold_for("Api::PaymentsController").name.should == "payments"
+      Fdoc.scaffold_for("Api::ComplicatedResourceTypeController").name.should == "complicated_resource_type"
+    end
 
-      context "when a method or scaffold does exist" do
-        it "scaffolds the method" do
-          expect { subject.checklist_for(controller, known_method) }.not_to raise_exception(Fdoc::UndocumentedMethodError)
-          subject.scaffold_for(controller, known_method).should be_kind_of Fdoc::MethodScaffold
-        end
-      end
+    it "should raise an exception when the real resource already exists" do
+      expect { Fdoc.scaffold_for("Api::MembersController") }.to raise_exception(Fdoc::ResourceAlreadyExistsError)
+    end
+  end
+
+  describe "#compile" do
+    it "returns a valid HTML string" do
+      html = Fdoc.compile("members", "/docs")
+      html.should be_kind_of String
+
+      parser = LibXML::XML::HTMLParser.string(html)
+      parser.parse.should be_kind_of LibXML::XML::Document
+    end
+  end
+
+  describe "#compile_index" do
+    it "returns a valid HTML string" do
+      html = Fdoc.compile_index("/docs")
+      html.should be_kind_of String
+
+      parser = LibXML::XML::HTMLParser.string(html)
+      parser.parse.should be_kind_of LibXML::XML::Document
+    end
+  end
+
+  describe "::schema" do
+    it "loads and returns the fdoc schema" do
+      Fdoc.schema.should == YAML.load_file(File.join(File.dirname(__FILE__), "../../fdoc-schema.yaml"))
     end
   end
 end
