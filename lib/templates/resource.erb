@@ -41,6 +41,8 @@
           <%= action_presenter.name_as_html %>
         </h3>
 
+        <p><%= action_hash["description"] %>
+
         <% if action_presenter.request_parameters.length > 0 %>
           <h4>Request Parameters</h4>
           <% ["Required", "Optional"].each do |required| %>
