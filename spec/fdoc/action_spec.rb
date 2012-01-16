@@ -117,7 +117,39 @@ describe Fdoc::Action do
           subject.request_parameters["properties"]["with_cheese"]["type"].should == "boolean"
           subject.request_parameters["properties"]["hold_the_lettuce"]["type"].should == "boolean"
         end
-        
+
+        context "infers formats" do
+          it "detects date-time formats as objects, or as is08601 strings" do
+            datetime_params = {
+              "time_str" => Time.now.iso8601,
+              "time_obj" => Time.now
+            }
+            subject.scaffold_request(datetime_params)
+            subject.request_parameters["properties"].should have(2).keys
+            subject.request_parameters["properties"]["time_str"]["type"].should == "string"
+            subject.request_parameters["properties"]["time_str"]["format"].should == "date-time"
+            subject.request_parameters["properties"]["time_obj"]["type"].should == "string"
+            subject.request_parameters["properties"]["time_obj"]["format"].should == "date-time"
+          end
+
+          it "detects uri formats" do
+            uri_params = {
+              "sample_uri" => "http://my.example.com"
+            }
+            subject.scaffold_request(uri_params)
+            subject.request_parameters["properties"].should have(1).keys
+            subject.request_parameters["properties"]["sample_uri"]["type"].should == "string"
+            subject.request_parameters["properties"]["sample_uri"]["format"].should == "uri"
+          end
+
+          it "detects color formats (hex only for now)" do
+            color_params = { "page_color" => "#AABBCC" }
+            subject.scaffold_request(color_params)
+            subject.request_parameters["properties"]["page_color"]["type"].should == "string"
+            subject.request_parameters["properties"]["page_color"]["format"].should == "color"
+          end
+        end
+
         it "uses strings (not symbols) as keys" do
           mixed_params = {
             :with_symbol => false,

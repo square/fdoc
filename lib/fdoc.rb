@@ -1,3 +1,4 @@
+require 'time'
 require 'json-schema'
 SCHEMA_FILE = File.join(File.dirname(__FILE__), "../fdoc-schema.yaml")
 
