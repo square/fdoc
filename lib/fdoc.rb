@@ -1,6 +1,10 @@
 require 'time'
 require 'json-schema'
-SCHEMA_FILE = File.join(File.dirname(__FILE__), "../fdoc-schema.yaml")
+
+lib_dir = File.expand_path(File.join(File.dirname(__FILE__) , "/fdoc"))
+$:.unshift(lib_dir)
+
+SCHEMA_FILE = File.join(File.dirname(File.expand_path(__FILE__)), "fdoc-schema.yaml")
 
 module Fdoc
   class << self
@@ -88,11 +92,10 @@ module Fdoc
   class UndocumentedResponseCode < Error; end
 end
 
-require 'fdoc'
-require 'fdoc/models/resource'
-require 'fdoc/models/action'
-require 'fdoc/presenters/html_presenter'
-require 'fdoc/presenters/resource_presenter'
-require 'fdoc/presenters/action_presenter'
-require 'fdoc/presenters/parameter_presenter'
-require 'fdoc/presenters/response_code_presenter'
+require 'models/resource'
+require 'models/action'
+require 'presenters/html_presenter'
+require 'presenters/resource_presenter'
+require 'presenters/action_presenter'
+require 'presenters/parameter_presenter'
+require 'presenters/response_code_presenter'
