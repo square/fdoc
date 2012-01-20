@@ -21,8 +21,11 @@ class Fdoc::Resource
       if options[:scaffold] && !action.scaffold?
         raise Fdoc::ActionAlreadyExistsError,
           "Action for #{verb} #{action_name} already exists, can't scaffold"
+      elsif !options[:scaffold] && action.scaffold?
+        nil
+      else
+        action
       end
-      action
     elsif options[:scaffold]
       actions << {
         "name" => action_name,

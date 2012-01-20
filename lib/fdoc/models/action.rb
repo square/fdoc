@@ -110,6 +110,9 @@ class Fdoc::Action
     else
       value = params
       schema["type"] ||= guess_type(params)
+      if format = guess_format(params)
+        schema["format"] ||= format
+      end
       schema["example"] ||= value
     end
 
@@ -125,12 +128,30 @@ class Fdoc::Action
       "Fixnum" => "integer",
       "Float" => "number",
       "Hash" => "object",
-      "Time" => "date-time",
+      "Time" => "string",
       "TrueClass" => "boolean",
       "FalseClass" => "boolean",
       "NilClass" => nil,
     }
     type_map[in_type] || in_type.downcase
+  end
+
+  def guess_format(value)
+    if value.kind_of? Time
+      "date-time"
+    elsif value.kind_of? String
+      if value.start_with? "http://"
+        "uri"
+      elsif value.match(/\#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/)
+        "color"
+      else
+        begin
+          "date-time" if Time.iso8601(value)
+        rescue
+          nil
+        end
+      end
+    end
   end
 
   def set_additional_properties_false_on(value)
