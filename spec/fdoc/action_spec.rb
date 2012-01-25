@@ -10,7 +10,8 @@ describe Fdoc::Action do
     describe "#consume_request" do
       good_params = {
         "limit" => 0,
-        "offset" => 100
+        "offset" => 100,
+        "order_by" => "name"
         }
 
       context "with a well-behaved request" do
@@ -22,6 +23,40 @@ describe Fdoc::Action do
       context "with an extra key added in" do
         it "throws an exception" do
           expect { subject.consume_request(good_params.merge({"extra_goodness" => true})) }.to raise_exception
+        end
+      end
+      
+      context "error messages" do
+        context "verifying json-schema gem verbosity" do
+          context "when the response contains additional properties" do
+            it "should have the unknown keys in the error message" do
+              begin
+                subject.consume_request(good_params.merge({"extra_goodness" => true}))
+              rescue JSON::Schema::ValidationError => error
+                error.message.should match("extra_goodness")
+              end
+            end
+          end
+
+          context "when the response contains an unknown enum value" do
+            it "should have the value in the error messages" do
+              begin
+                subject.consume_request(good_params.merge({"order_by" => "some_stuff"}))
+              rescue JSON::Schema::ValidationError => error
+                error.message.should match("some_stuff")
+              end
+            end
+          end
+
+          context "when the response encounters an object of an known type" do
+            it "should have the Ruby type in the error message" do
+              begin
+                subject.consume_request(good_params.merge({"order_by" => 1}))
+              rescue JSON::Schema::ValidationError => error
+                error.message.should match("Fixnum")
+              end
+            end
+          end
         end
       end
     end
