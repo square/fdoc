@@ -62,7 +62,7 @@ describe Fdoc do
 
   describe "::schema" do
     it "loads and returns the fdoc schema" do
-      Fdoc.schema.should == YAML.load_file(File.join(File.dirname(__FILE__), "../../fdoc-schema.yaml"))
+      Fdoc.schema.should == YAML.load_file(File.join(File.dirname(__FILE__), "../../lib/fdoc-schema.yaml"))
     end
   end
 end
