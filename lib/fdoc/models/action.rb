@@ -80,6 +80,10 @@ class Fdoc::Action
     @action["requestParameters"] ||= {}
   end
 
+  def request_parameters=(params)
+    @action["requestParameters"] = params
+  end
+
   def response_parameters
     @action["responseParameters"] ||= {}
   end
