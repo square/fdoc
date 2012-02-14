@@ -95,6 +95,11 @@ class Fdoc::Action
   private
 
   def scaffold_schema(schema, params, options = {:root_object => false})
+    unless options[:root_object]
+      schema["description"] ||= "???"
+      schema["required"] ||= "???"
+    end
+
     if params.kind_of? Hash
       schema["type"] ||= "object" unless options[:root_object]
       schema["properties"] ||= {}
@@ -118,11 +123,6 @@ class Fdoc::Action
         schema["format"] ||= format
       end
       schema["example"] ||= value
-    end
-
-    unless options[:root_object]
-      schema["description"] ||= "???"
-      schema["required"] ||= "???"
     end
   end
 
