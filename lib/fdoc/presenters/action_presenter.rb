@@ -10,7 +10,9 @@ class Fdoc::ActionPresenter < Fdoc::HTMLPresenter
 
   def name_as_html
     "<span class=\"verb\">#{action.verb.strip}</span> " +
-    "<span class=\"base-path\">#{@resource_href.strip}</span>/<span class=\"name\">#{action.name.strip}</span>"
+    "<span class=\"base-path\">#{@resource_href.strip}</span>" +
+    "#{ "/" unless action.name.start_with? "/" }" +
+    "<span class=\"name\">#{action.name.strip}</span>"
   end
 
   def html_id

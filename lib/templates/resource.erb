@@ -22,11 +22,11 @@
       <p>Jump to an action</p>
       <ul id="toc">
         <% resource.actions.each do |action_hash| %>
-          <% action = Action.new(action_hash) %>
           <li>
+            <% action = Action.new(action_hash) %>
+            <% action_presenter = Fdoc::ActionPresenter.new(action, resource.base_path, @base_path, options) %>
             <a href="#<%= action.name %>" class="action-name">
-              <span class="verb"><%= action.verb.strip %></span>
-              <span class="base-path"><%= resource.base_path.strip %></span><span class="name">/<%= action.name.strip %></span>
+              <%= action_presenter.name_as_html %>
             </a>
           </li>
         <% end %>
