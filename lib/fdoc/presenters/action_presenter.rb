@@ -1,7 +1,10 @@
 class Fdoc::ActionPresenter < Fdoc::HTMLPresenter
   def initialize(action, resource_href, base_path, options = {})
     super action, base_path, options
-    @resource_href = resource_href
+    @resource_href = resource_href.strip
+    if @resource_href.end_with? "/"
+      @resource_href = @resource_href[0..-2]
+    end
   end
 
   def action
@@ -10,13 +13,20 @@ class Fdoc::ActionPresenter < Fdoc::HTMLPresenter
 
   def name_as_html
     "<span class=\"verb\">#{action.verb.strip}</span> " +
-    "<span class=\"base-path\">#{@resource_href.strip}</span>" +
-    "#{ "/" unless action.name.start_with? "/" }" +
-    "<span class=\"name\">#{action.name.strip}</span>"
+    "<span class=\"base-path\">#{@resource_href}</span>" +
+    "<span class=\"name\">#{action_name}</span>"
   end
 
   def html_id
     action.name
+  end
+
+  def action_name
+    action_name = action.name.strip
+    unless action_name.start_with? "/"
+      action_name = "/" + action_name
+    end
+    action_name
   end
 
   def request_parameters
