@@ -52,4 +52,39 @@ class Fdoc::ActionPresenter < Fdoc::HTMLPresenter
   def failure_response_codes
     action.response_codes.select { |value| not value["successful"] }
   end
+
+  def example_request
+    self.class.example_from_schema(action.request_parameters)
+  end
+
+  def example_response
+    self.class.example_from_schema(action.response_parameters)
+  end
+
+  private
+
+  def self.example_from_schema(schema)
+    type = schema["type"]
+    if type == "string" or type == "integer" or type == "number" or type == "null"
+      schema["example"] || schema["default"] || nil
+    elsif type == "object" or schema["properties"]
+      example = {}
+      schema["properties"].each do |key, value|
+        example[key] = example_from_schema(value)
+      end
+      example
+    elsif type == "array" or schema["items"]
+      if schema["items"].kind_of? Array
+        example = []
+        schema["items"].each do |item|
+          example << example_from_schema(item)
+        end
+        example
+      else
+        [example_from_schema(schema["items"])]
+      end
+    else
+      {}
+    end
+  end
 end

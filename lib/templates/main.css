@@ -5,8 +5,8 @@ body {
 	padding: 0;
 }
 
-tt, kbd, code { font-family: Monaco, monospace; font-size: 80%; background: #eee; padding: .2em; border: 1pt solid #ddd;}
-code { padding: 6pt; background: #eee;}
+tt, kbd, pre { font-family: Monaco, monospace; font-size: 80%; background: #eee; padding: .2em; border: 1pt solid #ddd;}
+pre { padding: 6pt; background: #eee;}
 
 a {
 	color: inherit;

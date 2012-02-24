@@ -44,6 +44,9 @@
         <p><%= action_hash["description"] %>
 
         <% if action_presenter.request_parameters.length > 0 %>
+          <h4>Example Request</h4>
+          <code><pre><%= JSON.pretty_generate(action_presenter.example_request) %></pre></code>
+
           <h4>Request Parameters</h4>
           <% ["Required", "Optional"].each do |required| %>
             <% parameters = action_presenter.send("#{required.downcase}_request_parameters") %>
@@ -59,7 +62,11 @@
         <% end %>
 
         <% if action_presenter.response_parameters.length > 0 %>
+          <h4>Example Response</h4>
+          <code><pre><%= JSON.pretty_generate(action_presenter.example_response) %></pre></code>
+
           <h4>Response Parameters</h4>
+
           <ul>
             <% action_presenter.response_parameters.each do |key, value| %>
               <%= Fdoc::ParameterPresenter.new(key, value, @base_path, options).as_html %>
