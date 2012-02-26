@@ -41,6 +41,12 @@ describe Fdoc::ActionPresenter do
           zip:
             type: integer
             example: 91234
+      homepage_url:
+        type:
+          - string
+          - "null"
+        format: uri
+        example: http://my.website.com
     EOS
     example_schema = YAML.load(example_schema_yaml)
 
@@ -60,7 +66,8 @@ describe Fdoc::ActionPresenter do
         "street_name" => "Main St.",
         "state" => "CA",
         "zip" => 91234
-      }
+      },
+      "homepage_url" => "http://my.website.com"
     }
 
     Fdoc::ActionPresenter.example_from_schema(example_schema).should == expected_example

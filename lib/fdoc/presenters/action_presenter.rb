@@ -64,16 +64,26 @@ class Fdoc::ActionPresenter < Fdoc::HTMLPresenter
   private
 
   def self.example_from_schema(schema)
-    type = schema["type"]
-    if type == "string" or type == "integer" or type == "number" or type == "null"
+    if schema.nil?
+      return nil
+    end
+
+    type = Array(schema["type"])
+    if type.include? "string" or
+       type.include? "integer" or
+       type.include? "number" or
+       type.include? "boolean" or
+       type.include? "null"
       schema["example"] || schema["default"] || nil
-    elsif type == "object" or schema["properties"]
+    elsif type.include? "object" or schema["properties"]
       example = {}
-      schema["properties"].each do |key, value|
-        example[key] = example_from_schema(value)
+      if schema["properties"]
+        schema["properties"].each do |key, value|
+          example[key] = example_from_schema(value)
+        end
       end
       example
-    elsif type == "array" or schema["items"]
+    elsif type.include? "array" or schema["items"]
       if schema["items"].kind_of? Array
         example = []
         schema["items"].each do |item|
