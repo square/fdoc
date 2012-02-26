@@ -11,7 +11,7 @@ class Fdoc::ParameterPresenter < Fdoc::HTMLPresenter
     html << "<li class=\"#{css_classname}\">\n"
     html << " <tt>#{@name}</tt>\n" if @name
     html << " <span class=\"deprecated\">(deprecated)</span>\n" if deprecated?
-    html << " <p>#{description}</p>\n" if description
+    html << " #{HTMLPresenter.unpack_markdown description}\n" if description
     html << " <ul>\n"
 
     if (!type or type == "object") and title

@@ -5,7 +5,13 @@ body {
 	padding: 0;
 }
 
-tt, kbd, pre { font-family: Monaco, monospace; font-size: 80%; background: #eee; padding: .2em; border: 1pt solid #ddd;}
+tt, kbd, pre {
+    font-family: Monaco, monospace;
+    font-size: 80%; background: #eee;
+    padding: .2em;
+    border: 1pt solid #ddd;
+    white-space: pre-wrap;
+}
 pre { padding: 6pt; background: #eee;}
 
 a {
