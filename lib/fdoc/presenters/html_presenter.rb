@@ -27,4 +27,13 @@ class Fdoc::HTMLPresenter
 
   def as_html
   end
+
+  def self.unpack_markdown(markdown_str)
+    @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, :space_after_headers => true)
+    if markdown_str
+      @markdown.render markdown_str
+    else
+      nil
+    end
+  end
 end

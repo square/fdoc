@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency("json")
   s.add_dependency("json-schema", ">= 1.0.1")
+  s.add_dependency("redcarpet")
 
   s.add_development_dependency("rake")
   s.add_development_dependency("rspec", "~> 2.5")

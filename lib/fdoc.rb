@@ -1,5 +1,6 @@
 require 'time'
 require 'json-schema'
+require 'redcarpet'
 
 lib_dir = File.expand_path(File.join(File.dirname(__FILE__) , "/fdoc"))
 $:.unshift(lib_dir)

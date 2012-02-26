@@ -16,7 +16,7 @@
        <span class="base-path"><%= resource.base_path %></span>
       </div>
 
-      <p><%= resource.description %></p>
+      <%= Fdoc::HTMLPresenter.unpack_markdown(resource.description) %>
 
       <h2>Action</h2>
       <p>Jump to an action</p>
@@ -41,7 +41,7 @@
           <%= action_presenter.name_as_html %>
         </h3>
 
-        <p><%= action_hash["description"] %>
+        <%= Fdoc::HTMLPresenter.unpack_markdown(action_hash["description"]) %>
 
         <% if action_presenter.request_parameters.length > 0 %>
           <h4>Example Request</h4>
@@ -83,7 +83,7 @@
             <% response_code = Fdoc::ResponseCodePresenter.new(response_code_hash, @base_path, options) %>
               <ul>
                 <li class="status-code"><span class="primary-key"><%= response_code.status %></span>
-                  <p><%= response_code.description %></p>
+                  <%= Fdoc::HTMLPresenter.unpack_markdown(response_code.description) %>
                 </li>
               </ul>
             <% end %>
