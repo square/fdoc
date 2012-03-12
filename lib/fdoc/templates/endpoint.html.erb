@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= title %>
+    </title>
+
+    <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
+  </head>
+  <body>
+    <div id="page">
+      <div id="content">
+        <h1>
+          <%= name %>
+        </h1>
+
+        <div id="nav">
+          <a href="<%= index_path %>">
+            &#171; <%= @endpoint.service.name %>
+          </a>
+        </div>
+
+        <%= description %>
+
+        <% if show_request? %>
+          <h2>Request</h2>
+
+          <h3>Example Request</h3>
+          <%= example_request %>
+
+          <h3>Request Parameters</h3>
+          <%= request_parameters %>
+        <% end %>
+
+        <h2>Response</h2>
+        <% if show_response? %>
+          <h3>Example Response</h3>
+          <%= example_response %>
+
+          <h3>Response Parameters</h3>
+          <%= response_parameters %>
+        <% end %>
+
+        <h3>Response Codes</h3>
+        <% if !successful_response_codes.empty? %>
+          <h4>Successful Response Codes</h4>
+          <ul>
+            <% successful_response_codes.each do |response_code| %>
+            <li>
+              <%= response_code.to_html %>
+            </li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <% if !successful_response_codes.empty? %>
+          <h4>Failure Response Codes</h4>
+          <ul>
+            <% failure_response_codes.each do |response_code| %>
+            <li>
+              <%= response_code.to_html %>
+            </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+    </div>
+  </body>
+</html>
+

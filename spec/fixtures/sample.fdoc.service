@@ -1,0 +1,8 @@
+name: fdoc Sample API
+basePath: https://api.sample.com/
+description: |
+  This service is used for lots of fun things
+  
+  * It would not make for a very exciting REST API, but
+    that's perfectly acceptable for a fixture file.
+  * These bullets are mostly to demonstrate Markdown interpolation

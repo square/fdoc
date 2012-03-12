@@ -1,27 +1,44 @@
 #!/usr/bin/env ruby
 
-require 'yaml'
-require 'erb'
-require File.expand_path(File.join(File.dirname(__FILE__), "../lib/fdoc.rb"))
+require_relative '../lib/fdoc'
 
 if ARGV.length < 2
   abort "Usage: doc_to_html [fdoc_directory] [html_directory] (url_base_path)"
 end
 
 fdoc_directory, html_directory, base_path = ARGV[0..2]
+fdoc_directory = File.expand_path(fdoc_directory)
 html_directory = File.expand_path(html_directory)
 
-if !base_path
-  base_path = html_directory
+def mkdir(dirname)
+  Dir.mkdir(dirname) unless Dir.exist?(dirname)
 end
 
-Fdoc.load(fdoc_directory)
+mkdir(html_directory)
 
-File.open(File.join(html_directory,  "index.html"), "w") { |f| f.write(Fdoc.compile_index(base_path, :html => true)) }
+service = Fdoc::Service.new(fdoc_directory)
+service_presenter = Fdoc::ServicePresenter.new(service,
+  :html_directory => html_directory,
+  :static_html => true
+)
 
-Fdoc.resources.each do |resource|
-  filename = File.join(html_directory, "#{resource.name}.html")
-  File.open(filename, "w") { |f| f.write(Fdoc.compile(resource.name, base_path, :html => true)) }
+css_path = File.join(File.dirname(__FILE__), '../lib/fdoc/templates/styles.css')
+`cp "#{css_path}" "#{html_directory}"`
+
+index_html_path = File.join(html_directory, "index.html")
+File.open(index_html_path, "w") do |file|
+  file.write(service_presenter.to_html)
+
+  puts "created #{index_html_path}"
 end
 
-File.open(File.join(html_directory, "main.css"), "w") { |f| f.write(Fdoc.css) }
+service_presenter.endpoints.each do |endpoint|
+  endpoint_html_path = File.join(html_directory, endpoint.url)
+  mkdir(File.dirname(endpoint_html_path))
+
+  File.open(endpoint_html_path, "w") do |file|
+    file.write(endpoint.to_html)
+
+    puts "created #{endpoint_html_path}"
+  end
+end

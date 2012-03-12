@@ -1,0 +1,60 @@
+description: The list of members, filtered by params
+requestParameters:
+  type: object
+  properties:
+    limit:
+      type: integer
+      required: no
+      default: 50
+      description: Limits the number of results returned, used for paging.
+    offset:
+      type: integer
+      required: no
+      default: 0
+      description: Offsets the results returned, used for paging.
+    older_than:
+      type: string
+      format: date-time
+      required: no
+      description: |
+        If provided, results returned will only be updated before
+        the given date (exclusive)
+    newer_than:
+      type: string
+      format: date-time
+      required: no
+      description: |
+        If provided, results returned will only be updated after
+        the given date (inclusive)
+responseParameters:
+  type: object
+  properties:
+    members:
+      type: array
+      items:
+        title: member
+        description: Representation of a member
+        type: object
+        properties:
+          name:
+            description: Member's name
+            type: string
+            required: yes
+            example: Captain Smellypants
+          email:
+            description: Member's email
+            type: string
+            required: no
+            example: smelly@pants.com
+          member_since:
+            description: The date the member joined
+            type: string
+            format: date-time
+            example: 2012-01-01T13:00:00Z
+responseCodes:
+  - status: 200 OK
+    successful: yes
+    description: A list of current members
+  - status: 400 Bad Request
+    successful: no
+    description: Indicates malformed parameters
