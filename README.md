@@ -5,7 +5,7 @@ High-quality documentation is extremely useful, but maintaining it is often a pa
 
 Fdoc is named for everybody's favorite, good news-bearing, crotchety old man, Professor Farnsworth.
 
-![Professor Farnsworth](docs/farnsworth.png)
+![Professor Farnsworth](https://github.com/square/fdoc/raw/master/docs/farnsworth.png)
 
 ### Example
 
