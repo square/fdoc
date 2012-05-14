@@ -55,3 +55,5 @@ p {
 .endpoint-name .verb { font-weight: bold; }
 .endpoint-name .root {}
 .endpoint-name .path { font-weight: bold; }
+
+a .endpoint-name .verb { display: inline-block; width: 3em; text-align: right }
