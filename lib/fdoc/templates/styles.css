@@ -36,7 +36,7 @@ ul, ol, dl {
   margin: .5em 0;
 }
 
-code { display: block; }
+pre code { display: block; }
 tt, kbd, code {
   font-family: Monaco, monospace;
   font-size: 80%;

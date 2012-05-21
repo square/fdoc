@@ -74,7 +74,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     e = @schema["example"]
     if e.kind_of? String
       '<tt>&quot;%s&quot;</tt>' % e.gsub(/\"/, 'quot;')
-    elsif e.kind_of? Numeric
+    elsif e.kind_of?(Numeric) || e.kind_of?(TrueClass) || e.kind_of?(FalseClass)
       '<tt>%s</tt>' % e
     end
   end
