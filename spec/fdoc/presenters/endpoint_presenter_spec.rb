@@ -59,6 +59,10 @@ describe Fdoc::EndpointPresenter do
           zip:
             type: integer
             example: 91234
+      homepage_url:
+        type: ['string', 'null']
+        format: uri
+        example: http://my.website.com
     EOS
     example_schema = YAML.load(example_schema_yaml)
 
@@ -78,7 +82,8 @@ describe Fdoc::EndpointPresenter do
         "street_name" => "Main St.",
         "state" => "CA",
         "zip" => 91234
-      }
+      },
+      "homepage_url" => "http://my.website.com"
     }
 
     it "should generate an example response from the contents of the schema" do
