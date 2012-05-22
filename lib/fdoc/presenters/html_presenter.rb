@@ -16,7 +16,7 @@ class Fdoc::HtmlPresenter
 
   def render_markdown(markdown_str)
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
-      :space_after_headers => true)
+      :space_after_headers => true, :no_intra_emphasis => true)
     if markdown_str
       @markdown.render(markdown_str)
     else
@@ -29,7 +29,7 @@ class Fdoc::HtmlPresenter
   end
 
   def html_directory
-    options[:html_directory] || ""
+    options[:url_base_path] || options[:html_directory] || ""
   end
 
   def css_path
