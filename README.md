@@ -36,6 +36,8 @@ To enable fdoc for an endpoint, add the `fdoc` option with the path to the endpo
 
 fdoc also has a scaffolding mode, where it attemps to infer the schema of a request based on sample responses. The interface is exactly the same as verifying, just set the environment variable `FDOC_SCAFFOLD=true`.
 
+    FDOC_SCAFFOLD=true bundle exec rspec spec/controllers
+
 ### Example
 
 `.fdoc` files are YAML files based on JSON schema to describe API endpoints.

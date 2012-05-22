@@ -4,10 +4,23 @@ require 'yaml'
 class Fdoc::Service
   attr_reader :service_dir
 
-  def initialize(service_dir)
+  def initialize(service_dir, scaffold_mode = Fdoc.scaffold_mode?)
     @service_dir = service_dir
-    @schema = if service_path = Dir["#{service_dir}/*.fdoc.service"].first
+    service_path = Dir["#{service_dir}/*.fdoc.service"].first
+    @schema = if service_path
       YAML.load_file(service_path)
+    elsif scaffold_mode
+      schema = {
+        'name'        => '???',
+        'basePath'    => '???',
+        'description' => '???'
+      }
+
+      Dir.mkdir(service_dir) unless Dir.exist?(service_dir)
+      service_path = "#{service_dir}/???.fdoc.service"
+      File.open(service_path, "w") { |file| YAML.dump(schema, file) }
+
+      schema
     else
       {}
     end
