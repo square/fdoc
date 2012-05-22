@@ -1,8 +1,18 @@
 $:.unshift(File.dirname(__FILE__))
 
 module Fdoc
+  DEFAULT_SERVICE_PATH = "docs/fdoc"
+
   def self.scaffold_mode?
     ENV['FDOC_SCAFFOLD']
+  end
+
+  def self.service_path=(service_path)
+    @service_path = service_path
+  end
+
+  def self.service_path
+    @service_path || DEFAULT_SERVICE_PATH
   end
 
   class ValidationError < StandardError; end

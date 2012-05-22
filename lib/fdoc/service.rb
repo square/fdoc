@@ -13,7 +13,7 @@ class Fdoc::Service
     end
   end
 
-  DefaultService = self.new("docs/fdoc")
+  DefaultService = self.new(Fdoc::DEFAULT_SERVICE_PATH)
 
   # Returns an Endpoint described by (verb, path)
   # In scaffold_mode, it will return an EndpointScaffold an of existing file

@@ -23,7 +23,7 @@ module Fdoc
     private
 
     def verify!(verb, path, request_params, response_params, response_status)
-      service = Service.new('docs/fdoc') # TODO allow custom directory
+      service = Service.new(Fdoc.service_path)
       endpoint = service.open(verb, path)
       endpoint.consume_request(request_params)
       endpoint.consume_response(response_params, response_status)
