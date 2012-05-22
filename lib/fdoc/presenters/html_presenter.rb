@@ -29,7 +29,7 @@ class Fdoc::HtmlPresenter
   end
 
   def html_directory
-    options[:html_directory] || ""
+    options[:url_base_path] || options[:html_directory] || ""
   end
 
   def css_path

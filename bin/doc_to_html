@@ -6,7 +6,7 @@ if ARGV.length < 2
   abort "Usage: doc_to_html [fdoc_directory] [html_directory] (url_base_path)"
 end
 
-fdoc_directory, html_directory, base_path = ARGV[0..2]
+fdoc_directory, html_directory, url_base_path = ARGV[0..2]
 fdoc_directory = File.expand_path(fdoc_directory)
 html_directory = File.expand_path(html_directory)
 
@@ -19,7 +19,8 @@ mkdir(html_directory)
 service = Fdoc::Service.new(fdoc_directory)
 service_presenter = Fdoc::ServicePresenter.new(service,
   :html_directory => html_directory,
-  :static_html => true
+  :static_html => true,
+  :url_base_path => url_base_path
 )
 
 css_path = File.join(File.dirname(__FILE__), '../lib/fdoc/templates/styles.css')
