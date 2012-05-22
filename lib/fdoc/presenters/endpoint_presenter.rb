@@ -79,18 +79,26 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def example_from_schema(schema)
-    return unless schema
-    type = schema["type"]
-    if type == "string" || type == "integer" || type == "number" ||
-       type == "null" || type == "boolean"
+    if schema.nil?
+      return nil
+    end
+
+    type = Array(schema["type"])
+    if type.include?("string") ||
+       type.include?("integer") ||
+       type.include?("number") ||
+       type.include?("boolean") ||
+       type.include?("null")
       schema["example"] || schema["default"] || nil
-    elsif schema["properties"]
+    elsif type.include?("object") || schema["properties"]
       example = {}
-      schema["properties"].each do |key, value|
-        example[key] = example_from_schema(value)
+      if schema["properties"]
+        schema["properties"].each do |key, value|
+          example[key] = example_from_schema(value)
+        end
       end
       example
-    elsif type == "array" or schema["items"]
+    elsif type.include?("array") || schema["items"]
       if schema["items"].kind_of? Array
         example = []
         schema["items"].each do |item|
@@ -98,7 +106,7 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
         end
         example
       else
-        [example_from_schema(schema["items"])]
+        [ example_from_schema(schema["items"]) ]
       end
     else
       {}
