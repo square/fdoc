@@ -20,6 +20,7 @@ body {
 h1, h2 {
   margin: 0 -12pt;
   padding: .5em 12pt;
+  line-height: 1.2em;
 }
 
 h1 { font-weight: bold; }
