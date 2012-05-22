@@ -12,8 +12,8 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     <<-EOS
     <span class="endpoint-name">
       <span class="verb">#{@endpoint.verb}</span>
-      <span class="root">#{@endpoint.service.base_path}</span><span
-       class="path">#{@endpoint.path}</span>
+      <span class="root">#{zws_ify(@endpoint.service.base_path)}</span><span
+       class="path">#{zws_ify(@endpoint.path)}</span>
     </span>
     EOS
   end
@@ -32,6 +32,11 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
 
   def title
     '%s %s - %s' % [ @endpoint.verb, @endpoint.path, @endpoint.service.name ]
+  end
+
+  def zws_ify(str)
+    # zero-width-space, makes long lines friendlier for breaking
+    str.gsub(/\//, '&#8203;/')
   end
 
   def description
