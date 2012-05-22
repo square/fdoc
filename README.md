@@ -9,13 +9,30 @@ fdoc is named for everybody's favorite, good news-bearing, crotchety old man, Pr
 
 ### Usage
 
-Verifying an endpoint is easy!
+Add fdoc to your Gemfile.
 
-    service = Fdoc::Service.new('docs/fdoc')
-    endpoint = service.open('GET', 'members/list')
+    gem 'fdoc'
 
-    endpoint.consume_request({'limit' => 10})
-    endpoint.consume_response({'members' => [{'name' => 'Captain Pants'}]}, '200 OK')
+Tell fdoc where to look for .fdoc files. By default, fdoc will look in `docs/fdoc`, but you can change this behavior to look anywhere. This fits best in something like a spec\_helper file.
+
+    require 'fdoc'
+
+    Fdoc.service_path = "path/to/your/fdocs"
+
+fdoc is built to work around controller specs in rspec, and provides `Fdoc::SpecWatcher` as a mixin. Make sure to include it *inside* your top level describe.
+
+    require 'fdoc/spec_watcher'
+
+    describe MembersController do
+      include Fdoc::SpecWatcher
+      ...
+    end
+
+To enable fdoc for an endpoint, add the `fdoc` option with the path to the endpoint. fdoc will intercept all calls to `get`, `post`, `put`, and `delete` and verify those parameters accordingly.
+
+    context "#show", :fdoc => 'members/list' do
+      ..
+    end
 
 fdoc also has a scaffolding mode, where it attemps to infer the schema of a request based on sample responses. The interface is exactly the same as verifying, just set the environment variable `FDOC_SCAFFOLD=true`.
 
