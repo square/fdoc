@@ -37,7 +37,7 @@ Dir[File.join(from_dir, "**/*.fdoc")].each do |fdoc_path|
   end
 end
 
-service_path = File.join(to_dir, "???.service.fdoc")
+service_path = File.join(to_dir, "???.fdoc.service")
 File.open(service_path, "w") { |f|
   f.write(YAML.dump({
     "name" => "???",

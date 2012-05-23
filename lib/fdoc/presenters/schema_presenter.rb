@@ -113,7 +113,9 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
 
       if items.kind_of? Array
         item.each do |item|
-          html << self.class.new(item, options.merge(:nested => true)).to_html
+          if item
+            html << self.class.new(item, options.merge(:nested => true)).to_html
+          end
         end
       else
         html << self.class.new(items, options.merge(:nested => true)).to_html
@@ -132,6 +134,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     html = StringIO.new
 
     properties.each do |key, property|
+      next if property.nil?
       html << '<li>'
       html << '<tt>%s</tt>' % key
       html << self.class.new(property, options.merge(:nested => true)).to_html
