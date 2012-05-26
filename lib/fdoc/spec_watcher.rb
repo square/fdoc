@@ -8,19 +8,16 @@ module Fdoc
         request_params ||= {}
         result = super(*params)
 
-        all_opts = if respond_to?(:example) # Rspec 2
-          example.metadata
+        path = if respond_to?(:example) # Rspec 2
+          example.metadata[:path]
         else # Rspec 1.3.2
           opts = {}
           __send__(:example_group_hierarchy).each do |example|
             opts.merge!(example.options)
           end
           opts.merge!(options)
-          opts
+          opts[:path]
         end
-
-        path    = all_opts[:fdoc]
-        success = all_opts.has_key?(:success) ? all_opts[:success] : true
 
         if path
           response_params = begin
@@ -28,7 +25,9 @@ module Fdoc
           rescue JSON::ParserError
             {}
           end
-          verify!(verb, path, request_params, response_params, response.status, success)
+          successful = Fdoc.decide_success(response_params)
+          verify!(verb, path, request_params, response_params, response.status,
+            successful)
         end
 
         result
@@ -37,11 +36,12 @@ module Fdoc
 
     private
 
-    def verify!(verb, path, request_params, response_params, response_status, success)
+    def verify!(verb, path, request_params, response_params, response_status,
+          successful)
       service = Service.new(Fdoc.service_path)
       endpoint = service.open(verb, path)
       endpoint.consume_request(request_params)
-      endpoint.consume_response(response_params, response_status)
+      endpoint.consume_response(response_params, response_status, successful)
       endpoint.persist! if endpoint.respond_to?(:persist!)
     end
   end

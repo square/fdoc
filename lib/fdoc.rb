@@ -15,6 +15,18 @@ module Fdoc
     @service_path || DEFAULT_SERVICE_PATH
   end
 
+  def self.decide_success_with(&block)
+    @success_block = block
+  end
+
+  def self.decide_success(response)
+    if @success_block
+      @success_block.call(response)
+    else
+      true
+    end
+  end
+
   class ValidationError < StandardError; end
   class UndocumentedResponseCode < ValidationError; end
 end
