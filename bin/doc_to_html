@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/fdoc'
+require File.join(File.dirname(__FILE__), '../lib/fdoc')
 
 if ARGV.length < 2
   abort "Usage: doc_to_html [fdoc_directory] [html_directory] (url_base_path)"
@@ -11,7 +11,7 @@ fdoc_directory = File.expand_path(fdoc_directory)
 html_directory = File.expand_path(html_directory)
 
 def mkdir(dirname)
-  Dir.mkdir(dirname) unless Dir.exist?(dirname)
+  `mkdir -p #{dirname}` unless File.directory?(dirname)
 end
 
 mkdir(html_directory)
