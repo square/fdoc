@@ -11,12 +11,12 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
   end
 
   def endpoints
-    @endpoints ||= @service.endpoints.map do |endpoint|
+    @endpoints ||= service.endpoints.map do |endpoint|
       Fdoc::EndpointPresenter.new(endpoint, options)
     end
   end
 
   def description
-    render_markdown(@service.description)
+    render_markdown(service.description)
   end
 end

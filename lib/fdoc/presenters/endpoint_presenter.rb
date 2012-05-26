@@ -83,17 +83,16 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     render_json(example_from_schema(@endpoint.response_parameters))
   end
 
+  ALLOWED_TYPES = %w(string integer number boolean null)
+
   def example_from_schema(schema)
     if schema.nil?
       return nil
     end
 
     type = Array(schema["type"])
-    if type.include?("string") ||
-       type.include?("integer") ||
-       type.include?("number") ||
-       type.include?("boolean") ||
-       type.include?("null")
+
+    if type.any? { |t| ALLOWED_TYPES.include?(t) }
       schema["example"] || schema["default"] || nil
     elsif type.include?("object") || schema["properties"]
       example = {}

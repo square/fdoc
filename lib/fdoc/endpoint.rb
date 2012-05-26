@@ -51,10 +51,6 @@ class Fdoc::Endpoint
     @schema["description"]
   end
 
-  def scaffold?
-    @schema["scaffold"]
-  end
-
   def request_parameters
     @schema["requestParameters"] ||= {}
   end
@@ -69,12 +65,9 @@ class Fdoc::Endpoint
 
   protected
 
-  def validate!
-    JSON::Validator.validate!(self.class.schema, @schema)
-  end
-
+  # default additionalProperties on objects to false
+  # create a copy, so we don't mutate the input
   def set_additional_properties_false_on(value)
-    # default additionalProperties on objects to false
     if value.kind_of? Hash
       copy = value.dup
       if value["type"] == "object"

@@ -68,8 +68,6 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     @schema["format"]
   end
 
-  
-
   def example
     e = @schema["example"]
     if e.kind_of? String

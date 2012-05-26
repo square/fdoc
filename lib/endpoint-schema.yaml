@@ -1,6 +1,6 @@
 type: object
-title: resource
-description: Describes a resource, often linked to an API controller in Rails
+title: endpoint
+description: Describes an API endpoint
 additionalProperties: no
 properties:
   description:
@@ -10,9 +10,6 @@ properties:
   requestParameters:
     type: object
     description: A schema for the request parameters
-  requestHeaders:
-    type: object
-    description: A dictionary of key-value pairs describing the headers handled by this method.
   responseParameters:
     type: object
     description: A schema for the response parameters
@@ -31,10 +28,3 @@ properties:
           type: boolean
           description: |
             Describes if the client can interpret this response as successful.
-  scaffold:
-      type: boolean
-      default: no
-      required: no
-      description: |
-          Flags this action as as a scaffold. If the action is a scaffold, it will not
-          be validated againt.

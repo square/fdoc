@@ -18,14 +18,14 @@ class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
   end
 
   def successful?
-    @response_code["successful"]
+    response_code["successful"]
   end
 
   def status
-    @response_code["status"]
+    response_code["status"]
   end
 
   def description
-    render_markdown(@response_code["description"])
+    render_markdown(response_code["description"])
   end
 end
