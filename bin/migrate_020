@@ -25,6 +25,7 @@ Dir[File.join(from_dir, "**/*.fdoc")].each do |fdoc_path|
     verb = action["verb"].upcase
 
     action.delete("verb")
+    action.delete("name")
     action.delete("path")
     action.delete("scaffold")
 
