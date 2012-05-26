@@ -76,6 +76,8 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
       '<tt>&quot;%s&quot;</tt>' % e.gsub(/\"/, 'quot;')
     elsif e.kind_of?(Numeric) || e.kind_of?(TrueClass) || e.kind_of?(FalseClass)
       '<tt>%s</tt>' % e
+    elsif e.kind_of?(Hash) || e.kind_of?(Array)
+      render_json(e)
     end
   end
 
