@@ -1,102 +1,41 @@
-require 'time'
-require 'json-schema'
-require 'redcarpet'
-
-lib_dir = File.expand_path(File.join(File.dirname(__FILE__) , "/fdoc"))
-$:.unshift(lib_dir)
-
-SCHEMA_FILE = File.join(File.dirname(File.expand_path(__FILE__)), "fdoc-schema.yaml")
+$:.unshift(File.dirname(__FILE__))
 
 module Fdoc
-  class << self
-    def load(path = "docs/fdoc")
-      @resources = {}
-      Dir.foreach(path) do |file|
-        next unless file.end_with? ".fdoc"
-        resource = Resource.build_from_file(File.join(path, file))
-        @resources[resource.controller] = resource
-      end
-    end
+  DEFAULT_SERVICE_PATH = "docs/fdoc"
 
-    def clear
-      @resources = {}
-    end
+  def self.scaffold_mode?
+    ENV['FDOC_SCAFFOLD']
+  end
 
-    def schema
-      @schema ||= YAML.load_file(SCHEMA_FILE)
-    end
+  def self.service_path=(service_path)
+    @service_path = service_path
+  end
 
-    def resources
-      @resources.values
-    end
+  def self.service_path
+    @service_path || DEFAULT_SERVICE_PATH
+  end
 
-    def resource_for(controller_name)
-      resource = @resources[controller_name]
-      unless resource.nil? or resource.scaffold?
-        resource
-      else
-        nil
-      end
-    end
+  def self.decide_success_with(&block)
+    @success_block = block
+  end
 
-    def scaffold_for(controller_name)
-      if resource = @resources[controller_name]
-        if not resource.scaffold?
-          raise ResourceAlreadyExistsError,
-            "Resource for #{controller_name} already exists, can't scaffold"
-        else
-          return resource
-        end
-      end
-
-      camel_case_resource = controller_name.split(':').last.match(/(.*)(?:Controller?)/)[1]
-      snake_case_resource = camel_case_resource.gsub(/^([A-Z])/) { |m| m.downcase}.gsub(/([A-Z])/) {|m| "_#{m.downcase}" }
-
-      @resources[controller_name] = Resource.new({
-        "controller" => controller_name,
-        "resourceName" => snake_case_resource,
-        "description" => "???",
-        "basePath" => "https://???/#{snake_case_resource}",
-        "scaffold" => true
-      })
-    end
-
-    def template_path(template, file_type = "erb")
-      File.expand_path(File.dirname(__FILE__) + "/templates/#{template}.#{file_type}")
-    end
-
-    def compile_index(base_path, options = {})
-      directory_template = ERB.new(File.read(template_path(:directory)))
-      d = HTMLPresenter.new(self, base_path, options)
-      directory_template.result(d.get_binding)
-    end
-
-    def compile(resource_name, base_path, options = {})
-      resource = resources.find { |r| r.name == resource_name }
-
-      resource_template = ERB.new(File.read(template_path(:resource)))
-      r = ResourcePresenter.new(resource, base_path, options)
-      resource_template.result(r.get_binding)
-    end
-
-    def css
-      File.read(template_path(:main, :css))
+  def self.decide_success(response)
+    if @success_block
+      @success_block.call(response)
+    else
+      true
     end
   end
 
-  class Error < StandardError; end
-
-  class ResourceAlreadyExistsError < Error; end
-  class ActionAlreadyExistsError < Error; end
-
-  class DocumentationError < Error; end
-  class UndocumentedResponseCode < Error; end
+  class ValidationError < StandardError; end
+  class UndocumentedResponseCode < ValidationError; end
 end
 
-require 'models/resource'
-require 'models/action'
-require 'presenters/html_presenter'
-require 'presenters/resource_presenter'
-require 'presenters/action_presenter'
-require 'presenters/parameter_presenter'
-require 'presenters/response_code_presenter'
+require 'fdoc/service'
+require 'fdoc/endpoint'
+require 'fdoc/endpoint_scaffold'
+require 'fdoc/presenters/html_presenter'
+require 'fdoc/presenters/service_presenter'
+require 'fdoc/presenters/endpoint_presenter'
+require 'fdoc/presenters/schema_presenter'
+require 'fdoc/presenters/response_code_presenter'

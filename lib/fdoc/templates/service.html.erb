@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= @service.name %>
+    </title>
+
+    <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
+  </head>
+  <body>
+    <div id="page">
+      <div id="content">
+        <h1>
+          <%= @service.name %>
+        </h1>
+
+        <%= description %>
+
+        <h2>
+          Endpoints
+        </h2>
+
+        <ul>
+          <% endpoints.each do |endpoint| %>
+            <li>
+              <%= endpoint.name_as_link %>
+            </li>          
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
+

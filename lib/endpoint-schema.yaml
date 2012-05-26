@@ -1,0 +1,30 @@
+type: object
+title: endpoint
+description: Describes an API endpoint
+additionalProperties: no
+properties:
+  description:
+    type: string
+    required: no
+    description: Free-form text describing the endpoint. Rendered with a Markdown parser.
+  requestParameters:
+    type: object
+    description: A schema for the request parameters
+  responseParameters:
+    type: object
+    description: A schema for the response parameters
+  responseCodes:
+    type: array
+    required: yes
+    items:
+      type: object
+      description: |
+        A status code is defined by its HTTP status code and whether or not it was successful
+      properties:
+        status:
+          type: string
+          description: An HTTP status code, such as 200 OK or 201 Created
+        successful:
+          type: boolean
+          description: |
+            Describes if the client can interpret this response as successful.

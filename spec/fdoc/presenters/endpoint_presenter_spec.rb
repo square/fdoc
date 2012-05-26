@@ -1,7 +1,25 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'spec_helper')
+require 'spec_helper'
+require 'nokogiri'
 
-describe Fdoc::ActionPresenter do
-  describe "::example_from_schema" do
+describe Fdoc::EndpointPresenter do
+  subject {
+    described_class.new(endpoint)
+  }
+
+  let (:test_service) { Fdoc::Service.new('spec/fixtures') }
+  let (:endpoint) { Fdoc::Endpoint.new("spec/fixtures/members/list/GET.fdoc", test_service) }
+
+  context "#to_html" do
+    it "should generate valid HTML" do
+      html = subject.to_html
+
+      expect {
+        Nokogiri::XML(html) { |config| config.strict }
+      }.to_not raise_exception
+    end
+  end
+
+  context "#example_from_schema" do
     example_schema_yaml = <<-EOS
     properties:
       name:
@@ -42,9 +60,7 @@ describe Fdoc::ActionPresenter do
             type: integer
             example: 91234
       homepage_url:
-        type:
-          - string
-          - "null"
+        type: ['string', 'null']
         format: uri
         example: http://my.website.com
     EOS
@@ -70,6 +86,8 @@ describe Fdoc::ActionPresenter do
       "homepage_url" => "http://my.website.com"
     }
 
-    Fdoc::ActionPresenter.example_from_schema(example_schema).should == expected_example
+    it "should generate an example response from the contents of the schema" do
+      subject.example_from_schema(example_schema).should == expected_example
+    end
   end
 end
