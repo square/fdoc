@@ -40,8 +40,9 @@ class Fdoc::Endpoint
   end
 
   def path
-    @path ||= endpoint_path.gsub(service.service_dir, "")
-                           .match(/\/?(.*)[-\/][A-Z]+\.fdoc/)[1]
+    @path ||= endpoint_path.
+                gsub(service.service_dir, "").
+                match(/\/?(.*)[-\/][A-Z]+\.fdoc/)[1]
   end
 
   # properties

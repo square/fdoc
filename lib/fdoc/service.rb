@@ -52,8 +52,8 @@ class Fdoc::Service
   end
 
   def path_for(verb, path)
-    flat_path   = File.join(@service_dir, "#{path}-#{verb.upcase}.fdoc")
-    nested_path = File.join(@service_dir, "#{path}/#{verb.upcase}.fdoc")
+    flat_path   = File.join(@service_dir, "#{path}-#{verb.to_s.upcase}.fdoc")
+    nested_path = File.join(@service_dir, "#{path}/#{verb.to_s.upcase}.fdoc")
 
     if File.exist?(flat_path)
       flat_path

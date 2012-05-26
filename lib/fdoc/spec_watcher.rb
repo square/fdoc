@@ -3,10 +3,22 @@ module Fdoc
     VERBS = [:get, :post, :put, :delete]
 
     VERBS.each do |verb|
-      define_method(verb) do |action, request_params = {}|
-        result = super(action, request_params)
+      define_method(verb) do |*params|
+        action, request_params = params
+        request_params ||= {}
+        result = super(*params)
 
-        if path = example.metadata[:fdoc]
+        path = if respond_to?(:example) # RSpec 2
+          example.metadata[:fdoc]
+        else # Rspec 1.3.2
+          fdoc_option = nil
+          __send__(:example_group_hierarchy).each do |example|
+            fdoc_option ||= example.options[:fdoc]
+          end
+          fdoc_option ||= options[:fdoc]
+        end
+
+        if path
           response_params = begin
             JSON.parse(response.body)
           rescue JSON::ParserError
