@@ -9,14 +9,14 @@ module Fdoc
         result = super(*params)
 
         path = if respond_to?(:example) # Rspec 2
-          example.metadata[:path]
+          example.metadata[:fdoc]
         else # Rspec 1.3.2
           opts = {}
           __send__(:example_group_hierarchy).each do |example|
             opts.merge!(example.options)
           end
           opts.merge!(options)
-          opts[:path]
+          opts[:fdoc]
         end
 
         if path
