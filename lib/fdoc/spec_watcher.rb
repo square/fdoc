@@ -40,7 +40,7 @@ module Fdoc
           successful)
       service = Service.new(Fdoc.service_path)
       endpoint = service.open(verb, path)
-      endpoint.consume_request(request_params)
+      endpoint.consume_request(request_params, successful)
       endpoint.consume_response(response_params, response_status, successful)
       endpoint.persist! if endpoint.respond_to?(:persist!)
     end
