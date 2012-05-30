@@ -25,7 +25,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
     end
   end
 
-  def consume_request(params)
+  def consume_request(params, successful=true)
     scaffold_schema(request_parameters, stringify_keys(params), {:root_object => true})
   end
 
