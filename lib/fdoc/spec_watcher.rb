@@ -22,10 +22,10 @@ module Fdoc
         if path
           response_params = begin
             JSON.parse(response.body)
-          rescue JSON::ParserError
+          rescue
             {}
           end
-          successful = Fdoc.decide_success(response_params)
+          successful = Fdoc.decide_success(response_params, response.status)
           verify!(verb, path, request_params, response_params, response.status,
             successful)
         end
@@ -40,7 +40,7 @@ module Fdoc
           successful)
       service = Service.new(Fdoc.service_path)
       endpoint = service.open(verb, path)
-      endpoint.consume_request(request_params)
+      endpoint.consume_request(request_params, successful)
       endpoint.consume_response(response_params, response_status, successful)
       endpoint.persist! if endpoint.respond_to?(:persist!)
     end

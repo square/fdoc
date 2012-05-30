@@ -19,9 +19,9 @@ module Fdoc
     @success_block = block
   end
 
-  def self.decide_success(response)
+  def self.decide_success(*args)
     if @success_block
-      @success_block.call(response)
+      @success_block.call(*args)
     else
       true
     end
