@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+export RAILS_ENV="test"
+bundler_version="1.1"
+
+source "$HOME/.rvm/scripts/rvm"
+export JRUBY_OPTS='--1.9'
+
+function install_ruby_if_needed() {
+  echo "Checking for $1..."
+  if ! rvm list rubies | grep $1 > /dev/null; then
+    echo "Ruby not found $1..."
+    rvm install $1
+  fi
+}
+
+function switch_ruby() {
+  install_ruby_if_needed $1 && rvm use $1
+}
+
+function install_bundler_if_needed() {
+  echo "Checking for Bundler $bundler_version..."
+  if ! gem list --installed bundler --version "$bundler_version" > /dev/null; then
+    gem install bundler --version "$bundler_version" --source http://mirrors.squareup.com/rubygems
+  fi
+}
+
+function update_gems_if_needed() {
+  echo "Installing gems..."
+  bundle check || bundle install
+}
+
+function run_tests() {
+  # TMPDIR is a work-around for http://jira.codehaus.org/browse/JRUBY-4033
+  env TMPDIR="tmp" bundle exec rake spec
+}
+
+function prepare_and_run() {
+  switch_ruby $1 &&
+  install_bundler_if_needed &&
+  update_gems_if_needed &&
+  run_tests
+}
+
+function tag_green_build() {
+  tag_name="ci-fdoc-master/latest"
+  git tag -f -m "tagging green build" "$tag_name"
+  git push -f origin "$tag_name"
+}
+
+function check_quality_metrics() {
+  switch_ruby "1.9.3-p0" &&
+    bundle exec rake check_metrics
+}
+
+prepare_and_run "ree-1.8.7" &&
+prepare_and_run "1.9.3-p0" &&
+prepare_and_run "jruby-1.6.7" &&
+tag_green_build
