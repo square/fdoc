@@ -25,7 +25,7 @@ module Fdoc
           rescue JSON::ParserError
             {}
           end
-          successful = Fdoc.decide_success(response_params)
+          successful = Fdoc.decide_success(response_params, response.status)
           verify!(verb, path, request_params, response_params, response.status,
             successful)
         end
