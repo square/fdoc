@@ -22,7 +22,7 @@ module Fdoc
         if path
           response_params = begin
             JSON.parse(response.body)
-          rescue JSON::ParserError
+          rescue
             {}
           end
           successful = Fdoc.decide_success(response_params, response.status)
