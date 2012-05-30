@@ -1,5 +1,5 @@
 require 'erb'
-require 'redcarpet'
+require 'kramdown'
 
 class Fdoc::HtmlPresenter
   attr_reader :options
@@ -15,10 +15,8 @@ class Fdoc::HtmlPresenter
   end
 
   def render_markdown(markdown_str)
-    @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
-      :space_after_headers => true, :no_intra_emphasis => true)
     if markdown_str
-      @markdown.render(markdown_str)
+      Kramdown::Document.new(markdown_str, :entity_output => :numeric).to_html
     else
       nil
     end
