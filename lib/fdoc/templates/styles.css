@@ -37,6 +37,11 @@ ul, ol, dl {
   margin: .5em 0;
 }
 
+p {
+  margin: .5em 0 .5em 0;
+  padding: 0;
+}
+
 pre code { display: block; }
 tt, kbd, code {
   font-family: Monaco, monospace;
@@ -47,14 +52,12 @@ tt, kbd, code {
   white-space: pre-wrap;    
 }
 
-p {
-  padding: 0;
-  margin: .5em 0 .5em 0;
-}
-
 .endpoint-name {}
 .endpoint-name .verb { font-weight: bold; }
 .endpoint-name .root {}
 .endpoint-name .path { font-weight: bold; }
 
 a .endpoint-name .verb { display: inline-block; width: 4em; text-align: right }
+
+.endpoint-name.deprecated { color: red; }
+.schema .deprecated { color: red; }

@@ -53,7 +53,7 @@ function check_quality_metrics() {
     bundle exec rake check_metrics
 }
 
-prepare_and_run "ree-1.8.7" &&
+prepare_and_run "ree-1.8.7-2011.12" &&
 prepare_and_run "1.9.3-p0" &&
 prepare_and_run "jruby-1.6.7" &&
 tag_green_build
