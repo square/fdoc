@@ -58,3 +58,5 @@ p {
 .endpoint-name .path { font-weight: bold; }
 
 a .endpoint-name .verb { display: inline-block; width: 4em; text-align: right }
+
+.deprecated { color: red; }

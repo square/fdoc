@@ -28,8 +28,9 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   def to_html
     html = StringIO.new
 
-    html << '<div class="schema">'
     html << '<span class="deprecated">Deprecated</span>' if deprecated?
+
+    html << '<div class="schema">'
     html << render_markdown(@schema["description"])
 
     html << '<ul>'
