@@ -22,4 +22,12 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.files = Dir['{lib,spec}/**/*'] + %w(fdoc.gemspec Rakefile README.md Gemfile)
   s.test_files = Dir['spec/**/*']
+
+  s.add_dependency("json")
+  s.add_dependency("json-schema", ">= 1.0.1")
+  s.add_dependency("kramdown")
+
+  s.add_development_dependency("rake")
+  s.add_development_dependency("rspec", "~> 2.5")
+  s.add_development_dependency("nokogiri")
 end
