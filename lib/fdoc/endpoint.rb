@@ -49,6 +49,10 @@ class Fdoc::Endpoint
 
   # properties
 
+  def deprecated?
+    @schema["deprecated"]
+  end
+
   def description
     @schema["description"]
   end
