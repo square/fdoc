@@ -37,6 +37,11 @@ ul, ol, dl {
   margin: .5em 0;
 }
 
+p {
+  margin: .5em 0 .5em 0;
+  padding: 0;
+}
+
 pre code { display: block; }
 tt, kbd, code {
   font-family: Monaco, monospace;
@@ -45,11 +50,6 @@ tt, kbd, code {
   padding: .1em;
   border: 1pt solid #ddd;
   white-space: pre-wrap;    
-}
-
-p {
-  padding: 0;
-  margin: .5em 0 .5em 0;
 }
 
 .endpoint-name {}
