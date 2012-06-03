@@ -1,3 +1,5 @@
+# An HtmlPresenter for a JSON Schema fragment. Like most JSON
+# schema things, has a tendency to recurse.
 class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   FORMATTED_KEYS = %w(
     description
@@ -57,7 +59,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   end
 
   def type
-    t = @schema["type"] 
+    t = @schema["type"]
     if t.kind_of? Array
       t.join(", ")
     elsif t != "object"

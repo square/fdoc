@@ -1,3 +1,4 @@
+# An HtmlPresenter for Fdoc::Service
 class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
   attr_reader :service
 

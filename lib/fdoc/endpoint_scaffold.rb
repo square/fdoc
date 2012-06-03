@@ -1,8 +1,7 @@
-# EndpointScaffolds aggregate input to guess at the structure of an API endpoint
-# The #consume_* methods can modify the structure of the in-memory endpoint,
-#   to save the results to the file system, call #persist!
+# EndpointScaffolds aggregate input to guess at the structure of an API
+# endpoint. The #consume_* methods can modify the structure of the
+# in-memory endpoint, to save the results to the file system, call #persist!
 class Fdoc::EndpointScaffold < Fdoc::Endpoint
-  # def initialize(verb, path, service)
   def initialize(endpoint_path, service=Fdoc::Service::DefaultService)
     if File.exist?(endpoint_path)
       super
@@ -26,15 +25,23 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
   end
 
   def consume_request(params)
-    scaffold_schema(request_parameters, stringify_keys(params), {:root_object => true})
+    scaffold_schema(request_parameters, stringify_keys(params), {
+      :root_object => true
+    })
   end
 
   def consume_response(params, status_code, successful=true)
     if successful
-      scaffold_schema(response_parameters, stringify_keys(params), {:root_object => true})
+      scaffold_schema(response_parameters, stringify_keys(params), {
+        :root_object => true
+      })
     end
 
-    if not response_codes.find { |rc| rc["status"] == status_code and rc["successful"] == successful }
+    response_code = response_codes.find do
+      |rc| rc["status"] == status_code && rc["successful"] == successful
+    end
+
+    if !response_code
       response_codes << {
         "status" => status_code,
         "successful" => successful,

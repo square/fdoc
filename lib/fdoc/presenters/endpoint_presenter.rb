@@ -1,3 +1,4 @@
+# HtmlPresenter for an Endpoint
 class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   def initialize(endpoint, options = {})
     super(options)

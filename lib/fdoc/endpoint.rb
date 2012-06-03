@@ -15,8 +15,8 @@ class Fdoc::Endpoint
 
   def consume_request(params, successful=true)
     if successful
-      parameters_schema = set_additional_properties_false_on(request_parameters.dup)
-      JSON::Validator.validate!(parameters_schema, stringify_keys(params))
+      schema = set_additional_properties_false_on(request_parameters.dup)
+      JSON::Validator.validate!(schema, stringify_keys(params))
     end
   end
 
@@ -25,13 +25,14 @@ class Fdoc::Endpoint
       rc["status"] == status_code && rc["successful"] == successful
     end
 
-    if !response_code 
+    if !response_code
       raise Fdoc::UndocumentedResponseCode,
-        "Undocumented response: #{status_code}, successful: #{successful.to_s}"
+        'Undocumented response: %s, successful: %s' % [
+          status_code, successful
+        ]
     elsif successful
-      response_schema = set_additional_properties_false_on(response_parameters.dup)
-      JSON::Validator.validate!(response_schema, stringify_keys(params),
-        :validate_schema => false)
+      schema = set_additional_properties_false_on(response_parameters.dup)
+      JSON::Validator.validate!(schema, stringify_keys(params))
     else
       true
     end
