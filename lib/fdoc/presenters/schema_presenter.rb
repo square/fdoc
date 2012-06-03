@@ -106,35 +106,29 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   end
 
   def items_html
-    items = @schema["items"]
-    return unless items
+    return unless items = @schema["items"]
 
-    html = StringIO.new
+    html = ""
+    html << '<li>Items'
 
-    if items
-      html << '<li>Items'
+    sub_options = options.merge(:nested => true)
 
-      if items.kind_of? Array
-        item.each do |item|
-          if item
-            html << self.class.new(item, options.merge(:nested => true)).to_html
-          end
-        end
-      else
-        html << self.class.new(items, options.merge(:nested => true)).to_html
+    if items.kind_of? Array
+      item.compact.each do |item|
+        html << self.class.new(item, sub_options).to_html
       end
-
-      html << '</li>'
+    else
+      html << self.class.new(items, sub_options).to_html
     end
 
-    html.string
+    html << '</li>'
+    html
   end
 
   def properties_html
-    properties = @schema["properties"]
-    return unless properties
+    return unless properties = @schema["properties"]
 
-    html = StringIO.new
+    html = ""
 
     properties.each do |key, property|
       next if property.nil?
@@ -144,6 +138,6 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
       html << '</li>'
     end
 
-    html.string
+    html
   end
 end

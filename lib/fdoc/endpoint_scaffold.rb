@@ -59,29 +59,43 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
     end
 
     if params.kind_of? Hash
-      schema["type"] ||= "object" unless options[:root_object]
-      schema["properties"] ||= {}
-
-      params.each do |key, value|
-        unless schema[key]
-          schema["properties"][key] ||= {}
-          scaffold_schema(schema["properties"][key], value)
-        end
-      end
+      scaffold_hash(schema, params, options)
     elsif params.kind_of? Array
-      schema["type"] ||= "array"
-      schema["items"] ||= {}
-      params.each do |arr_value|
-        scaffold_schema(schema["items"], arr_value)
-      end
+      scaffold_array(schema, params, options)
     else
-      value = params
-      schema["type"] ||= guess_type(params)
-      if format = guess_format(params)
-        schema["format"] ||= format
-      end
-      schema["example"] ||= value
+      scaffold_atom(schema, params, options)
     end
+  end
+
+  def scaffold_hash(schema, params, options = {})
+    schema["type"] ||= "object" unless options[:root_object]
+    schema["properties"] ||= {}
+
+    params.each do |key, value|
+      unless schema[key]
+        schema["properties"][key] ||= {}
+        sub_options = options.merge(:root_object => false)
+        scaffold_schema(schema["properties"][key], value, sub_options)
+      end
+    end
+  end
+
+  def scaffold_array(schema, params, options = {})
+    schema["type"] ||= "array"
+    schema["items"] ||= {}
+    params.each do |arr_value|
+      sub_options = options.merge(:root_object => false)
+      scaffold_schema(schema["items"], arr_value, options.merge(sub_options))
+    end
+  end
+
+  def scaffold_atom(schema, params, options = {})
+    value = params
+    schema["type"] ||= guess_type(params)
+    if format = guess_format(params)
+      schema["format"] ||= format
+    end
+    schema["example"] ||= value
   end
 
   def guess_type(value)
