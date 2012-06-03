@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>
-      <%= @service.name %>
+      <%= @meta_service.name %>
     </title>
 
     <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
@@ -11,27 +11,19 @@
     <div id="page">
       <div id="content">
         <h1>
-          <%= @service.name %>
+          <%= @meta_service.name %>
         </h1>
-
-        <div id="nav">
-          <% if @service.meta_service %>
-            <a href="<%= index_path %>">
-              &#187; <%= @service.meta_service.name %>
-            </a>
-          <% end %>
-        </div>
 
         <%= description %>
 
         <h2>
-          Endpoints
+          Services
         </h2>
 
         <ul>
-          <% endpoints.each do |endpoint| %>
+          <% services.each do |serv| %>
             <li>
-              <%= endpoint.name_as_link %>
+              <%= serv.name_as_link %>
             </li>          
           <% end %>
         </ul>

@@ -15,9 +15,14 @@
         </h1>
 
         <div id="nav">
-          <a href="<%= index_path %>">
-            &#171; <%= @endpoint.service.name %>
-          </a>
+          <% if @endpoint.service.meta_service %>
+            <a href="<%= index_path %>">
+              &#187; <%= @endpoint.service.meta_service.name %>
+            </a>
+          <% end %>
+          <% if service_presenter %>
+            <%= service_presenter.name_as_link(:prefix => '&#187;') %>
+          <% end %>
         </div>
 
         <%= description %>

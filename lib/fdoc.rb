@@ -32,10 +32,12 @@ module Fdoc
 end
 
 require 'fdoc/service'
+require 'fdoc/meta_service'
 require 'fdoc/endpoint'
 require 'fdoc/endpoint_scaffold'
 require 'fdoc/presenters/html_presenter'
 require 'fdoc/presenters/service_presenter'
+require 'fdoc/presenters/meta_service_presenter'
 require 'fdoc/presenters/endpoint_presenter'
 require 'fdoc/presenters/schema_presenter'
 require 'fdoc/presenters/response_code_presenter'

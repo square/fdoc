@@ -34,11 +34,12 @@ class Fdoc::HtmlPresenter
     File.join(html_directory, "styles.css")
   end
 
-  def index_path
+  def index_path(subdirectory = "")
+    html_path = File.join(html_directory, subdirectory)
     if options[:static_html]
-      File.join(html_directory, 'index.html')
+      File.join(html_path, 'index.html')
     else
-      html_directory
+      html_path
     end
   end
 end

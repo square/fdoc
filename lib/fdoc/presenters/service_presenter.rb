@@ -10,11 +10,26 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
     render_erb('service.html.erb')
   end
 
+  def name_as_link(options = {})
+    path = service.meta_service ? index_path(slug_name) : index_path
+    '<a href="%s">%s %s</a>' % [ path, options[:prefix], service.name ]
+  end
+
+  def slug_name
+    service.name.downcase.gsub(' ', '_')
+  end
+
+  def url(extension = ".html")
+    '%s-%s%s' % [ @endpoint.path, @endpoint.verb, extension ]
+  end
+
   def endpoints
     @endpoints ||= service.endpoints.sort_by do |endpoint|
       [endpoint.path, endpoint.verb]
     end.map do |endpoint|
-      Fdoc::EndpointPresenter.new(endpoint, options)
+      presenter = Fdoc::EndpointPresenter.new(endpoint, options)
+      presenter.service_presenter = self
+      presenter
     end
   end
 

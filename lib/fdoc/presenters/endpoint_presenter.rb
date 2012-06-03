@@ -1,4 +1,6 @@
 class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
+  attr_accessor :service_presenter
+
   def initialize(endpoint, options = {})
     super(options)
     @endpoint = endpoint
@@ -37,7 +39,7 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
 
   def zws_ify(str)
     # zero-width-space, makes long lines friendlier for breaking
-    str.gsub(/\//, '&#8203;/')
+    str.gsub(/\//, '&#8203;/') if str
   end
 
   def description
