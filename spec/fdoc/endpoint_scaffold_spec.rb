@@ -83,6 +83,32 @@ describe Fdoc::EndpointScaffold do
       subject.request_parameters["properties"].should have_key "with_string"
       subject.request_parameters["properties"].should_not have_key :with_string          
     end
+    
+    it "uses strings (not symbols) for keys of nested hashes" do
+      mixed_params = {
+        "nested_object" => {
+          :with_symbol => false,
+          "with_string" => true
+        }
+      }
+
+      subject.consume_request(mixed_params)
+      subject.request_parameters["properties"]["nested_object"]["properties"].keys.sort.should == ["with_string", "with_symbol"]
+    end
+    
+    it "uses strings (not symbols) for nested hashes inside arrays" do
+      mixed_params = {
+        "nested_array" => [
+          {
+            :with_symbol => false,
+            "with_string" => true
+          }            
+        ]
+      }
+
+      subject.consume_request(mixed_params)
+      subject.request_parameters["properties"]["nested_array"]["items"]["properties"].keys.sort.should == ["with_string", "with_symbol"]
+    end
 
     it "produces a valid JSON schema for the response" do
       subject.consume_request(request_params)
@@ -117,7 +143,8 @@ describe Fdoc::EndpointScaffold do
         "linked_to" => [ "111", "121", "999"]
       },
       "version" => 1,
-      "std_dev" => 1.231
+      "std_dev" => 1.231,
+      "updated_at" => nil
     } }
 
 
@@ -150,7 +177,7 @@ describe Fdoc::EndpointScaffold do
       it "creates properties for top-level keys, and populates them with examples" do
         subject.consume_response(response_params, "200 OK")
         subject.response_parameters["type"].should == nil
-        subject.response_parameters["properties"].keys.sort.should == ["nodes", "root_node", "std_dev", "version"]
+        subject.response_parameters["properties"].keys.should =~ ["nodes", "root_node", "std_dev", "version", "updated_at"]
 
         subject.response_parameters["properties"]["nodes"]["type"].should == "array"
         subject.response_parameters["properties"]["nodes"]["description"].should == "???"
@@ -171,7 +198,12 @@ describe Fdoc::EndpointScaffold do
         subject.response_parameters["properties"]["nodes"]["items"]["properties"].keys.sort.should == [
           "id", "linked_to","name"]
       end
-      
+
+      it "turns nil into null" do
+        subject.consume_response(response_params, "200 OK")
+        subject.response_parameters["properties"]["updated_at"]["type"].should == "null"
+      end
+
       it "uses strings (not symbols) as keys" do
         mixed_params = {
           :with_symbol => false,

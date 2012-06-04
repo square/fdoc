@@ -1,0 +1,94 @@
+requestParameters:
+  type: object
+  properties:
+    toplevel_param:
+      type: string
+      description: A paramater as normal
+      required: Yes
+    optional_nested_array:
+      type: array
+      required: No
+      items:
+        type: object
+        properties:
+          required_param:
+            required: Yes
+            description: It's required
+            type: string
+          optional_param:
+            required: Yes
+            description: It's optional
+            type: string
+    required_nested_array:
+      type: array
+      required: Yes
+      items:
+        type: object
+        properties:
+          required_param:
+            required: Yes
+            description: It's required
+            type: string
+          optional_param:
+            required: No
+            description: It's optional
+            type: string
+          optional_second_nested_object:
+            required: No
+            type: object
+            description: It's a bug
+            properties:
+              required_param:
+                required: Yes
+                description: It's required
+                type: string
+              optional_param:
+                required: No
+                description: It's optional
+                type: string
+          
+    optional_nested_object:
+      type: object
+      required: No
+      properties:
+        required_param:
+          required: Yes
+          description: It's required
+          type: string
+        optional_param:
+          required: No
+          description: It's optional
+          type: string
+    required_nested_object:
+      type: object
+      required: Yes
+      properties:
+        required_param:
+          required: Yes
+          description: It's required
+          type: string
+        optional_param:
+          required: No
+          description: It's optional
+          type: string
+        optional_second_nested_object:
+          required: No
+          type: object
+          description: It's a bug
+          properties:
+            required_param:
+              required: Yes
+              description: It's required
+              type: string
+            optional_param:
+              required: No
+              description: It's optional
+              type: string
+
+responseParameters:
+  type: string
+  description: Nothing important
+responseCodes:
+  - status: 200 OK
+    successful: yes
+    description: A list of current members

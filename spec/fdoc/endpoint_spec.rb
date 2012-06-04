@@ -1,11 +1,25 @@
 require 'spec_helper'
 
 describe Fdoc::Endpoint do
-  subject {
-    described_class.new("spec/fixtures/members/list/GET.fdoc", test_service)
-  }
-  
+  let(:endpoint) { described_class.new(fdoc_fixture, test_service) }
+  let(:fdoc_fixture) { "spec/fixtures/members/list/GET.fdoc" }  
   let (:test_service) { Fdoc::Service.new('spec/fixtures') }
+  subject { endpoint }
+  
+  def remove_optional(obj)
+    case obj
+    when Hash
+      res = {}
+      obj.each do |k, v|
+        next if k =~ /optional/
+        res[k] = remove_optional(v)
+      end
+      obj.clear
+      obj.merge!(res)
+    when Array then obj.map { |v| remove_optional(v) }
+    else obj
+    end
+  end
 
   describe "#verb" do
     it "infers the verb from the filename and service" do
@@ -20,54 +34,165 @@ describe Fdoc::Endpoint do
   end
 
   describe "#consume_request" do
-    good_params = {
-      "limit" => 0,
-      "offset" => 100,
-      "order_by" => "name"
+    subject { endpoint.consume_request(params) }
+    let(:params) {
+      {
+        "limit" => 0,
+        "offset" => 100,
+        "order_by" => "name"
+      }
     }
-
+    
     context "with a well-behaved request" do
       it "returns true" do
-        subject.consume_request(good_params).should be_true
+        subject.should be_true
       end
     end
 
-    context "with an extra key added in" do
-      it "throws an exception" do
-        expect { subject.consume_request(good_params.merge({"extra_goodness" => true})) }.to raise_exception
+    context "when the response contains additional properties" do
+      before { params.merge!("extra_goodness" => true) }
+
+      it "should have the unknown keys in the error message" do
+        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /extra_goodness/)
       end
     end
 
-    context "error messages" do
-      context "verifying json-schema gem verbosity" do
-        context "when the response contains additional properties" do
-          it "should have the unknown keys in the error message" do
-            begin
-              subject.consume_request(good_params.merge({"extra_goodness" => true}))
-            rescue JSON::Schema::ValidationError => error
-              error.message.should match("extra_goodness")
-            end
-          end
-        end
+    context "when the response contains an unknown enum value" do
+      before { params.merge!("order_by" => "some_stuff") }
 
-        context "when the response contains an unknown enum value" do
-          it "should have the value in the error messages" do
-            begin
-              subject.consume_request(good_params.merge({"order_by" => "some_stuff"}))
-            rescue JSON::Schema::ValidationError => error
-              error.message.should match("some_stuff")
-            end
-          end
-        end
+      it "should have the value in the error messages" do
+        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /some_stuff/)
+      end
+    end
 
-        context "when the response encounters an object of an known type" do
-          it "should have the Ruby type in the error message" do
-            begin
-              subject.consume_request(good_params.merge({"offset" => "woot"}))
-            rescue JSON::Schema::ValidationError => error
-              error.message.should match("String")
-            end
-          end
+    context "when the response encounters an object of an known type" do
+      before { params.merge!("offset" => "woot") }
+      
+      it "should have the Ruby type in the error message" do
+        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /String/)
+      end
+    end
+    
+    context "complex examples" do
+      let(:fdoc_fixture) { "spec/fixtures/members/list/complex-params-GET.fdoc" }
+      let(:params) {
+        {
+          "toplevel_param" => "here",
+          "optional_nested_array" => [
+            {
+              "required_param" => "here",
+              "optional_param" => "here"
+            }
+          ],          
+          "required_nested_array" => [
+            {
+              "required_param" => "here",
+              "optional_param" => "here",
+              "optional_second_nested_object" => {
+                "required_param" => "here",
+                "optional_param" => "here"
+              }
+            },
+          ],         
+          "optional_nested_object" => {
+            "required_param" => "here",
+            "optional_param" => "here"
+          },
+          "required_nested_object" => {
+            "required_param" => "here",
+            "optional_param" => "here",
+            "optional_second_nested_object" => {
+              "required_param" => "here",
+              "optional_param" => "here"
+            }
+          },
+        }
+      }
+      
+      it "is successful" do
+        subject.should be_true
+      end
+      
+      context "with no optional keys" do        
+        before { remove_optional(params) }
+
+        it "does not contain optional keys" do
+          params.keys.sort.should == ["required_nested_array", "required_nested_object", "toplevel_param"]
+        end
+        
+        it "is successful" do
+          subject.should be_true
+        end        
+      end
+      
+      context "non documented field added" do
+        before { params.merge!("non_documented" => true) }
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "non document field in an optional array" do
+        before { params["optional_nested_array"][0].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "non document field in a required array" do
+        before { params["required_nested_array"][0].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+
+      context "non document field in an optional object" do
+        before { params["optional_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+
+      context "non document field in a required object" do
+        before { params["required_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "non document field in a deeply nested object" do
+        before { params["required_nested_object"]["optional_second_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "required field in a deeply nested object is missing" do
+        before { params["required_nested_object"]["optional_second_nested_object"].delete("required_param") }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /required_param/)
+        end
+      end
+      
+      context "non document field in a deeply nested object in an array" do
+        before { params["required_nested_array"][0]["optional_second_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "required field in a deeply nested object is missing" do
+        before { params["required_nested_array"][0]["optional_second_nested_object"].delete("required_param") }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /required_param/)
         end
       end
     end

@@ -28,13 +28,18 @@
           Endpoints
         </h2>
 
-        <ul>
-          <% endpoints.each do |endpoint| %>
+        <% endpoints.each do |endpoint_ary| %>
+          <h3>
+            <%= endpoint_ary.first.prefix %>
+          </h3>
+          <ul>
+          <% endpoint_ary.each do |endpoint| %>
             <li>
               <%= endpoint.name_as_link %>
             </li>          
           <% end %>
-        </ul>
+          </ul>
+        <% end %>
       </div>
     </div>
   </body>

@@ -18,14 +18,14 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
 
   def persist!
     dirname = File.dirname(@endpoint_path)
-    Dir.mkdir(dirname) unless Dir.exist?(dirname)
+    Dir.mkdir(dirname) unless File.directory?(dirname)
 
     File.open(@endpoint_path, "w") do |file|
       YAML.dump(@schema, file)
     end
   end
 
-  def consume_request(params)
+  def consume_request(params, successful=true)
     scaffold_schema(request_parameters, stringify_keys(params), {:root_object => true})
   end
 
@@ -86,7 +86,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
       "Time" => "string",
       "TrueClass" => "boolean",
       "FalseClass" => "boolean",
-      "NilClass" => nil,
+      "NilClass" => "null"
     }
     type_map[in_type] || in_type.downcase
   end

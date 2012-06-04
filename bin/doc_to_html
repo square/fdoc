@@ -63,7 +63,7 @@ services.each do |service|
     puts "created #{index_html_path}"
   end
 
-  service_presenter.endpoints.each do |endpoint|
+  service_presenter.endpoints.flatten.each do |endpoint|
     endpoint_html_path = File.join(html_sub_directory, endpoint.url)
     mkdir(File.dirname(endpoint_html_path))
 

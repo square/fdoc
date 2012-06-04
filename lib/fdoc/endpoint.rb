@@ -94,14 +94,16 @@ class Fdoc::Endpoint
     end
   end
 
-  def stringify_keys(value)
-    return value unless value.is_a?(Hash)
-    result = {}
-
-    value.each do |k, v|
-      result[k.to_s] = stringify_keys(v)
+  def stringify_keys(obj)
+    case obj
+    when Hash
+      result = {}
+      obj.each do |k, v|
+        result[k.to_s] = stringify_keys(v)
+      end
+      result
+    when Array then obj.map { |v| stringify_keys(v) }
+    else obj
     end
-
-    result
   end
 end
