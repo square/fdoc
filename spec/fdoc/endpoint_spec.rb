@@ -34,39 +34,27 @@ describe Fdoc::Endpoint do
       end
     end
 
-    context "with an extra key added in" do
-      before { params.merge!({"extra_goodness" => true}) }
-      
-      it "throws an exception" do
-        expect { subject }.to raise_exception
+    context "when the response contains additional properties" do
+      before { params.merge!("extra_goodness" => true) }
+
+      it "should have the unknown keys in the error message" do
+        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /extra_goodness/)
       end
     end
 
-    context "error messages" do
-      context "verifying json-schema gem verbosity" do
-        context "when the response contains additional properties" do
-          before { params.merge!("extra_goodness" => true) }
+    context "when the response contains an unknown enum value" do
+      before { params.merge!("order_by" => "some_stuff") }
 
-          it "should have the unknown keys in the error message" do
-            expect { subject }.to raise_exception(JSON::Schema::ValidationError, /extra_goodness/)
-          end
-        end
+      it "should have the value in the error messages" do
+        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /some_stuff/)
+      end
+    end
 
-        context "when the response contains an unknown enum value" do
-          before { params.merge!("order_by" => "some_stuff") }
-
-          it "should have the value in the error messages" do
-            expect { subject }.to raise_exception(JSON::Schema::ValidationError, /some_stuff/)
-          end
-        end
-
-        context "when the response encounters an object of an known type" do
-          before { params.merge!("offset" => "woot") }
-          
-          it "should have the Ruby type in the error message" do
-            expect { subject }.to raise_exception(JSON::Schema::ValidationError, /String/)
-          end
-        end
+    context "when the response encounters an object of an known type" do
+      before { params.merge!("offset" => "woot") }
+      
+      it "should have the Ruby type in the error message" do
+        expect { subject }.to raise_exception(JSON::Schema::ValidationError, /String/)
       end
     end
   end
