@@ -27,7 +27,10 @@ module Fdoc
     end
   end
 
+  # Top-level fdoc validation error, abstract.
   class ValidationError < StandardError; end
+
+  # Indicates an unknown response code.
   class UndocumentedResponseCode < ValidationError; end
 end
 

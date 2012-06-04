@@ -32,4 +32,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rake")
   s.add_development_dependency("rspec", "~> 2.5")
   s.add_development_dependency("nokogiri")
+  s.add_development_dependency("cane")
 end

@@ -56,10 +56,11 @@ function tag_green_build() {
 
 function check_quality_metrics() {
   switch_ruby "1.9.3-p0" &&
-    bundle exec rake check_metrics
+    bundle exec cane --style-glob "lib/**/*.rb" --abc-max 11
 }
 
 prepare_and_run "ree-1.8.7-2011.12" &&
 prepare_and_run "1.9.3-p0" &&
 prepare_and_run "jruby-1.6.7" &&
+check_quality_metrics &&
 tag_green_build

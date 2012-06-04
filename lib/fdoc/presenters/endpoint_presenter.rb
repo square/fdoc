@@ -1,3 +1,4 @@
+# HtmlPresenter for an Endpoint
 class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   attr_accessor :service_presenter
 
@@ -90,7 +91,7 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     render_json(example_from_schema(@endpoint.response_parameters))
   end
 
-  ALLOWED_TYPES = %w(string integer number boolean null)
+  ATOMIC_TYPES = %w(string integer number boolean null)
 
   def example_from_schema(schema)
     if schema.nil?
@@ -99,28 +100,36 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
 
     type = Array(schema["type"])
 
-    if type.any? { |t| ALLOWED_TYPES.include?(t) }
+    if type.any? { |t| ATOMIC_TYPES.include?(t) }
       schema["example"] || schema["default"] || nil
     elsif type.include?("object") || schema["properties"]
-      example = {}
-      if schema["properties"]
-        schema["properties"].each do |key, value|
-          example[key] = example_from_schema(value)
-        end
-      end
-      example
+      example_from_object(schema)
     elsif type.include?("array") || schema["items"]
-      if schema["items"].kind_of? Array
-        example = []
-        schema["items"].each do |item|
-          example << example_from_schema(item)
-        end
-        example
-      else
-        [ example_from_schema(schema["items"]) ]
-      end
+      example_from_array(schema)
     else
       {}
+    end
+  end
+
+  def example_from_object(object)
+    example = {}
+    if object["properties"]
+      object["properties"].each do |key, value|
+        example[key] = example_from_schema(value)
+      end
+    end
+    example
+  end
+
+  def example_from_array(array)
+    if array["items"].kind_of? Array
+      example = []
+      array["items"].each do |item|
+        example << example_from_schema(item)
+      end
+      example
+    else
+      [ example_from_schema(array["items"]) ]
     end
   end
 end

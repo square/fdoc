@@ -1,3 +1,4 @@
+# An HtmlPresenter for Fdoc::Service
 class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
   attr_reader :service
 
@@ -27,21 +28,19 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
     if !@endpoints
       @endpoints = []
       prefix = nil
-      service.endpoints.sort_by do |endpoint|
-        [endpoint.path, endpoint.verb]
-      end.map do |endpoint|
+
+      service.endpoints.sort_by(&:enmdpoint_path).map do |endpoint|
         presenter = Fdoc::EndpointPresenter.new(endpoint, options)
         presenter.service_presenter = self
         presenter
-      end.each do |endpoint|
-        current_prefix = endpoint.prefix
-        if prefix != current_prefix
-          @endpoints << []
-        end
 
-        @endpoints.last << endpoint
+        current_prefix = presenter.prefix
+
+        @endpoints << [] if prefix != current_prefix
+        @endpoints.last << presenter
 
         prefix = current_prefix
+        presenter
       end
     end
 

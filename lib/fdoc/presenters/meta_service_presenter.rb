@@ -1,3 +1,4 @@
+# HtmlPresenter for Fdoc::MetaService
 class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
   attr_reader :meta_service
 

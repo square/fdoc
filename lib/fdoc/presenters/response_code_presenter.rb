@@ -1,3 +1,4 @@
+# An HtmlPresenter for ResponseCodes
 class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
   attr_reader :response_code
 
@@ -8,12 +9,12 @@ class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
 
   def to_html
     <<-EOS
-    <div class="response-code">
-    <span class="status">
-      #{status}
-    </span>
-    #{description}
-    </div>
+      <div class="response-code">
+        <span class="status">
+          #{status}
+        </span>
+        #{description}
+      </div>
     EOS
   end
 
