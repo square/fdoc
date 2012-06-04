@@ -11,7 +11,7 @@ describe Fdoc::ServicePresenter do
       html = subject.to_html
 
       expect {
-        Nokogiri::XML(html) { |config| config.strict }
+        Nokogiri::HTML(html) { |config| config.strict }
       }.to_not raise_exception
     end
   end

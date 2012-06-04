@@ -63,9 +63,9 @@ describe Fdoc::Endpoint do
         context "when the response encounters an object of an known type" do
           it "should have the Ruby type in the error message" do
             begin
-              subject.consume_request(good_params.merge({"order_by" => 1}))
+              subject.consume_request(good_params.merge({"offset" => "woot"}))
             rescue JSON::Schema::ValidationError => error
-              error.message.should match("Fixnum")
+              error.message.should match("String")
             end
           end
         end

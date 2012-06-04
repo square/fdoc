@@ -10,10 +10,11 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
 
   def name
     <<-EOS
-    <span class="endpoint-name">
+    <span class="endpoint-name #{@endpoint.deprecated? ? 'deprecated' : nil}">
       <span class="verb">#{@endpoint.verb}</span>
       <span class="root">#{zws_ify(@endpoint.service.base_path)}</span><span
        class="path">#{zws_ify(@endpoint.path)}</span>
+      #{@endpoint.deprecated? ? '(deprecated)' : nil}
     </span>
     EOS
   end

@@ -86,7 +86,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
       "Time" => "string",
       "TrueClass" => "boolean",
       "FalseClass" => "boolean",
-      "NilClass" => nil,
+      "NilClass" => "null"
     }
     type_map[in_type] || in_type.downcase
   end
