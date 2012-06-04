@@ -3,7 +3,8 @@
 require File.join(File.dirname(__FILE__), '../lib/fdoc')
 
 if ARGV.length < 2
-  abort "Usage: doc_to_html [fdoc_directory] [html_directory] (url_base_path)"
+  exec_name = File.basename($0)
+  abort "Usage: #{exec_name} [fdoc_directory] [html_directory] (url_base_path)"
 end
 
 fdoc_directory, html_directory, url_base_path = ARGV[0..2]
