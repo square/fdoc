@@ -1,0 +1,59 @@
+requestParameters:
+  type: object
+  properties:
+    toplevel_param:
+      type: string
+      description: A paramater as normal
+      required: Yes
+    optional_nested_array:
+      type: Array
+      required: No
+      items:
+        type: object
+        properties:
+          required_param:
+            required: Yes
+            description: It's required
+          optional_param:
+            required: Yes
+            description: It's optional
+    required_nested_array:
+      type: Array
+      required: Yes
+      items:
+        type: object
+        properties:
+          required_param:
+            required: Yes
+            description: It's required
+          optional_param:
+            required: Yes
+            description: It's optional
+    required_nested_object:
+      type: object
+      required: No
+      properties:
+        required_param:
+          required: Yes
+          description: It's required
+        optional_param:
+          required: Yes
+          description: It's optional
+    required_nested_object:
+      type: object
+      required: Yes
+      properties:
+        required_param:
+          required: Yes
+          description: It's required
+        optional_param:
+          required: Yes
+          description: It's optional
+
+responseParameters:
+  type: string
+  description: Nothing important
+responseCodes:
+  - status: 200 OK
+    successful: yes
+    description: A list of current members

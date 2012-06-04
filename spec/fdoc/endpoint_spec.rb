@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 describe Fdoc::Endpoint do
-  subject {
-    described_class.new("spec/fixtures/members/list/GET.fdoc", test_service)
-  }
-  
+  let(:endpoint) { described_class.new(fdoc_fixture, test_service) }
+  let(:fdoc_fixture) { "spec/fixtures/members/list/GET.fdoc" }  
   let (:test_service) { Fdoc::Service.new('spec/fixtures') }
+  subject { endpoint }
 
   describe "#verb" do
     it "infers the verb from the filename and service" do
@@ -20,53 +19,52 @@ describe Fdoc::Endpoint do
   end
 
   describe "#consume_request" do
-    good_params = {
-      "limit" => 0,
-      "offset" => 100,
-      "order_by" => "name"
+    subject { endpoint.consume_request(params) }
+    let(:params) {
+      {
+        "limit" => 0,
+        "offset" => 100,
+        "order_by" => "name"
+      }
     }
-
+    
     context "with a well-behaved request" do
       it "returns true" do
-        subject.consume_request(good_params).should be_true
+        subject.should be_true
       end
     end
 
     context "with an extra key added in" do
+      before { params.merge!({"extra_goodness" => true}) }
+      
       it "throws an exception" do
-        expect { subject.consume_request(good_params.merge({"extra_goodness" => true})) }.to raise_exception
+        expect { subject }.to raise_exception
       end
     end
 
     context "error messages" do
       context "verifying json-schema gem verbosity" do
         context "when the response contains additional properties" do
+          before { params.merge!("extra_goodness" => true) }
+
           it "should have the unknown keys in the error message" do
-            begin
-              subject.consume_request(good_params.merge({"extra_goodness" => true}))
-            rescue JSON::Schema::ValidationError => error
-              error.message.should match("extra_goodness")
-            end
+            expect { subject }.to raise_exception(JSON::Schema::ValidationError, /extra_goodness/)
           end
         end
 
         context "when the response contains an unknown enum value" do
+          before { params.merge!("order_by" => "some_stuff") }
+
           it "should have the value in the error messages" do
-            begin
-              subject.consume_request(good_params.merge({"order_by" => "some_stuff"}))
-            rescue JSON::Schema::ValidationError => error
-              error.message.should match("some_stuff")
-            end
+            expect { subject }.to raise_exception(JSON::Schema::ValidationError, /some_stuff/)
           end
         end
 
         context "when the response encounters an object of an known type" do
+          before { params.merge!("offset" => "woot") }
+          
           it "should have the Ruby type in the error message" do
-            begin
-              subject.consume_request(good_params.merge({"offset" => "woot"}))
-            rescue JSON::Schema::ValidationError => error
-              error.message.should match("String")
-            end
+            expect { subject }.to raise_exception(JSON::Schema::ValidationError, /String/)
           end
         end
       end
