@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.files = Dir['{lib,spec}/**/*'] + %w(fdoc.gemspec Rakefile README.md Gemfile)
   s.test_files = Dir['spec/**/*']
+  s.bindir        = "bin"
+  s.executables  << "fdoc_to_html"
 
   s.add_dependency("json")
   s.add_dependency("json-schema", ">= 1.0.1")

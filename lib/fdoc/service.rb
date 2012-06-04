@@ -3,10 +3,11 @@ require 'yaml'
 # Services represent a group of Fdoc API endpoints in a directory
 class Fdoc::Service
   attr_reader :service_dir
+  attr_accessor :meta_service
 
   def initialize(service_dir, scaffold_mode = Fdoc.scaffold_mode?)
-    @service_dir = service_dir
-    service_path = Dir["#{service_dir}/*.fdoc.service"].first
+    @service_dir = File.expand_path(service_dir)
+    service_path = Dir["#{@service_dir}/*.fdoc.service"].first
     @schema = if service_path
       YAML.load_file(service_path)
     elsif scaffold_mode
@@ -69,7 +70,12 @@ class Fdoc::Service
   end
 
   def base_path
-    @schema['basePath']
+    base_path = @schema['basePath']
+    if base_path && !base_path.end_with?('/')
+      base_path + '/'
+    else
+      base_path
+    end
   end
 
   def description

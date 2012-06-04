@@ -1,13 +1,12 @@
-# fdoc
-## Farnsdocs: Documentation format and verification
+# fdoc: Documentation format and verification
 
 High-quality documentation is extremely useful, but maintaining it is often a pain. We aim to create a tool to facilitate easy creation and maintenance of API documentation.
 
-fdoc is named for everybody's favorite, good news-bearing, crotchety old man, Professor Farnsworth.
+fdoc is short for Farnsdocs. They are named for everybody's favorite, good news-bearing, crotchety old man, Professor Farnsworth.
 
-![Professor Farnsworth](https://github.com/square/fdoc/raw/master/docs/farnsworth.png)
+![Professor Farnsworth][github_img]
 
-### Usage
+## Usage
 
 Add fdoc to your Gemfile.
 
@@ -38,9 +37,11 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
 
     FDOC_SCAFFOLD=true bundle exec rspec spec/controllers
 
-### Example
+## Example
 
-`.fdoc` files are YAML files based on JSON schema to describe API endpoints.
+`.fdoc` files are YAML files based on JSON schema to describe API endpoints. The derive their endpointh path and verb from their filename. For more information on fdoc file naming conventions, please see the [fdoc file conventions guide][github_files].
+
+Here is `members/list-POST.fdoc`:
 
     description: The list of members.
     requestParameters:
@@ -73,7 +74,7 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
       description: Indicates malformed parameters
     
 
-### Goals
+## Goals
 
  - As a client engineer, I want to be able to document an API and keep it up to date
  - The server engineers want to be able to test their implementations
@@ -82,9 +83,11 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
    - Experimental drafts should just live on branches and never get merged into master
  - Specification alone is not enough, there needs to be room for discussion
 
-### Feedback
+## Feedback
 
 Since fdoc is built on top of JSON schemas, all the hard work of verifiying that inputs conform their respective schemas is done by a [JSON schema gem](https://github.com/hoxworth/json-schema).
 
 To make feedback more valuable, the request and response consumption methods will modify schemas to set `additionalProperties` to `false` unless specified. This gives the desired behavior of throwing an error when a new property is detected in the schema to verify, indicating the documentation needs updating.
 
+[github_img]: https://github.com/square/fdoc/raw/master/docs/farnsworth.png
+[github_files]: https://github.com/square/fdoc/blob/master/docs/files.png

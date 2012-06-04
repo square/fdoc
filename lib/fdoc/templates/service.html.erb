@@ -14,6 +14,14 @@
           <%= @service.name %>
         </h1>
 
+        <div id="nav">
+          <% if @service.meta_service %>
+            <a href="<%= index_path %>">
+              &#187; <%= @service.meta_service.name %>
+            </a>
+          <% end %>
+        </div>
+
         <%= description %>
 
         <h2>

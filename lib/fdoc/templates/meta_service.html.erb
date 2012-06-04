@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      <%= @meta_service.name %>
+    </title>
+
+    <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
+  </head>
+  <body>
+    <div id="page">
+      <div id="content">
+        <h1>
+          <%= @meta_service.name %>
+        </h1>
+
+        <%= description %>
+
+        <h2>
+          Services
+        </h2>
+
+        <ul>
+          <% services.each do |serv| %>
+            <li>
+              <h3>
+                <%= serv.name_as_link %>
+              </h3>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
+

@@ -27,7 +27,16 @@ class Fdoc::HtmlPresenter
   end
 
   def render_json(json)
-    '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
+    if json.kind_of? String
+      '<tt>&quot;%s&quot;</tt>' % json.gsub(/\"/, 'quot;')
+    elsif json.kind_of?(Numeric) ||
+          json.kind_of?(TrueClass) ||
+          json.kind_of?(FalseClass)
+      '<tt>%s</tt>' % json
+    elsif json.kind_of?(Hash) ||
+          json.kind_of?(Array)
+      '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
+    end
   end
 
   def html_directory
@@ -38,11 +47,12 @@ class Fdoc::HtmlPresenter
     File.join(html_directory, "styles.css")
   end
 
-  def index_path
+  def index_path(subdirectory = "")
+    html_path = File.join(html_directory, subdirectory)
     if options[:static_html]
-      File.join(html_directory, 'index.html')
+      File.join(html_path, 'index.html')
     else
-      html_directory
+      html_path
     end
   end
 end

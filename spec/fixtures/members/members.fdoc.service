@@ -1,5 +1,5 @@
-name: fdoc Sample API
-basePath: https://api.sample.com/
+name: Members API
+basePath: https://api.sample.com/members
 description: |
   This service is used for lots of fun things
   
