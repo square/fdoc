@@ -5,6 +5,21 @@ describe Fdoc::Endpoint do
   let(:fdoc_fixture) { "spec/fixtures/members/list/GET.fdoc" }  
   let (:test_service) { Fdoc::Service.new('spec/fixtures') }
   subject { endpoint }
+  
+  def remove_optional(obj)
+    case obj
+    when Hash
+      res = {}
+      obj.each do |k, v|
+        next if k =~ /optional/
+        res[k] = remove_optional(v)
+      end
+      obj.clear
+      obj.merge!(res)
+    when Array then obj.map { |v| remove_optional(v) }
+    else obj
+    end
+  end
 
   describe "#verb" do
     it "infers the verb from the filename and service" do
@@ -55,6 +70,130 @@ describe Fdoc::Endpoint do
       
       it "should have the Ruby type in the error message" do
         expect { subject }.to raise_exception(JSON::Schema::ValidationError, /String/)
+      end
+    end
+    
+    context "complex examples" do
+      let(:fdoc_fixture) { "spec/fixtures/members/list/complex-params.fdoc" }
+      let(:params) {
+        {
+          "toplevel_param" => "here",
+          "optional_nested_array" => [
+            {
+              "required_param" => "here",
+              "optional_param" => "here"
+            }
+          ],          
+          "required_nested_array" => [
+            {
+              "required_param" => "here",
+              "optional_param" => "here",
+              "optional_second_nested_object" => {
+                "required_param" => "here",
+                "optional_param" => "here"
+              }
+            },
+          ],         
+          "optional_nested_object" => {
+            "required_param" => "here",
+            "optional_param" => "here"
+          },
+          "required_nested_object" => {
+            "required_param" => "here",
+            "optional_param" => "here",
+            "optional_second_nested_object" => {
+              "required_param" => "here",
+              "optional_param" => "here"
+            }
+          },
+        }
+      }
+      
+      it "is successful" do
+        subject.should be_true
+      end
+      
+      context "with no optional keys" do        
+        before { remove_optional(params) }
+
+        it "does not contain optional keys" do
+          params.keys.sort.should == ["required_nested_array", "required_nested_object", "toplevel_param"]
+        end
+        
+        it "is successful" do
+          subject.should be_true
+        end        
+      end
+      
+      context "non documented field added" do
+        before { params.merge!("non_documented" => true) }
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "non document field in an optional array" do
+        before { params["optional_nested_array"][0].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "non document field in a required array" do
+        before { params["required_nested_array"][0].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+
+      context "non document field in an optional object" do
+        before { params["optional_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+
+      context "non document field in a required object" do
+        before { params["required_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "non document field in a deeply nested object" do
+        before { params["required_nested_object"]["optional_second_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "required field in a deeply nested object is missing" do
+        before { params["required_nested_object"]["optional_second_nested_object"].delete("required_param") }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /required_param/)
+        end
+      end
+      
+      context "non document field in a deeply nested object in an array" do
+        before { params["required_nested_array"][0]["optional_second_nested_object"].merge!("non_documented" => true) }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /non_documented/)
+        end
+      end
+      
+      context "required field in a deeply nested object is missing" do
+        before { params["required_nested_array"][0]["optional_second_nested_object"].delete("required_param") }
+
+        it "raises an error" do
+          expect { subject }.to raise_exception(JSON::Schema::ValidationError, /required_param/)
+        end
       end
     end
   end

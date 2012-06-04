@@ -14,9 +14,11 @@ requestParameters:
           required_param:
             required: Yes
             description: It's required
+            type: string
           optional_param:
             required: Yes
             description: It's optional
+            type: string
     required_nested_array:
       type: Array
       required: Yes
@@ -26,19 +28,37 @@ requestParameters:
           required_param:
             required: Yes
             description: It's required
+            type: string
           optional_param:
-            required: Yes
+            required: No
             description: It's optional
-    required_nested_object:
+            type: string
+          optional_second_nested_object:
+            required: No
+            type: Object
+            description: It's a bug
+            properties:
+              required_param:
+                required: Yes
+                description: It's required
+                type: string
+              optional_param:
+                required: No
+                description: It's optional
+                type: string
+          
+    optional_nested_object:
       type: object
       required: No
       properties:
         required_param:
           required: Yes
           description: It's required
+          type: string
         optional_param:
-          required: Yes
+          required: No
           description: It's optional
+          type: string
     required_nested_object:
       type: object
       required: Yes
@@ -46,9 +66,24 @@ requestParameters:
         required_param:
           required: Yes
           description: It's required
+          type: string
         optional_param:
-          required: Yes
+          required: No
           description: It's optional
+          type: string
+        optional_second_nested_object:
+          required: No
+          type: Object
+          description: It's a bug
+          properties:
+            required_param:
+              required: Yes
+              description: It's required
+              type: string
+            optional_param:
+              required: No
+              description: It's optional
+              type: string
 
 responseParameters:
   type: string
