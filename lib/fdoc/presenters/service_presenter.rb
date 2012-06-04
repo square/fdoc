@@ -29,7 +29,7 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
       @endpoints = []
       prefix = nil
 
-      service.endpoints.sort_by(&:enmdpoint_path).map do |endpoint|
+      service.endpoints.sort_by(&:endpoint_path).map do |endpoint|
         presenter = Fdoc::EndpointPresenter.new(endpoint, options)
         presenter.service_presenter = self
         presenter
