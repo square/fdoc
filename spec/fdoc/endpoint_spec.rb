@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Fdoc::Endpoint do
-  let(:endpoint) { described_class.new(fdoc_fixture, test_service) }
-  let(:fdoc_fixture) { "spec/fixtures/members/list/GET.fdoc" }  
+  let(:endpoint) { test_service.open(*fdoc_fixture) }
+  let(:fdoc_fixture) { ["GET", "members/list"] }
   let (:test_service) { Fdoc::Service.new('spec/fixtures') }
   subject { endpoint }
   
@@ -74,7 +74,7 @@ describe Fdoc::Endpoint do
     end
     
     context "complex examples" do
-      let(:fdoc_fixture) { "spec/fixtures/members/list/complex-params-GET.fdoc" }
+      let(:fdoc_fixture) { ["GET", "/members/list/complex-params"] }
       let(:params) {
         {
           "toplevel_param" => "here",

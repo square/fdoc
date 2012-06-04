@@ -26,8 +26,8 @@ describe Fdoc::Service do
   end
 
   describe "#path_for" do
-    let(:flat_file_name) { 'spec/fixtures/members/list-GET.fdoc' }
-    let(:nested_file_name) { 'spec/fixtures/members/list/GET.fdoc' }
+    let(:flat_file_name) { File.expand_path('spec/fixtures/members/list-GET.fdoc') }
+    let(:nested_file_name) { File.expand_path('spec/fixtures/members/list/GET.fdoc') }
 
     context "when a flat named filename exists" do
       before do
