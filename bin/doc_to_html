@@ -33,7 +33,7 @@ File.open(index_html_path, "w") do |file|
   puts "created #{index_html_path}"
 end
 
-service_presenter.endpoints.each do |endpoint|
+service_presenter.endpoints.flatten.each do |endpoint|
   endpoint_html_path = File.join(html_directory, endpoint.url)
   mkdir(File.dirname(endpoint_html_path))
 

@@ -35,6 +35,10 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     '%s %s - %s' % [ @endpoint.verb, @endpoint.path, @endpoint.service.name ]
   end
 
+  def prefix
+    @endpoint.path.split("/").first
+  end
+
   def zws_ify(str)
     # zero-width-space, makes long lines friendlier for breaking
     str.gsub(/\//, '&#8203;/')
