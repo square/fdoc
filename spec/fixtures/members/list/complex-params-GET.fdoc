@@ -6,7 +6,7 @@ requestParameters:
       description: A paramater as normal
       required: Yes
     optional_nested_array:
-      type: Array
+      type: array
       required: No
       items:
         type: object
@@ -20,7 +20,7 @@ requestParameters:
             description: It's optional
             type: string
     required_nested_array:
-      type: Array
+      type: array
       required: Yes
       items:
         type: object
@@ -35,7 +35,7 @@ requestParameters:
             type: string
           optional_second_nested_object:
             required: No
-            type: Object
+            type: object
             description: It's a bug
             properties:
               required_param:
@@ -73,7 +73,7 @@ requestParameters:
           type: string
         optional_second_nested_object:
           required: No
-          type: Object
+          type: object
           description: It's a bug
           properties:
             required_param:

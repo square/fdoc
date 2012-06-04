@@ -74,7 +74,7 @@ describe Fdoc::Endpoint do
     end
     
     context "complex examples" do
-      let(:fdoc_fixture) { "spec/fixtures/members/list/complex-params.fdoc" }
+      let(:fdoc_fixture) { "spec/fixtures/members/list/complex-params-GET.fdoc" }
       let(:params) {
         {
           "toplevel_param" => "here",
