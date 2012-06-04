@@ -70,14 +70,9 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   end
 
   def example
-    e = @schema["example"]
-    if e.kind_of? String
-      '<tt>&quot;%s&quot;</tt>' % e.gsub(/\"/, 'quot;')
-    elsif e.kind_of?(Numeric) || e.kind_of?(TrueClass) || e.kind_of?(FalseClass)
-      '<tt>%s</tt>' % e
-    elsif e.kind_of?(Hash) || e.kind_of?(Array)
-      render_json(e)
-    end
+    return unless e = @schema["example"]
+
+    render_json(e)
   end
 
   def deprecated?

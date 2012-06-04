@@ -23,7 +23,16 @@ class Fdoc::HtmlPresenter
   end
 
   def render_json(json)
-    '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
+    if json.kind_of? String
+      '<tt>&quot;%s&quot;</tt>' % json.gsub(/\"/, 'quot;')
+    elsif json.kind_of?(Numeric) ||
+          json.kind_of?(TrueClass) ||
+          json.kind_of?(FalseClass)
+      '<tt>%s</tt>' % json
+    elsif json.kind_of?(Hash) ||
+          json.kind_of?(Array)
+      '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
+    end
   end
 
   def html_directory
