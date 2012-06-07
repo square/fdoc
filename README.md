@@ -90,4 +90,4 @@ Since fdoc is built on top of JSON schemas, all the hard work of verifiying that
 To make feedback more valuable, the request and response consumption methods will modify schemas to set `additionalProperties` to `false` unless specified. This gives the desired behavior of throwing an error when a new property is detected in the schema to verify, indicating the documentation needs updating.
 
 [github_img]: https://github.com/square/fdoc/raw/master/docs/farnsworth.png
-[github_files]: https://github.com/square/fdoc/blob/master/docs/files.png
+[github_files]: https://github.com/square/fdoc/blob/master/docs/files.md
