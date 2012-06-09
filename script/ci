@@ -44,12 +44,12 @@ function prepare_and_run() {
 
 function tag_green_build() {
   # tag current build
-  tag_name=`date "+ci-fdoc-master/%Y%m%d%H%M%S"`
+  tag_name=`date -u "+ci-master/%Y%m%d%H%M%S"`
   git tag -f -m "tagging green build" "$tag_name"
   git push -f origin "$tag_name"
 
   # force branch to this
-  branch_name="ci-fdoc-master/latest"
+  branch_name="ci-master/latest"
   git branch -f "$branch_name"
   git push -f origin "$branch_name"
 }
