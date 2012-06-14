@@ -6,3 +6,6 @@ description: |
   * It would not make for a very exciting REST API, but
     that's perfectly acceptable for a fixture file.
   * These bullets are mostly to demonstrate Markdown interpolation
+discussion: |
+  This is room at the bottom of the page for more details about
+  this service.

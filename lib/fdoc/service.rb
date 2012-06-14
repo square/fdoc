@@ -81,4 +81,8 @@ class Fdoc::Service
   def description
     @schema['description']
   end
+
+  def discussion
+    @schema['discussion']
+  end
 end

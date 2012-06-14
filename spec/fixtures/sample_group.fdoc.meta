@@ -2,5 +2,8 @@ name: fdoc Sample API
 description: |
   This is a sample meta service, it encompasses only one service
   for now.
+discussion: |
+  This is room at the bottom of the page for more details about
+  this service.
 services:
   - ./members

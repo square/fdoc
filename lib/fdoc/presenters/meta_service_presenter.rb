@@ -22,4 +22,8 @@ class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
   def description
     render_markdown(meta_service.description)
   end
+
+  def discussion
+    render_markdown(meta_service.discussion)
+  end
 end
