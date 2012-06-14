@@ -50,4 +50,8 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
   def description
     render_markdown(service.description)
   end
+
+  def discussion
+    render_markdown(service.discussion)
+  end
 end
