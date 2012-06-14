@@ -31,7 +31,7 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def url(extension = ".html")
-    '%s-%s%s' % [ @endpoint.path, @endpoint.verb, extension ]
+    '%s%s-%s%s' % [ options[:prefix], @endpoint.path, @endpoint.verb, extension ]
   end
 
   def title
