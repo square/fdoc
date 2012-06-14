@@ -121,6 +121,8 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
       hash % 1000
     elsif type.include?("number")
       Math.sqrt(hash % 1000).round 2
+    elsif type.include?("string")
+      ""
     else
       nil
     end
