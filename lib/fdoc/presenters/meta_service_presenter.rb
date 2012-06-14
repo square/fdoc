@@ -19,6 +19,34 @@ class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
       end
   end
 
+  def endpoints
+    if !@endpoints
+      @endpoints = []
+      prefix = nil
+
+      ungrouped_endpoints = meta_service.
+                              services.
+                              map(&:endpoints).
+                              flatten.
+                              sort_by(&:endpoint_path)
+
+      ungrouped_endpoints.each do |endpoint|
+        presenter = Fdoc::EndpointPresenter.new(endpoint, options)
+        presenter.service_presenter = self
+        presenter
+
+        current_prefix = presenter.prefix
+
+        @endpoints << [] if prefix != current_prefix
+        @endpoints.last << presenter
+
+        prefix = current_prefix
+      end
+    end
+
+    @endpoints
+  end
+
   def description
     render_markdown(meta_service.description)
   end
