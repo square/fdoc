@@ -17,7 +17,7 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
   end
 
   def slug_name
-    service.name.downcase.gsub(' ', '_')
+    service.name.downcase.gsub(/[ \/]/, '_')
   end
 
   def url(extension = ".html")
