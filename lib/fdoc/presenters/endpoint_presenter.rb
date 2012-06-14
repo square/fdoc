@@ -101,13 +101,28 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     type = Array(schema["type"])
 
     if type.any? { |t| ATOMIC_TYPES.include?(t) }
-      schema["example"] || schema["default"] || nil
+      schema["example"] || schema["default"] || example_from_atom(schema)
     elsif type.include?("object") || schema["properties"]
       example_from_object(schema)
     elsif type.include?("array") || schema["items"]
       example_from_array(schema)
     else
       {}
+    end
+  end
+
+  def example_from_atom(schema)
+    type = Array(schema["type"])
+    hash = schema.hash
+
+    if type.include?("boolean")
+      [true, false][hash % 2]
+    elsif type.include?("integer")
+      hash % 1000
+    elsif type.include?("number")
+      Math.sqrt(hash % 1000).round 2
+    else
+      nil
     end
   end
 
