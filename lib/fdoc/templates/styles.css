@@ -57,7 +57,8 @@ tt, kbd, code {
 .endpoint-name .root {}
 .endpoint-name .path { font-weight: bold; }
 
-a .endpoint-name .verb { display: inline-block; width: 4em; text-align: right }
+a .endpoint-name .verb { display: inline-block; width: 3em; text-align: right; font-size:80% }
 
-.endpoint-name.deprecated { color: red; }
-.schema .deprecated { color: red; }
+.deprecated { color: gray; }
+
+ul span.deprecated { margin-left:.5em; font-size: 80%; color: red }
