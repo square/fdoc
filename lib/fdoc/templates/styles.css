@@ -59,6 +59,5 @@ tt, kbd, code {
 
 a .endpoint-name .verb { display: inline-block; width: 3em; text-align: right; font-size:80% }
 
-.deprecated { color: gray; }
-
-ul span.deprecated { margin-left:.5em; font-size: 80%; color: red }
+.endpoint-name.deprecated { color: gray; }
+.schema ul span.deprecated { margin-left:.5em; font-size: 80%; color: red }
