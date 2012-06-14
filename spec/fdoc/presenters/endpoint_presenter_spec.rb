@@ -70,7 +70,7 @@ describe Fdoc::EndpointPresenter do
       "name" => "Bobby Brown",
       "achievements" => ["Most Bugs Squashed"],
       "check_in_count" => 52,
-      "email" => nil,
+      "email" => "",
       "friends" => [
         {
           "name" => "Freddy Friend",
