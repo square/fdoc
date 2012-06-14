@@ -31,9 +31,11 @@ class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
                               sort_by(&:endpoint_path)
 
       ungrouped_endpoints.each do |endpoint|
-        presenter = Fdoc::EndpointPresenter.new(endpoint, options)
-        presenter.service_presenter = self
-        presenter
+        service_presenter = Fdoc::ServicePresenter.new(endpoint.service, {})
+
+        presenter = Fdoc::EndpointPresenter.new(endpoint,
+          options.merge(:prefix => (service_presenter.slug_name + "/")))
+        presenter.service_presenter = service_presenter
 
         current_prefix = presenter.prefix
 
