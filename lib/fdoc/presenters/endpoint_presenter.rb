@@ -1,6 +1,6 @@
 # HtmlPresenter for an Endpoint
 class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
-  attr_accessor :service_presenter
+  attr_accessor :service_presenter, :endpoint
 
   def initialize(endpoint, options = {})
     super(options)
@@ -31,15 +31,15 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def url(extension = ".html")
-    '%s%s-%s%s' % [ options[:prefix], @endpoint.path, @endpoint.verb, extension ]
+    '%s%s-%s%s' % [ options[:prefix], endpoint.path, endpoint.verb, extension ]
   end
 
   def title
-    '%s %s - %s' % [ @endpoint.verb, @endpoint.path, @endpoint.service.name ]
+    '%s %s - %s' % [ endpoint.verb, endpoint.path, endpoint.service.name ]
   end
 
   def prefix
-    @endpoint.path.split("/").first
+    endpoint.path.split("/").first
   end
 
   def zws_ify(str)
@@ -48,29 +48,29 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def description
-    render_markdown(@endpoint.description)
+    render_markdown(endpoint.description)
   end
 
   def show_request?
-    !@endpoint.request_parameters.empty?
+    !endpoint.request_parameters.empty?
   end
 
   def show_response?
-    !@endpoint.response_parameters.empty?
+    !endpoint.response_parameters.empty?
   end
 
   def request_parameters
-    Fdoc::SchemaPresenter.new(@endpoint.request_parameters,
+    Fdoc::SchemaPresenter.new(endpoint.request_parameters,
       options.merge(:request => true)
     ).to_html
   end
 
   def response_parameters
-    Fdoc::SchemaPresenter.new(@endpoint.response_parameters, options).to_html
+    Fdoc::SchemaPresenter.new(endpoint.response_parameters, options).to_html
   end
 
   def response_codes
-    @response_codes ||= @endpoint.response_codes.map do |response_code|
+    @response_codes ||= endpoint.response_codes.map do |response_code|
       Fdoc::ResponseCodePresenter.new(response_code, options)
     end
   end
@@ -84,11 +84,11 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def example_request
-    render_json(example_from_schema(@endpoint.request_parameters))
+    render_json(example_from_schema(endpoint.request_parameters))
   end
 
   def example_response
-    render_json(example_from_schema(@endpoint.response_parameters))
+    render_json(example_from_schema(endpoint.response_parameters))
   end
 
   ATOMIC_TYPES = %w(string integer number boolean null)
