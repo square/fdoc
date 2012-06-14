@@ -29,7 +29,7 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
       @endpoints = []
       prefix = nil
 
-      service.endpoints.sort_by(&:endpoint_path).map do |endpoint|
+      service.endpoints.sort_by(&:endpoint_path).each do |endpoint|
         presenter = Fdoc::EndpointPresenter.new(endpoint, options)
         presenter.service_presenter = self
         presenter
@@ -40,7 +40,6 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
         @endpoints.last << presenter
 
         prefix = current_prefix
-        presenter
       end
     end
 
