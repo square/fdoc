@@ -24,19 +24,8 @@ class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
       @endpoints = []
       prefix = nil
 
-      ungrouped_endpoints = meta_service.
-                              services.
-                              map(&:endpoints).
-                              flatten.
-                              sort_by(&:endpoint_path)
-
       ungrouped_endpoints.each do |endpoint|
-        service_presenter = Fdoc::ServicePresenter.new(endpoint.service, {})
-
-        presenter = Fdoc::EndpointPresenter.new(endpoint,
-          options.merge(:prefix => (service_presenter.slug_name + "/")))
-        presenter.service_presenter = service_presenter
-
+        presenter = presenter_from_endpoint(endpoint)
         current_prefix = presenter.prefix
 
         @endpoints << [] if prefix != current_prefix
@@ -55,5 +44,22 @@ class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
 
   def discussion
     render_markdown(meta_service.discussion)
+  end
+
+  private
+
+  def ungrouped_endpoints
+    meta_service.services.
+                 map(&:endpoints).
+                 flatten.
+                 sort_by(&:endpoint_path)
+  end
+
+  def presenter_from_endpoint(endpoint)
+    service_presenter = Fdoc::ServicePresenter.new(endpoint.service)
+
+    presenter = Fdoc::EndpointPresenter.new(endpoint,
+      options.merge(:prefix => (service_presenter.slug_name + "/")))
+    presenter.service_presenter = service_presenter
   end
 end
