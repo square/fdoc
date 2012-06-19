@@ -20,7 +20,7 @@ describe Fdoc::EndpointScaffold do
     end
 
     it "creates properties for top-level keys, and populates them with examples" do
-      subject.consume_request(request_params)
+      subject.consume_request(request_params, true)
       subject.request_parameters["type"].should == nil
       subject.request_parameters["properties"].should have(3).keys
       subject.request_parameters["properties"]["depth"]["type"].should == "integer"
