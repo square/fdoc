@@ -43,6 +43,8 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
 
     FDOC_SCAFFOLD=true bundle exec rspec spec/controllers
 
+For more information on scaffolding, please see the more in-depth [fdoc scaffolding example][github_scaffold].
+
 ### Outside a Rails App
 
 fdoc provides the `fdoc_to_html` script to transform a directory of `.fdoc` files into more human-readable HTML.
@@ -108,6 +110,7 @@ Just fork and make a pull request! You will need to sign the [Individual Contrib
 
 
 [github_img]: https://github.com/square/fdoc/raw/master/docs/farnsworth.png
+[github_scaffold]: https://github.com/square/fdoc/blob/master/docs/scaffold.md
 [github_json]: https://github.com/square/fdoc/blob/master/docs/json_schema.md
 [github_files]: https://github.com/square/fdoc/blob/master/docs/files.md
 
