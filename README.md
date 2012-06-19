@@ -2,11 +2,17 @@
 
 High-quality documentation is extremely useful, but maintaining it is often a pain. We aim to create a tool to facilitate easy creation and maintenance of API documentation.
 
+In a Rails app, fdoc can help document an API as well as verify that requests and responses adhere to their appropriate schemata.
+
+Outside a Rails app, fdoc can provide a common format for API documentation, as well as the ability to generate basic HTML pages for humans to consume.
+
 fdoc is short for Farnsdocs. They are named for everybody's favorite, good news-bearing, crotchety old man, Professor Farnsworth.
 
 ![Professor Farnsworth][github_img]
 
 ## Usage
+
+### In a Rails app
 
 Add fdoc to your Gemfile.
 
@@ -37,9 +43,20 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
 
     FDOC_SCAFFOLD=true bundle exec rspec spec/controllers
 
+### Outside a Rails App
+
+fdoc provides the `fdoc_to_html` script to transform a directory of `.fdoc` files into more human-readable HTML.
+
+In this repo, try running:
+
+    bin/fdoc_to_html spec/fixtures html
+
 ## Example
 
-`.fdoc` files are YAML files based on JSON schema to describe API endpoints. The derive their endpointh path and verb from their filename. For more information on fdoc file naming conventions, please see the [fdoc file conventions guide][github_files].
+`.fdoc` files are YAML files based on [JSON schema][json_schema] to describe API endpoints. They derive their endpoint path and verb from their filename.
+
+- For more information on fdoc file naming conventions, please see the [fdoc file conventions guide][github_files].
+- For more information on how fdoc uses JSON schema, please see the [json schema usage document][github_json].
 
 Here is `members/list-POST.fdoc`:
 
@@ -72,7 +89,7 @@ Here is `members/list-POST.fdoc`:
     - status: 400 Bad Request
       successful: no
       description: Indicates malformed parameters
-    
+
 
 ## Goals
 
@@ -83,11 +100,16 @@ Here is `members/list-POST.fdoc`:
    - Experimental drafts should just live on branches and never get merged into master
  - Specification alone is not enough, there needs to be room for discussion
 
-## Feedback
+## Contributing
 
-Since fdoc is built on top of JSON schemas, all the hard work of verifiying that inputs conform their respective schemas is done by a [JSON schema gem](https://github.com/hoxworth/json-schema).
+Just fork and make a pull request! You will need to sign the [Individual Contributor License Agreement (CLA)][contrib_license] before we can merge your code.
 
-To make feedback more valuable, the request and response consumption methods will modify schemas to set `additionalProperties` to `false` unless specified. This gives the desired behavior of throwing an error when a new property is detected in the schema to verify, indicating the documentation needs updating.
+
+
 
 [github_img]: https://github.com/square/fdoc/raw/master/docs/farnsworth.png
+[github_json]: https://github.com/square/fdoc/blob/master/docs/json_schema.md
 [github_files]: https://github.com/square/fdoc/blob/master/docs/files.md
+
+[json_schema]: http://json-schema.org/
+[contrib_license]: https://spreadsheets.google.com/spreadsheet/viewform?formkey=dDViT2xzUHAwRkI3X3k5Z0lQM091OGc6MQ&ndplr=1
