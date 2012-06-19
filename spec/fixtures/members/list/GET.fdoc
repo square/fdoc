@@ -1,6 +1,5 @@
 description: The list of members.
 requestParameters:
-  type: object
   properties:
     limit:
       type: integer
@@ -19,7 +18,6 @@ requestParameters:
         - email
         - member_since
 responseParameters:
-  type: object
   properties:
     members:
       type: array

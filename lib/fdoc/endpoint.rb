@@ -77,7 +77,7 @@ class Fdoc::Endpoint
   def set_additional_properties_false_on(value)
     if value.kind_of? Hash
       copy = value.dup
-      if value["type"] == "object"
+      if value["type"] == "object" || value.has_key?("properties")
         copy["additionalProperties"] ||= false
       end
       value.each do |key, hash_val|
