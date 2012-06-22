@@ -20,24 +20,30 @@ Add fdoc to your Gemfile.
 
 Tell fdoc where to look for .fdoc files. By default, fdoc will look in `docs/fdoc`, but you can change this behavior to look anywhere. This fits best in something like a spec\_helper file.
 
-    require 'fdoc'
+```ruby
+require 'fdoc'
 
-    Fdoc.service_path = "path/to/your/fdocs"
+Fdoc.service_path = "path/to/your/fdocs"
+```
 
 fdoc is built to work around controller specs in rspec, and provides `Fdoc::SpecWatcher` as a mixin. Make sure to include it *inside* your top level describe.
 
-    require 'fdoc/spec_watcher'
+```ruby
+require 'fdoc/spec_watcher'
 
-    describe MembersController do
-      include Fdoc::SpecWatcher
-      ...
-    end
+describe MembersController do
+  include Fdoc::SpecWatcher
+  # ...
+end
+```
 
 To enable fdoc for an endpoint, add the `fdoc` option with the path to the endpoint. fdoc will intercept all calls to `get`, `post`, `put`, and `delete` and verify those parameters accordingly.
 
-    context "#show", :fdoc => 'members/list' do
-      ..
-    end
+```ruby
+context "#show", :fdoc => 'members/list' do
+  # ...
+end
+```
 
 fdoc also has a scaffolding mode, where it attemps to infer the schema of a request based on sample responses. The interface is exactly the same as verifying, just set the environment variable `FDOC_SCAFFOLD=true`.
 
@@ -51,7 +57,7 @@ fdoc provides the `fdoc_to_html` script to transform a directory of `.fdoc` file
 
 In this repo, try running:
 
-    bin/fdoc_to_html spec/fixtures html
+    bin/fdoc_to_html ./spec/fixtures ./html
 
 ## Example
 
@@ -60,37 +66,90 @@ In this repo, try running:
 - For more information on fdoc file naming conventions, please see the [fdoc file conventions guide][github_files].
 - For more information on how fdoc uses JSON schema, please see the [json schema usage document][github_json].
 
-Here is `members/list-POST.fdoc`:
+Here is `docs/fdoc/members/list-POST.fdoc`:
 
-    description: The list of members.
-    requestParameters:
-      properties:
-        limit:
-          type: integer
-          required: no
-          default: 50
-          description: Limits the number of results returned, used for paging.
-    responseParameters:
-      properties:
-        members:
-          type: array
-          items:
-            title: member
-            description: Representation of a member
-            type: object
-            properties:
-              name:
-                description: Member's name
-                type: string
-                required: yes
-                example: Captain Smellypants
-    responseCodes:
-    - status: 200 OK
-      successful: yes
-      description: A list of current members
-    - status: 400 Bad Request
-      successful: no
-      description: Indicates malformed parameters
+```yaml
+description: The list of members.
+requestParameters:
+  properties:
+    limit:
+      type: integer
+      required: no
+      default: 50
+      description: Limits the number of results returned, used for paging.
+responseParameters:
+  properties:
+    members:
+      type: array
+      items:
+        title: member
+        description: Representation of a member
+        type: object
+        properties:
+          name:
+            description: Member's name
+            type: string
+            required: yes
+            example: Captain Smellypants
+responseCodes:
+- status: 200 OK
+  successful: yes
+  description: A list of current members
+- status: 400 Bad Request
+  successful: no
+  description: Indicates malformed parameters
+```
+
+If we run a test against our members controller with an undocumented parameter, `offset`, we'll get an error.
+
+Our spec file, `spec/controllers/members_controller_spec.rb` looks like:
+
+```ruby
+require 'fdoc/spec_watcher'
+
+describe MembersController do
+  content "#show", :fdoc => members/list do
+    it "can take an offset" do
+      get :show, {
+        :offset => 5
+      }
+    end
+  end
+end
+```
+
+We run:
+
+    bundle exec rspec spec/controllers/members_controller_spec.rb
+
+And since `offset` is undocumented, fdoc will fail the test:
+
+    Failures:
+
+      1) MembersController#show can take an offset
+         Failure/Error: get :show, { :offset => 5 }
+         JSON::Schema::ValidationError:
+           The property '#/' contains additional properties ["offset"] outside of the schema when none are allowed in schema 8fcac6c4-294b-56a2-a3de-9342e2e729da#
+         # ./spec/controllers/members_controller_spec.rb:5:in `block (3 levels) in <top (required)>'
+
+If we run the same spec in scaffold mode, it passes and fdoc will write changes to the correspoding.fdoc file:
+
+    FDOC_SCAFFOLD=true bundle exec spec/controllers/members_controller_spec.rb
+
+The diff looks like:
+
+```diff
+diff --git a/docs/fdoc/members/list-POST.fdoc b/docs/fdoc/members/list-POST.fdoc b2e3656..dfa363a 100644
+--- a/docs/fdoc/members/list-POST.fdoc
++++ b/docs/fdoc/members/list-POST.fdoc
++    offset:
++      description: ???
++      required: ???
++      type: integer
++      example: 5
+```
+
+Notice how it infers a type, and copies an example, but leaves description and required blank. These fields are best left to humans to decide.
 
 
 ## Goals
