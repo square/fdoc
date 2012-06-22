@@ -132,6 +132,23 @@ And since `offset` is undocumented, fdoc will fail the test:
            The property '#/' contains additional properties ["offset"] outside of the schema when none are allowed in schema 8fcac6c4-294b-56a2-a3de-9342e2e729da#
          # ./spec/controllers/members_controller_spec.rb:5:in `block (3 levels) in <top (required)>'
 
+If we run the same spec in scaffold mode, it passes and fdoc will write changes to the correspoding.fdoc file:
+
+    FDOC_SCAFFOLD=true bundle exec spec/controllers/members_controller_spec.rb
+
+The diff looks like:
+
+```diff
++    offset:
++      description: ???
++      required: ???
++      type: integer
++      example: 5
+```
+
+Notice how it infers a type, and copies an example, but leaves description and required blank. These fields are best left to humans to decide.
+
+
 ## Goals
 
 - Client engineers should be able to participate in documenting an API and
