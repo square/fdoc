@@ -66,7 +66,7 @@ In this repo, try running:
 - For more information on fdoc file naming conventions, please see the [fdoc file conventions guide][github_files].
 - For more information on how fdoc uses JSON schema, please see the [json schema usage document][github_json].
 
-Here is `docs/fdoc/members/list-POST.fdoc`:
+Here is `docs/fdoc/members/list-GET.fdoc`:
 
 ```yaml
 description: The list of members.
@@ -139,9 +139,9 @@ If we run the same spec in scaffold mode, it passes and fdoc will write changes 
 The diff looks like:
 
 ```diff
-diff --git a/docs/fdoc/members/list-POST.fdoc b/docs/fdoc/members/list-POST.fdoc b2e3656..dfa363a 100644
---- a/docs/fdoc/members/list-POST.fdoc
-+++ b/docs/fdoc/members/list-POST.fdoc
+diff --git a/docs/fdoc/members/list-GET.fdoc b/docs/fdoc/members/list-GET.fdoc b2e3656..dfa363a 100644
+--- a/docs/fdoc/members/list-GET.fdoc
++++ b/docs/fdoc/members/list-GET.fdoc
 +    offset:
 +      description: ???
 +      required: ???
