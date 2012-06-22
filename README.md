@@ -18,7 +18,7 @@ Add fdoc to your Gemfile.
 
     gem 'fdoc'
 
-Tell fdoc where to look for .fdoc files. By default, fdoc will look in `docs/fdoc`, but you can change this behavior to look anywhere. This fits best in something like a spec\_helper file.
+Tell fdoc where to look for `.fdoc` files. By default, fdoc will look in `docs/fdoc`, but you can change this behavior to look anywhere. This fits best in something like a spec\_helper file.
 
 ```ruby
 require 'fdoc'
@@ -132,7 +132,7 @@ And since `offset` is undocumented, fdoc will fail the test:
            The property '#/' contains additional properties ["offset"] outside of the schema when none are allowed in schema 8fcac6c4-294b-56a2-a3de-9342e2e729da#
          # ./spec/controllers/members_controller_spec.rb:5:in `block (3 levels) in <top (required)>'
 
-If we run the same spec in scaffold mode, it passes and fdoc will write changes to the correspoding.fdoc file:
+If we run the same spec in scaffold mode, it passes and fdoc will write changes to the correspoding `.fdoc` file:
 
     FDOC_SCAFFOLD=true bundle exec spec/controllers/members_controller_spec.rb
 

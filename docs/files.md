@@ -2,14 +2,14 @@
 
 A sample file hierarchy (derived from `spec/fixtures`)
 
-    * docs/fdoc
-      - sample.fdoc.service
-      * members
-        - add-PUT.fdoc
-        - draft-POST.fdoc
-        * list
-          - GET.fdoc
-          - filter-GET.fdoc
+    * docs/fdoc              |
+      - sample.fdoc.service  |
+      * members              |
+        - add-PUT.fdoc       | docs/fdoc/members/add-PUT.fdoc
+        - draft-POST.fdoc    | docs/fdoc/members/draft-POST.fdoc
+        * list               |
+          - GET.fdoc         | docs/fdoc/members/list/GET.fdoc
+          - filter-GET.fdoc  | docs/fdoc/members/list/filter-GET.fdoc
 
 These files describe an API with the following endpoints:
 
