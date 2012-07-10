@@ -128,11 +128,19 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     properties.each do |key, property|
       next if property.nil?
       html << '<li>'
-      html << '<tt>%s</tt>' % key
+      html << tag_with_anchor(
+        'span',
+        '<tt>%s</tt>' % key,
+        schema_slug(key, property)
+      )
       html << self.class.new(property, options.merge(:nested => true)).to_html
       html << '</li>'
     end
 
     html
+  end
+
+  def schema_slug(key, property)
+    "#{key}-#{property.hash}"
   end
 end

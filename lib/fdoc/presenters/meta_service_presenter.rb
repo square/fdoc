@@ -61,5 +61,6 @@ class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
     presenter = Fdoc::EndpointPresenter.new(endpoint,
       options.merge(:prefix => (service_presenter.slug_name + "/")))
     presenter.service_presenter = service_presenter
+    presenter
   end
 end
