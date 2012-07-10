@@ -55,4 +55,15 @@ class Fdoc::HtmlPresenter
       html_path
     end
   end
+
+  def tag_with_anchor(tag, content, anchor_slug = nil)
+    anchor_slug ||= content.downcase.gsub(' ', '_')
+    <<-EOS
+    <#{tag} id="#{anchor_slug}">
+      <a href="##{anchor_slug}" class="anchor">
+        #{content}
+      </a>
+    </#{tag}>
+    EOS
+  end
 end

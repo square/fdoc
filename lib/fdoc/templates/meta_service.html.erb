@@ -16,9 +16,7 @@
 
         <%= description %>
 
-        <h2>
-          Services
-        </h2>
+        <%= tag_with_anchor('h2', 'Services') %>
 
         <ul>
           <% services.each do |serv| %>
@@ -30,14 +28,10 @@
           <% end %>
         </ul>
 
-        <h2>
-          Endpoints
-        </h2>
+        <%= tag_with_anchor('h2', 'Endpoints') %>
 
         <% endpoints.each do |endpoint_ary| %>
-          <h3>
-            <%= endpoint_ary.first.prefix %>
-          </h3>
+          <%= tag_with_anchor('h3', endpoint_ary.first.prefix) %>
           <ul>
           <% endpoint_ary.each do |endpoint| %>
             <li>
@@ -48,9 +42,7 @@
         <% end %>
 
         <% if discussion %>
-          <h2>
-            Discussion
-          </h2>
+          <%= tag_with_anchor('h2', 'Discussion') %>
           <%= discussion %>
         <% end %>
       </div>
