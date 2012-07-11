@@ -28,27 +28,27 @@
         <%= description %>
 
         <% if show_request? %>
-          <h2>Request</h2>
+          <%= tag_with_anchor('h2', 'Request') %>
 
-          <h3>Example Request</h3>
+          <%= tag_with_anchor('h3', 'Example Request') %>
           <%= example_request %>
 
-          <h3>Request Parameters</h3>
+          <%= tag_with_anchor('h3', 'Request Parameters') %>
           <%= request_parameters %>
         <% end %>
 
-        <h2>Response</h2>
+        <%= tag_with_anchor('h2', 'Response') %>
         <% if show_response? %>
-          <h3>Example Response</h3>
+          <%= tag_with_anchor('h3', 'Example Response') %>
           <%= example_response %>
 
-          <h3>Response Parameters</h3>
+          <%= tag_with_anchor('h3', 'Response Parameters') %>
           <%= response_parameters %>
         <% end %>
 
-        <h3>Response Codes</h3>
+        <%= tag_with_anchor('h3', 'Response Codes') %>
         <% if !successful_response_codes.empty? %>
-          <h4>Successful Response Codes</h4>
+          <%= tag_with_anchor('h4', 'Successful Response Codes') %>
           <ul>
             <% successful_response_codes.each do |response_code| %>
             <li>
@@ -59,7 +59,7 @@
         <% end %>
 
         <% if !successful_response_codes.empty? %>
-          <h4>Failure Response Codes</h4>
+          <%= tag_with_anchor('h4', 'Failure Response Codes') %>
           <ul>
             <% failure_response_codes.each do |response_code| %>
             <li>
