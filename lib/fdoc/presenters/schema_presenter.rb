@@ -37,9 +37,9 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
 
     html << '<ul>'
     begin
+      html << '<li>Required: %s</li>' % required? if nested?
       html << '<li>Type: %s</li>' % type if type
       html << '<li>Format: %s</li>' % format if format
-      html << '<li>Required: %s</li>' % required? if nested?
       html << '<li>Example: %s</li>' % example if example
       html << enum_html
 
@@ -61,7 +61,15 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   def type
     t = @schema["type"]
     if t.kind_of? Array
-      t.join(", ")
+      types = t.map do |type|
+        if type.kind_of? Hash
+          '<li>%s</li>' % self.class.new(type, options).to_html
+        else
+          '<li>%s</li>' % type
+        end
+      end.join('')
+
+      '<ul>%s</ul>' % types
     elsif t != "object"
       t
     end

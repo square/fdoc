@@ -145,6 +145,12 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
         example << example_from_schema(item)
       end
       example
+    elsif (array["items"] || {})["type"].kind_of? Array
+      example = []
+      array["items"]["type"].each do |item|
+        example << example_from_schema(item)
+      end
+      example
     else
       [ example_from_schema(array["items"]) ]
     end
