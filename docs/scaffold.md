@@ -37,7 +37,7 @@ And a controller that returns:
 ```
 
 
-If we run the associated test with `FDOC_SCAFFOLD=true`, fdoc will dump the beloe example to `members/list-GET.fdoc` in your fdoc folder. Notice how it leaves lots of `???` for you to fill in, but fairly accurately seems to capture the structure of our simple request. It even populates examples, which make for even better documentation.
+If we run the associated test with `FDOC_SCAFFOLD=true`, fdoc will dump the below example to `members/list-GET.fdoc` in your fdoc folder. Notice how it leaves lots of `???` for you to fill in, but fairly accurately seems to capture the structure of our simple request. It even populates examples, which make for even better documentation.
 
 ```yaml
 description: ???
