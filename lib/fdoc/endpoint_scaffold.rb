@@ -2,7 +2,7 @@
 # endpoint. The #consume_* methods can modify the structure of the
 # in-memory endpoint, to save the results to the file system, call #persist!
 class Fdoc::EndpointScaffold < Fdoc::Endpoint
-  def initialize(endpoint_path, service=Fdoc::Service::DefaultService)
+  def initialize(endpoint_path, service=Fdoc::Service.default_service)
     if File.exist?(endpoint_path)
       super
     else
