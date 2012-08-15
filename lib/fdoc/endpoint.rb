@@ -7,7 +7,7 @@ class Fdoc::Endpoint
   attr_reader :service
   attr_reader :endpoint_path
 
-  def initialize(endpoint_path, service=Fdoc::Service::DefaultService)
+  def initialize(endpoint_path, service=Fdoc::Service.default_service)
     @endpoint_path = endpoint_path
     @schema = YAML.load_file(@endpoint_path)
     @service = service

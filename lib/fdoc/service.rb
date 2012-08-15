@@ -5,6 +5,10 @@ class Fdoc::Service
   attr_reader :service_dir
   attr_accessor :meta_service
 
+  def self.default_service
+    new(Fdoc.service_path)
+  end
+
   def initialize(service_dir, scaffold_mode = Fdoc.scaffold_mode?)
     @service_dir = File.expand_path(service_dir)
     service_path = Dir["#{@service_dir}/*.fdoc.service"].first
@@ -26,8 +30,6 @@ class Fdoc::Service
       {}
     end
   end
-
-  DefaultService = self.new(Fdoc::DEFAULT_SERVICE_PATH)
 
   # Returns an Endpoint described by (verb, path)
   # In scaffold_mode, it will return an EndpointScaffold an of existing file
