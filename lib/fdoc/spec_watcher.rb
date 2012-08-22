@@ -5,7 +5,17 @@ module Fdoc
     VERBS.each do |verb|
       define_method(verb) do |*params|
         action, request_params = params
-        request_params ||= {}
+
+        request_params = if request_params.kind_of(Hash)
+          request_params
+        else
+          begin
+            JSON.parse(request_params)
+          rescue
+            {}
+          end
+        end
+
         result = super(*params)
 
         path = if respond_to?(:example) # Rspec 2
