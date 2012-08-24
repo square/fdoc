@@ -36,23 +36,12 @@ module Fdoc
             {}
           end
           successful = Fdoc.decide_success(response_params, response.status)
-          verify!(verb, path, request_params, response_params, response.status,
-            successful)
+          Endpoint.verify!(verb, path, request_params, response_params,
+            response.status, successful)
         end
 
         result
       end
-    end
-
-    private
-
-    def verify!(verb, path, request_params, response_params, response_status,
-          successful)
-      service = Service.new(Fdoc.service_path)
-      endpoint = service.open(verb, path)
-      endpoint.consume_request(request_params, successful)
-      endpoint.consume_response(response_params, response_status, successful)
-      endpoint.persist! if endpoint.respond_to?(:persist!)
     end
   end
 end
