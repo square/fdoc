@@ -1,3 +1,5 @@
+require 'json'
+
 module Fdoc
   module SpecWatcher
     VERBS = [:get, :post, :put, :delete]
@@ -6,7 +8,7 @@ module Fdoc
       define_method(verb) do |*params|
         action, request_params = params
 
-        request_params = if request_params.kind_of(Hash)
+        request_params = if request_params.kind_of?(Hash)
           request_params
         else
           begin
