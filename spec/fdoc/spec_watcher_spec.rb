@@ -23,14 +23,14 @@ describe Fdoc::SpecWatcher do
   end
 
   it 'should verify when params are a hash' do
-    Fdoc::Endpoint.should_receive(:verify!).with do |*args|
+    Fdoc::Service.should_receive(:verify!).with do |*args|
       args[2] == {:id => 1}
     end
     @klass.get(:index, {:id => 1})
   end
 
   it 'should verify when params are JSON' do
-    Fdoc::Endpoint.should_receive(:verify!).with do |*args|
+    Fdoc::Service.should_receive(:verify!).with do |*args|
       args[2] == {'id' => 1}
     end
     @klass.get(:index, {:id => 1}.to_json)

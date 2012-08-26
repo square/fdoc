@@ -13,15 +13,6 @@ class Fdoc::Endpoint
     @service = service
   end
 
-  def self.verify!(verb, path, request_params, response_params,
-                   response_status, successful)
-    service = Fdoc::Service.new(Fdoc.service_path)
-    endpoint = service.open(verb, path)
-    endpoint.consume_request(request_params, successful)
-    endpoint.consume_response(response_params, response_status, successful)
-    endpoint.persist! if endpoint.respond_to?(:persist!)
-  end
-
   def consume_request(params, successful=true)
     if successful
       schema = set_additional_properties_false_on(request_parameters.dup)
