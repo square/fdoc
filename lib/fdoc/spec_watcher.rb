@@ -1,3 +1,5 @@
+require 'json'
+
 module Fdoc
   module SpecWatcher
     VERBS = [:get, :post, :put, :delete]
@@ -6,7 +8,7 @@ module Fdoc
       define_method(verb) do |*params|
         action, request_params = params
 
-        request_params = if request_params.kind_of(Hash)
+        request_params = if request_params.kind_of?(Hash)
           request_params
         else
           begin
@@ -36,23 +38,12 @@ module Fdoc
             {}
           end
           successful = Fdoc.decide_success(response_params, response.status)
-          verify!(verb, path, request_params, response_params, response.status,
-            successful)
+          Service.verify!(verb, path, request_params, response_params,
+            response.status, successful)
         end
 
         result
       end
-    end
-
-    private
-
-    def verify!(verb, path, request_params, response_params, response_status,
-          successful)
-      service = Service.new(Fdoc.service_path)
-      endpoint = service.open(verb, path)
-      endpoint.consume_request(request_params, successful)
-      endpoint.consume_response(response_params, response_status, successful)
-      endpoint.persist! if endpoint.respond_to?(:persist!)
     end
   end
 end
