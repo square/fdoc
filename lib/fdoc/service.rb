@@ -31,6 +31,15 @@ class Fdoc::Service
     end
   end
 
+  def self.verify!(verb, path, request_params, response_params,
+                   response_status, successful)
+    service = Fdoc::Service.new(Fdoc.service_path)
+    endpoint = service.open(verb, path)
+    endpoint.consume_request(request_params, successful)
+    endpoint.consume_response(response_params, response_status, successful)
+    endpoint.persist! if endpoint.respond_to?(:persist!)
+  end
+
   # Returns an Endpoint described by (verb, path)
   # In scaffold_mode, it will return an EndpointScaffold an of existing file
   #   or create an empty EndpointScaffold
