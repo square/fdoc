@@ -2,9 +2,9 @@
 
 High-quality documentation is extremely useful, but maintaining it is often a pain. We aim to create a tool to facilitate easy creation and maintenance of API documentation.
 
-In a Rails app, fdoc can help document an API as well as verify that requests and responses adhere to their appropriate schemata.
+In a Rails or Sinatra app, fdoc can help document an API as well as verify that requests and responses adhere to their appropriate schemata.
 
-Outside a Rails app, fdoc can provide a common format for API documentation, as well as the ability to generate basic HTML pages for humans to consume.
+Outside a Rails or Sinatra app, fdoc can provide a common format for API documentation, as well as the ability to generate basic HTML pages for humans to consume.
 
 fdoc is short for Farnsdocs. They are named for everybody's favorite, good news-bearing, crotchety old man, Professor Farnsworth.
 
@@ -50,6 +50,35 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
     FDOC_SCAFFOLD=true bundle exec rspec spec/controllers
 
 For more information on scaffolding, please see the more in-depth [fdoc scaffolding example][github_scaffold].
+
+### In a Sinatra app
+
+Add fdoc to your Gemfile.
+
+    gem 'fdoc'
+
+Tell fdoc where to look for `.fdoc` files. By default, fdoc will look in `docs/fdoc`, but you can change this behavior to look anywhere. This fits best in something like a spec\_helper file.
+
+```ruby
+require 'fdoc'
+
+Fdoc.service_path = "path/to/your/fdocs"
+```
+
+fdoc is built to work around your Sinatra app specs in rspec, and provides `Fdoc::SpecWatcher` as a mixin. Make sure to include it *inside* your top level describe.
+
+```ruby
+require 'fdoc/spec_watcher'
+
+describe Sinatra::Appllication do
+  include Rack::Test::Methods
+  include Fdoc::SpecWatcher
+
+  def app
+    Sinatra::Application
+  end
+end
+```
 
 ### Outside a Rails App
 
