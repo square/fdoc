@@ -64,14 +64,14 @@ describe Fdoc::SpecWatcher do
       Fdoc::Service.should_receive(:verify!).with do |*args|
         args[2] == {:id => 1}
       end
-      @klass.get(:index, {:id => 1})
+      @klass.get("/", {:id => 1})
     end
 
     it 'should verify when params are JSON' do
       Fdoc::Service.should_receive(:verify!).with do |*args|
         args[2] == {'id' => 1}
       end
-      @klass.get(:index, {:id => 1}.to_json)
+      @klass.get("/", {:id => 1}.to_json)
     end
   end
 end
