@@ -30,16 +30,25 @@ module Fdoc
           opts.merge!(options)
           opts[:fdoc]
         end
+        
+        real_response = nil
+        if defined? response
+          # we are on rails
+          real_response = response
+        else
+          # we are on sinatra
+          real_response = last_response
+        end
 
         if path
           response_params = begin
-            JSON.parse(response.body)
+            JSON.parse(real_response.body)
           rescue
             {}
           end
-          successful = Fdoc.decide_success(response_params, response.status)
+          successful = Fdoc.decide_success(response_params, real_response.status)
           Service.verify!(verb, path, request_params, response_params,
-            response.status, successful)
+            real_response.status, successful)
         end
 
         result
