@@ -1,5 +1,6 @@
 require 'erb'
 require 'kramdown'
+require 'json'
 
 # HtmlPresenters assist in generating Html for fdoc classes.
 # HtmlPresenters is an abstract class with a lot of helper methods
