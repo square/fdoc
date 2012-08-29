@@ -13,6 +13,13 @@ class Fdoc::Endpoint
     @service = service
   end
 
+  def consume_path(params, successful=true)
+    if successful
+      schema = set_additional_properties_false_on stringify_keys(path_parameters.dup)
+      JSON::Validator.validate!(schema, stringify_keys(params))
+    end
+  end
+
   def consume_request(params, successful=true)
     if successful
       schema = set_additional_properties_false_on(request_parameters.dup)
@@ -42,10 +49,54 @@ class Fdoc::Endpoint
     @verb ||= endpoint_path.match(/([A-Z]*)\.fdoc$/)[1]
   end
 
-  def path
-    @path ||= endpoint_path.
+  def file_path
+    endpoint_path.
                 gsub(service.service_dir, "").
                 match(/\/?(.*)[-\/][A-Z]+\.fdoc/)[1]
+  end
+
+  def display_path
+    resources.inject('') do |path, resource|
+      data = resource['data']
+
+      is_dynamic = false
+      current_path = if data
+        is_dynamic = true
+        data['display_name'] || data['name'] || "#{resource['path_fragment']}_id"
+      else
+        resource['path_fragment']
+      end
+      path += "/#{is_dynamic ? ':' : ''}#{current_path}"
+      path
+    end
+  end
+
+  def resources
+    path = file_path
+
+    current_path = ''
+    path_ary = path.split '/'
+    main_resource_index = nil
+    path_params = []
+
+    path_ary.each_with_index do |path_fragment, i|
+      current_path += "/#{path_fragment}"
+      current_dir = File.join(service.service_dir, current_path)
+      main_resource_index = i if File.directory?(current_dir)
+
+      resource_file = Dir["#{current_dir}/*.fdoc.resource"].first
+      resource_data = YAML.load_file(resource_file) rescue nil
+      path_params.push({
+        'path_fragment' => path_fragment,
+        'data' => resource_data
+      })
+    end
+
+    if main_resource_index
+      path_params[main_resource_index]['main_resource'] = true
+    end
+
+    path_params
   end
 
   # properties
@@ -56,6 +107,31 @@ class Fdoc::Endpoint
 
   def description
     @schema["description"]
+  end
+
+  def path_parameters(for_display=false)
+    path_params = {}
+
+    resources.each do |resource|
+      data = resource['data']
+      next if data.nil?
+
+      name = unless for_display
+        if data['name']
+          data['name']
+        elsif resource['main_resource']
+          'id'
+        end
+      else
+        data['display_name']
+      end
+      name = "#{resource['path_fragment']}_id" unless name
+
+      data.delete 'display_name'
+      data.delete 'name'
+      path_params[name] = data
+    end
+    { 'properties' => path_params }
   end
 
   def request_parameters

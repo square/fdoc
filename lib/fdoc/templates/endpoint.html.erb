@@ -27,6 +27,13 @@
 
         <%= description %>
 
+        <% if show_path_params? %>
+          <%= tag_with_anchor('h2', 'URL') %>
+
+          <%= tag_with_anchor('h3', 'URL Parameters') %>
+          <%= path_parameters %>
+        <% end %>
+
         <% if show_request? %>
           <%= tag_with_anchor('h2', 'Request') %>
 

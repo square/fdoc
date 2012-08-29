@@ -16,7 +16,7 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     <span class="endpoint-name #{@endpoint.deprecated? ? 'deprecated' : nil}">
       <span class="verb">#{@endpoint.verb}</span>
       <span class="root">#{zws_ify(@endpoint.service.base_path)}</span><span
-       class="path">#{zws_ify(@endpoint.path)}</span>
+       class="path">#{zws_ify(path)}</span>
       #{@endpoint.deprecated? ? '(deprecated)' : nil}
     </span>
     EOS
@@ -31,15 +31,15 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def url(extension = ".html")
-    '%s%s-%s%s' % [ options[:prefix], endpoint.path, endpoint.verb, extension ]
+    '%s%s-%s%s' % [ options[:prefix], endpoint.file_path, endpoint.verb, extension ]
   end
 
   def title
-    '%s %s - %s' % [ endpoint.verb, endpoint.path, endpoint.service.name ]
+    '%s %s - %s' % [ endpoint.verb, path, endpoint.service.name ]
   end
 
   def prefix
-    endpoint.path.split("/").first
+    endpoint.file_path.split("/").first
   end
 
   def zws_ify(str)
@@ -51,12 +51,24 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     render_markdown(endpoint.description)
   end
 
+  def show_path_params?
+    !endpoint.path_parameters.empty?
+  end
+
   def show_request?
     !endpoint.request_parameters.empty?
   end
 
   def show_response?
     !endpoint.response_parameters.empty?
+  end
+
+  def path
+    endpoint.display_path
+  end
+
+  def path_parameters
+    Fdoc::SchemaPresenter.new(endpoint.path_parameters(true), options).to_html
   end
 
   def request_parameters

@@ -31,10 +31,11 @@ class Fdoc::Service
     end
   end
 
-  def self.verify!(verb, path, request_params, response_params,
+  def self.verify!(verb, path, request_params, response_params, path_params,
                    response_status, successful)
     service = Fdoc::Service.new(Fdoc.service_path)
     endpoint = service.open(verb, path)
+    endpoint.consume_path(path_params, successful)
     endpoint.consume_request(request_params, successful)
     endpoint.consume_response(response_params, response_status, successful)
     endpoint.persist! if endpoint.respond_to?(:persist!)
