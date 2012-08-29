@@ -30,9 +30,9 @@ module Fdoc
           opts.merge!(options)
           opts[:fdoc]
         end
-        
+
         real_response = nil
-        if defined? response
+        if respond_to? :response
           # we are on rails
           real_response = response
         else
