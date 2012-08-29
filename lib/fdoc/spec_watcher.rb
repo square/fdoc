@@ -30,14 +30,13 @@ module Fdoc
           opts.merge!(options)
           opts[:fdoc]
         end
-        
-        real_response = nil
-        if defined? response
+
+        real_response = if respond_to? :response
           # we are on rails
-          real_response = response
+          response
         else
           # we are on sinatra
-          real_response = last_response
+          last_response
         end
 
         if path
