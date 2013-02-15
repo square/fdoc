@@ -70,7 +70,7 @@ fdoc is built to work around your Sinatra app specs in rspec, and provides `Fdoc
 ```ruby
 require 'fdoc/spec_watcher'
 
-describe Sinatra::Appllication do
+describe Sinatra::Application do
   include Rack::Test::Methods
   include Fdoc::SpecWatcher
 
