@@ -137,7 +137,7 @@ Our spec file, `spec/controllers/members_controller_spec.rb` looks like:
 require 'fdoc/spec_watcher'
 
 describe MembersController do
-  content "#show", :fdoc => "members/list" do
+  context "#show", :fdoc => "members/list" do
     it "can take an offset" do
       get :show, {
         :offset => 5
