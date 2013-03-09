@@ -138,6 +138,7 @@ describe Fdoc::EndpointScaffold do
         }
       ],
       "root_node" => {
+        "description" => "description",
         "id" => "12941",
         "name" => "Bobjoe Smith",
         "linked_to" => [ "111", "121", "999"]
@@ -186,6 +187,7 @@ describe Fdoc::EndpointScaffold do
         subject.response_parameters["properties"]["root_node"]["type"].should == "object"
         subject.response_parameters["properties"]["root_node"]["description"].should == "???"
         subject.response_parameters["properties"]["root_node"]["required"].should == "???"
+        subject.response_parameters["properties"]["root_node"]["properties"]["description"]["type"].should == "string"
 
         subject.response_parameters["properties"]["version"]["type"].should == "integer"
         subject.response_parameters["properties"]["std_dev"]["type"].should == "number"
@@ -202,6 +204,11 @@ describe Fdoc::EndpointScaffold do
       it "turns nil into null" do
         subject.consume_response(response_params, "200 OK")
         subject.response_parameters["properties"]["updated_at"]["type"].should == "null"
+      end
+
+      it "sets response keys with the same name as schema keys" do
+        subject.consume_response(response_params, "200 OK")
+        subject.response_parameters["properties"]["root_node"]["properties"]["description"]["example"].should == "description"
       end
 
       it "uses strings (not symbols) as keys" do
