@@ -72,11 +72,9 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
     schema["properties"] ||= {}
 
     params.each do |key, value|
-      unless schema["properties"][key]
-        schema["properties"][key] ||= {}
-        sub_options = options.merge(:root_object => false)
-        scaffold_schema(schema["properties"][key], value, sub_options)
-      end
+      schema["properties"][key] ||= {}
+      sub_options = options.merge(:root_object => false)
+      scaffold_schema(schema["properties"][key], value, sub_options)
     end
   end
 
