@@ -22,8 +22,12 @@ class Fdoc::Endpoint
 
   def consume_response(params, status_code, successful=true)
     response_code = response_codes.find do |rc|
-      rc["status"] == status_code && rc["successful"] == successful
+      rc["successful"] == successful && (
+        rc["status"]      == status_code || # 200
+        rc["status"].to_i == status_code    # "200 OK"
+      )
     end
+
 
     if !response_code
       raise Fdoc::UndocumentedResponseCode,

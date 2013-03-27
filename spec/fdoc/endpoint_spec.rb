@@ -217,6 +217,10 @@ describe Fdoc::Endpoint do
         subject.consume_response(good_response_params, "200 OK").should be_true
       end
 
+      it "allows either fully-qualified or integer HTTP status codes" do
+        subject.consume_response(good_response_params, 200).should be_true
+      end
+
       context "with unknown keys" do
         it "throws an error when there an unknown key at the top level" do
           bad_params = good_response_params.merge({"extra_goodness" => true})
