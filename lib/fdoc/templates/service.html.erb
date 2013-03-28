@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>
-      <%= @service.name %>
-    </title>
-
+    <title><%= @service.name %></title>
     <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
+    <script type="text/javascript" src="<%= js_path %>"></script>
   </head>
   <body>
     <div id="page">
@@ -32,7 +30,7 @@
           <% endpoint_ary.each do |endpoint| %>
             <li>
               <%= endpoint.name_as_link %>
-            </li>          
+            </li>
           <% end %>
           </ul>
         <% end %>

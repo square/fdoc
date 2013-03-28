@@ -45,7 +45,11 @@ class Fdoc::HtmlPresenter
   end
 
   def css_path
-    File.join(html_directory, "styles.css")
+    File.join(html_directory, "application.css")
+  end
+
+  def js_path
+    File.join(html_directory, "application.js")
   end
 
   def index_path(subdirectory = "")
