@@ -131,21 +131,16 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   def properties_html
     return unless properties = @schema["properties"]
 
-    html = ""
+    build do |output|
+      properties.each do |key, property|
+        next if property.nil?
 
-    properties.each do |key, property|
-      next if property.nil?
-      html << '<li>'
-      html << tag_with_anchor(
-        'span',
-        '<tt>%s</tt>' % key,
-        schema_slug(key, property)
-      )
-      html << self.class.new(property, options.merge(:nested => true)).to_html
-      html << '</li>'
+        output.tag(:li) do |t|
+          t.puts(tag_with_anchor('span', '<tt>%s</tt>' % key, schema_slug(key, property)))
+          t.puts(self.class.new(property, options.merge(:nested => true)).to_html)
+        end
+      end
     end
-
-    html
   end
 
 end
