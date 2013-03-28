@@ -111,21 +111,21 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   def items_html
     return unless items = @schema["items"]
 
-    html = ""
-    html << '<li>Items'
+    build do |output|
+      output.tag(:li) do
+        sub_options = options.merge(:nested => true)
 
-    sub_options = options.merge(:nested => true)
+        if items.kind_of?(Array)
+          item.compact.each do |item|
+            html = self.class.new(item, sub_options).to_html
+          end
+        else
+          html = self.class.new(items, sub_options).to_html
+        end
 
-    if items.kind_of? Array
-      item.compact.each do |item|
-        html << self.class.new(item, sub_options).to_html
+        %{Items #{html}}
       end
-    else
-      html << self.class.new(items, sub_options).to_html
     end
-
-    html << '</li>'
-    html
   end
 
   def properties_html
