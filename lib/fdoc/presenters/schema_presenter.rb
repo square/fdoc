@@ -25,6 +25,10 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     @schema["format"]
   end
 
+  def type
+    @schema["type"]
+  end
+
   def request?
     options[:request]
   end
@@ -63,7 +67,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
         schema.puts render_markdown(@schema["description"])
         schema.tag(:ul) do |list|
           list.tag(:li, "Required: #{required?  ? 'yes' : 'no'}") if nested?
-          list.tag(:li, "Type: #{type}") if type
+          list.tag(:li, "Type: #{type_html}") if type_html
           list.tag(:li, "Format: #{format}") if format
           list.tag(:li, "Example: #{example}") if example
           list.puts(enum_html)
@@ -79,20 +83,21 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     end
   end
 
-  def type
-    t = @schema["type"]
-    if t.kind_of? Array
-      types = t.map do |type|
-        if type.kind_of? Hash
-          '<li>%s</li>' % self.class.new(type, options).to_html
-        else
-          '<li>%s</li>' % type
+  def type_html
+    if type.kind_of?(Array)
+      build do |output|
+        output.tag(:ul) do |list|
+          type.each do |t|
+            if t.kind_of?(Hash)
+              list.tag(:li, self.class.new(t, options).to_html)
+            else
+              list.tag(:li, t)
+            end
+          end
         end
-      end.join('')
-
-      '<ul>%s</ul>' % types
-    elsif t != "object"
-      t
+      end
+    elsif type != "object"
+      type
     end
   end
 
