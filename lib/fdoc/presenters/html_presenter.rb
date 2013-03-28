@@ -68,9 +68,7 @@ class Fdoc::HtmlPresenter
     end
 
     def render
-      output = @buffer.join
-      puts output
-      output
+      @buffer.join
     end
 
   protected

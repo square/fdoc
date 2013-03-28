@@ -5,10 +5,10 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     description
     type
     required
-    example
     deprecated
     default
     format
+    example
     enum
     items
     properties
@@ -20,6 +20,10 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   end
 
   # Attribute Helpers
+
+  def description
+    @schema["description"]
+  end
 
   def format
     @schema["format"]
@@ -53,29 +57,18 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     "#{key}-#{property.hash}"
   end
 
-  def example
-    return unless e = @schema["example"]
-    render_json(e)
-  end
-
   # Builders
 
   def to_html
     build do |output|
       output.tag(:span, 'Deprecated', :class => 'deprecated') if deprecated?
       output.tag(:div, :class => 'schema') do |schema|
-        schema.puts render_markdown(@schema["description"])
         schema.tag(:ul) do |list|
-          list.tag(:li, "Required: #{required?  ? 'yes' : 'no'}") if nested?
-          list.tag(:li, "Type: #{type_html}") if type_html
-          list.tag(:li, "Format: #{format}") if format
-          list.tag(:li, "Example: #{example}") if example
-          list.puts(enum_html)
-
           unformatted_keys.each do |key|
             list.tag(:li, "#{key}: #{@schema[key]}")
           end
 
+          list.puts(enum_html)
           list.puts(items_html)
           list.puts(properties_html)
         end
@@ -121,14 +114,12 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
         sub_options = options.merge(:nested => true)
 
         if items.kind_of?(Array)
-          item.compact.each do |item|
-            html = self.class.new(item, sub_options).to_html
-          end
+          items.compact.map do |item|
+            self.class.new(item, sub_options).to_html
+          end.join
         else
-          html = self.class.new(items, sub_options).to_html
+          self.class.new(items, sub_options).to_html
         end
-
-        %{Items #{html}}
       end
     end
   end
@@ -141,7 +132,13 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
         next if property.nil?
 
         output.tag(:li) do |t|
-          t.puts(tag_with_anchor('span', '<tt>%s</tt>' % key, schema_slug(key, property)))
+          tags = build do |tags|
+            tags.tag(:span, "[required]", :class => 'required') if nested? && required?
+            tags.tag(:span, "[#{format}]", :class => 'format') if format
+            tags.tag(:span, "[#{type_html}]", :class => 'type') if type_html
+          end
+
+          t.puts(tag_with_anchor('span', "<tt>%s</tt> - #{description} #{tags}" % key, schema_slug(key, property)))
           t.puts(self.class.new(property, options.merge(:nested => true)).to_html)
         end
       end

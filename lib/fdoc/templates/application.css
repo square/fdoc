@@ -68,6 +68,10 @@ a .endpoint-name .verb {
   color: #aaa;
 }
 
+span.required,
+span.format,
+span.type { color: #ddd; }
+
 .endpoint-name.deprecated { color: gray; }
 
 .schema ul span.deprecated {
