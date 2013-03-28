@@ -9,8 +9,42 @@ class Fdoc::Endpoint
 
   def initialize(endpoint_path, service=Fdoc::Service.default_service)
     @endpoint_path = endpoint_path
-    @schema = YAML.load_file(@endpoint_path)
+    @schema = IncludeBuilder.new(@endpoint_path).schema
     @service = service
+  end
+
+  class IncludeBuilder
+
+    attr_reader :schema
+
+    def initialize(path)
+      @path = path
+
+      contents = File.read(@path)
+
+      i, includes = 0, {}
+      contents = contents.gsub(/\{([^\}]*)\}/) do
+        i += 1
+        includes[i.to_s] = IncludeBuilder.new("#{FDOC_DIRECTORY}#{$1}").schema
+        "include_#{i}"
+      end
+
+      @schema = YAML.load(contents)
+      replace_includes(@schema, includes)
+    end
+
+    def replace_includes(schema, replacements)
+      schema.each do |k, v|
+        if v.is_a?(String) && v.match(/include_(\d+)/)
+          schema[k] = replacements[$1]
+        end
+
+        if v.is_a?(Hash)
+          replace_includes(v, replacements)
+        end
+      end
+    end
+
   end
 
   def consume_request(params, successful=true)

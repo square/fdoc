@@ -23,6 +23,8 @@ end
 
 mkdir(html_directory)
 
+FDOC_DIRECTORY = fdoc_directory
+
 meta_service = Fdoc::MetaService.new(fdoc_directory)
 services = if !meta_service.empty?
   meta_service.services
@@ -54,7 +56,7 @@ services.each do |service|
   else
     File.join(html_directory, service_presenter.slug_name)
   end
-  
+
   mkdir(html_sub_directory)
 
   index_html_path = File.join(html_sub_directory, "index.html")
