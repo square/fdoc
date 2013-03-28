@@ -20,17 +20,26 @@ class Fdoc::Endpoint
     def initialize(path)
       @path = path
 
-      contents = File.read(@path)
+      begin
+        contents = File.read(@path)
 
-      i, includes = 0, {}
-      contents = contents.gsub(/\{([^\}]*)\}/) do
-        i += 1
-        includes[i.to_s] = IncludeBuilder.new("#{FDOC_DIRECTORY}#{$1}").schema
-        "include_#{i}"
+        i, includes = 0, {}
+        contents = contents.gsub(/\{([^\}]*)\}/) do
+          i += 1
+          content = IncludeBuilder.new("#{FDOC_DIRECTORY}#{$1}").schema
+          raise "Include: #{$1} is empty!" if content.nil?
+          includes[i.to_s] = content
+          "include_#{i}"
+        end
+
+        @schema = YAML.load(contents)
+        raise "File #{@path} is empty" if @schema.nil? || @schema == false
+
+        replace_includes(@schema, includes)
+      rescue => e
+        puts "#{e.message} (from #{@path})"
+        exit
       end
-
-      @schema = YAML.load(contents)
-      replace_includes(@schema, includes)
     end
 
     def replace_includes(schema, replacements)
