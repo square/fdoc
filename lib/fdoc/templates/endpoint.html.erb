@@ -12,7 +12,7 @@
 
         <div id="nav">
           <% if @endpoint.service.meta_service %>
-            <a href="<%= index_path %>">&#187; <%= @endpoint.service.meta_service.name %></a>
+            <a href="<%= index_path %>"><%= @endpoint.service.meta_service.name %></a>
           <% end %>
 
           <% if service_presenter %>

@@ -19,6 +19,12 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     @schema = schema
   end
 
+  # Attribute Helpers
+
+  def format
+    @schema["format"]
+  end
+
   def request?
     options[:request]
   end
@@ -27,35 +33,50 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     options[:nested]
   end
 
+  def deprecated?
+    @schema["deprecated"]
+  end
+
+  def required?
+    @schema["required"]
+  end
+
+  def unformatted_keys
+    @schema.keys - FORMATTED_KEYS
+  end
+
+  def schema_slug(key, property)
+    "#{key}-#{property.hash}"
+  end
+
+  def example
+    return unless e = @schema["example"]
+    render_json(e)
+  end
+
+  # Builders
+
   def to_html
-    html = StringIO.new
+    build do |output|
+      output.tag(:span, 'Deprecated', :class => 'deprecated') if deprecated?
+      output.tag(:div, :class => 'schema') do |schema|
+        schema.puts render_markdown(@schema["description"])
+        schema.tag(:ul) do |list|
+          list.tag(:li, "Required: #{required?  ? 'yes' : 'no'}") if nested?
+          list.tag(:li, "Type: #{type}") if type
+          list.tag(:li, "Format: #{format}") if format
+          list.tag(:li, "Example: #{example}") if example
+          list.puts(enum_html)
 
-    html << '<span class="deprecated">Deprecated</span>' if deprecated?
+          unformatted_keys.each do |key|
+            list.tag(:li, "#{key}: #{@schema[key]}")
+          end
 
-    html << '<div class="schema">'
-    html << render_markdown(@schema["description"])
-
-    html << '<ul>'
-    begin
-      html << '<li>Required: %s</li>' % required? if nested?
-      html << '<li>Type: %s</li>' % type if type
-      html << '<li>Format: %s</li>' % format if format
-      html << '<li>Example: %s</li>' % example if example
-      html << enum_html
-
-      (@schema.keys - FORMATTED_KEYS).each do |key|
-        html << '<li>%s: %s</li>' % [ key, @schema[key] ]
+          list.puts(items_html)
+          list.puts(properties_html)
+        end
       end
-
-      html << items_html
-      html << properties_html
     end
-
-
-    html << '</ul>'
-    html << '</div>'
-
-    html.string
   end
 
   def type
@@ -73,24 +94,6 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     elsif t != "object"
       t
     end
-  end
-
-  def format
-    @schema["format"]
-  end
-
-  def example
-    return unless e = @schema["example"]
-
-    render_json(e)
-  end
-
-  def deprecated?
-    @schema["deprecated"]
-  end
-
-  def required?
-    @schema["required"] ? "yes" : "no"
   end
 
   def enum_html
@@ -148,7 +151,4 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     html
   end
 
-  def schema_slug(key, property)
-    "#{key}-#{property.hash}"
-  end
 end
