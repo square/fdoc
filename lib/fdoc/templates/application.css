@@ -28,7 +28,7 @@ a.anchor.active::before {
 #page {
   background: white;
   margin: 10px auto;
-  width: 800px;
+  width: 900px;
   border: 4px #ccc solid;
 }
 

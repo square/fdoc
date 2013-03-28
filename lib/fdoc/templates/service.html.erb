@@ -8,15 +8,11 @@
   <body>
     <div id="page">
       <div id="content">
-        <h1>
-          <%= @service.name %>
-        </h1>
+        <h1><%= @service.name %></h1>
 
         <div id="nav">
           <% if @service.meta_service %>
-            <a href="<%= index_path %>">
-              &#187; <%= @service.meta_service.name %>
-            </a>
+            <a href="<%= index_path %>">&#187; <%= @service.meta_service.name %></a>
           <% end %>
         </div>
 
@@ -27,11 +23,11 @@
         <% endpoints.each do |endpoint_ary| %>
           <%= tag_with_anchor('h3', endpoint_ary.first.prefix) %>
           <ul>
-          <% endpoint_ary.each do |endpoint| %>
-            <li>
-              <%= endpoint.name_as_link %>
-            </li>
-          <% end %>
+            <% endpoint_ary.each do |endpoint| %>
+              <li>
+                <%= endpoint.name_as_link %>
+              </li>
+            <% end %>
           </ul>
         <% end %>
 
