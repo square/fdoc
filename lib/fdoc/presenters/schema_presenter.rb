@@ -97,18 +97,15 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   end
 
   def enum_html
-    enum = @schema["enum"]
-    return unless enum
+    return unless enum = @schema["enum"]
 
     list = enum.map do |e|
-      '<tt>%s</tt>' % e
+      "<tt>#{e}</tt>"
     end.join(", ")
 
-    html = StringIO.new
-    html << '<li>Enum: '
-    html << list
-    html << '</li>'
-    html.string
+    build do |output|
+      output.tag(:li, "Enum: #{list}")
+    end
   end
 
   def items_html
