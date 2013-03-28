@@ -24,7 +24,7 @@ class Fdoc::Endpoint
         contents = File.read(@path)
 
         i, includes = 0, {}
-        contents = contents.gsub(/\{([^\}]*)\}/) do
+        contents = contents.gsub(/\[(\/[^\]]*)\]/) do
           i += 1
           content = IncludeBuilder.new("#{FDOC_DIRECTORY}#{$1}").schema
           raise "Include: #{$1} is empty!" if content.nil?
