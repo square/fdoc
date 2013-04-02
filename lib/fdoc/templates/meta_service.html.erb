@@ -15,39 +15,40 @@
     </div>
 
     <div id="page">
-      <h1><%= @meta_service.name %></h1>
+      <div id="content">
+        <h1><%= @meta_service.name %></h1>
 
-      <%= description %>
+        <%= description %>
 
-      <%= tag_with_anchor('h2', 'Services') %>
-
-      <ul>
-        <% services.each do |serv| %>
-          <li>
-            <h3><%= serv.name_as_link %></h3>
-          </li>
-        <% end %>
-      </ul>
-
-      <%= tag_with_anchor('h2', 'Endpoints') %>
-
-      <% endpoints.each do |endpoint_ary| %>
-        <%= tag_with_anchor('h3', endpoint_ary.first.prefix) %>
+        <%= tag_with_anchor('h2', 'Services') %>
 
         <ul>
-        <% endpoint_ary.each do |endpoint| %>
-          <li>
-            <%= endpoint.name_as_link %>
-          </li>
-        <% end %>
+          <% services.each do |serv| %>
+            <li>
+              <h4><%= serv.name_as_link %></h4>
+            </li>
+          <% end %>
         </ul>
-      <% end %>
 
-      <% if discussion %>
-        <%= tag_with_anchor('h2', 'Discussion') %>
-        <%= discussion %>
-      <% end %>
+        <%= tag_with_anchor('h2', 'Endpoints') %>
+
+        <% endpoints.each do |endpoint_ary| %>
+          <%= tag_with_anchor('h3', endpoint_ary.first.prefix) %>
+
+          <ul>
+          <% endpoint_ary.each do |endpoint| %>
+            <li>
+              <%= endpoint.name_as_link %>
+            </li>
+          <% end %>
+          </ul>
+        <% end %>
+
+        <% if discussion %>
+          <%= tag_with_anchor('h2', 'Discussion') %>
+          <%= discussion %>
+        <% end %>
+      </div>
     </div>
   </body>
 </html>
-

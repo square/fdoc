@@ -4,6 +4,11 @@
 
 /* Custom */
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   background: #fdfdfd;
 }
@@ -27,18 +32,21 @@ a.anchor.active::before {
 
 #page {
   background: white;
-  margin: 41px auto 0 auto;
+  margin: 0 auto;
   border: 2px #ccc solid;
   border-top: none;
   border-bottom: none;
   width: 940px;
-  padding: 16px 10px;
+  min-height: 100%;
 }
 
-#nav { padding-bottom: 1em; }
+#content {
+  padding: 60px 16px 20px 16px;
+}
 
 ul {
   list-style: none;
+  margin: 0 0 10px 0;
 }
 
 .schema ul {
@@ -62,8 +70,7 @@ ul {
 
 a .endpoint-name .verb {
   display: inline-block;
-  width: 4em;
-  text-align: right;
+  width: 4.5em;
   color: #aaa;
 }
 
@@ -83,6 +90,10 @@ span.type { color: #BF3604; }
   margin-left: .5em;
   font-size: 80%;
   color: red;
+}
+
+.response-code {
+  margin-left: 20px;
 }
 
 .response-code p {

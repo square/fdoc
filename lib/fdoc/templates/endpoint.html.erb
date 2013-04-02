@@ -15,63 +15,65 @@
     </div>
 
     <div id="page">
-      <h1><%= name %></h1>
+      <div id="content">
+        <h1><%= name %></h1>
 
-      <ul class="breadcrumb">
-        <% if @endpoint.service.meta_service %>
-          <li><a href="<%= index_path %>"><%= @endpoint.service.meta_service.name %></a></li>
-        <% end %>
+        <ul class="breadcrumb">
+          <% if @endpoint.service.meta_service %>
+            <li><a href="<%= index_path %>"><%= @endpoint.service.meta_service.name %></a></li>
+          <% end %>
 
-        <% if service_presenter %>
-          <li><span class="divider">/</span> <%= service_presenter.name_as_link %></li>
-        <% end %>
-      </ul>
-
-      <%= description %>
-
-      <% if show_request? %>
-        <%= tag_with_anchor('h2', 'Request') %>
-
-        <%= tag_with_anchor('h3', 'Example Request') %>
-        <%= example_request %>
-
-        <%= tag_with_anchor('h3', 'Request Parameters') %>
-        <%= request_parameters %>
-      <% end %>
-
-      <%= tag_with_anchor('h2', 'Response') %>
-
-      <% if show_response? %>
-        <%= tag_with_anchor('h3', 'Example Response') %>
-        <%= example_response %>
-
-        <%= tag_with_anchor('h3', 'Response Parameters') %>
-        <%= response_parameters %>
-      <% end %>
-
-      <%= tag_with_anchor('h3', 'Response Codes') %>
-
-      <% if !successful_response_codes.empty? %>
-        <%= tag_with_anchor('h4', 'Successful Response Codes') %>
-        <ul>
-          <% successful_response_codes.each do |response_code| %>
-          <li>
-            <%= response_code.to_html %>
-          </li>
+          <% if service_presenter %>
+            <li><span class="divider">/</span> <%= service_presenter.name_as_link %></li>
           <% end %>
         </ul>
-      <% end %>
 
-      <% if !successful_response_codes.empty? %>
-        <%= tag_with_anchor('h4', 'Failure Response Codes') %>
-        <ul>
-          <% failure_response_codes.each do |response_code| %>
-          <li>
-            <%= response_code.to_html %>
-          </li>
-          <% end %>
-        </ul>
-      <% end %>
+        <%= description %>
+
+        <% if show_request? %>
+          <%= tag_with_anchor('h2', 'Request') %>
+
+          <%= tag_with_anchor('h3', 'Example Request') %>
+          <%= example_request %>
+
+          <%= tag_with_anchor('h3', 'Request Parameters') %>
+          <%= request_parameters %>
+        <% end %>
+
+        <%= tag_with_anchor('h2', 'Response') %>
+
+        <% if show_response? %>
+          <%= tag_with_anchor('h3', 'Example Response') %>
+          <%= example_response %>
+
+          <%= tag_with_anchor('h3', 'Response Parameters') %>
+          <%= response_parameters %>
+        <% end %>
+
+        <%= tag_with_anchor('h3', 'Response Codes') %>
+
+        <% if !successful_response_codes.empty? %>
+          <%= tag_with_anchor('h4', 'Successful Response Codes') %>
+          <ul>
+            <% successful_response_codes.each do |response_code| %>
+            <li>
+              <%= response_code.to_html %>
+            </li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <% if !successful_response_codes.empty? %>
+          <%= tag_with_anchor('h4', 'Failure Response Codes') %>
+          <ul>
+            <% failure_response_codes.each do |response_code| %>
+            <li>
+              <%= response_code.to_html %>
+            </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
     </div>
   </body>
 </html>
