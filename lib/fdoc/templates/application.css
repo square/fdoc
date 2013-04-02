@@ -5,7 +5,7 @@
 /* Custom */
 
 body {
-  background: #f4f4f4;
+  background: #fdfdfd;
 }
 
 h1 { text-align: center; margin: 20px 0; }
@@ -27,13 +27,12 @@ a.anchor.active::before {
 
 #page {
   background: white;
-  margin: 10px auto;
-  width: 900px;
+  margin: 41px auto 0 auto;
   border: 2px #ccc solid;
-}
-
-#content {
-  padding: 0 12pt 2em 12pt;
+  border-top: none;
+  border-bottom: none;
+  width: 940px;
+  padding: 16px 10px;
 }
 
 #nav { padding-bottom: 1em; }
