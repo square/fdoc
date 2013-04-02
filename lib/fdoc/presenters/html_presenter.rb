@@ -85,7 +85,7 @@ class Fdoc::HtmlPresenter
 
   end
 
-  def build(*args, &block)
+  def html(*args, &block)
     HTMLBuilder.new(*args, &block).render
   end
 

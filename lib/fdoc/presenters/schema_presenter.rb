@@ -60,7 +60,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   # Builders
 
   def to_html
-    build do |output|
+    html do |output|
       output.tag(:span, 'Deprecated', :class => 'deprecated') if deprecated?
       output.tag(:div, :class => 'schema') do |schema|
         schema.tag(:ul) do |list|
@@ -78,7 +78,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
 
   def type_html
     if type.kind_of?(Array)
-      build do |output|
+      html do |output|
         output.tag(:ul) do |list|
           type.each do |t|
             if t.kind_of?(Hash)
@@ -101,7 +101,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
       "<tt>#{e}</tt>"
     end.join(", ")
 
-    build do |output|
+    html do |output|
       output.tag(:li, "Enum: #{list}")
     end
   end
@@ -109,7 +109,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   def items_html
     return unless items = @schema["items"]
 
-    build do |output|
+    html do |output|
       output.tag(:li) do
         sub_options = options.merge(:nested => true)
 
@@ -127,14 +127,14 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   def properties_html
     return unless properties = @schema["properties"]
 
-    build do |output|
+    html do |output|
       properties.each do |key, property|
         next if property.nil?
 
         schema = self.class.new(property, options.merge(:nested => true))
 
         output.tag(:li) do |t|
-          tags = build do |tags|
+          tags = html do |tags|
             tags.tag(:span, "required", :class => 'required') if schema.nested? && schema.required?
             tags.puts " "
             tags.tag(:span, "#{schema.format}", :class => 'format') if schema.format
