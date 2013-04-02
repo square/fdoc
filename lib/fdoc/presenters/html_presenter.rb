@@ -40,12 +40,65 @@ class Fdoc::HtmlPresenter
     end
   end
 
+  class HTMLBuilder
+
+    def initialize(options = {})
+      @options = options.dup
+      @buffer  = []
+
+      yield self if block_given?
+    end
+
+    def tag(name, *args)
+      if block_given?
+        options = args.pop || {}
+        builder = self.class.new
+        yield(builder)
+        content = builder.render
+      else
+        content = args.shift
+        options = args.shift || {}
+      end
+
+      @buffer << %{<#{name}#{format_options(options)}>#{content}</#{name}>}
+    end
+
+    def puts(*args)
+      @buffer << args.join
+    end
+
+    def render
+      @buffer.join
+    end
+
+  protected
+
+    def format_options(hash)
+      return "" if hash.empty?
+
+      attributes = hash.map do |attribute, value|
+       %{#{attribute}="#{value}"}
+      end
+
+      %{ #{attributes.join(' ')}}
+    end
+
+  end
+
+  def html(*args, &block)
+    HTMLBuilder.new(*args, &block).render
+  end
+
   def html_directory
     options[:url_base_path] || options[:html_directory] || ""
   end
 
   def css_path
-    File.join(html_directory, "styles.css")
+    File.join(html_directory, "application.css")
+  end
+
+  def js_path
+    File.join(html_directory, "application.js")
   end
 
   def index_path(subdirectory = "")

@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>
-      <%= @meta_service.name %>
-    </title>
-
+    <title><%= @meta_service.name %></title>
     <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
+    <script type="text/javascript" src="<%= js_path %>"></script>
   </head>
   <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="<%= html_directory %>">API Documentation</a>
+        </div>
+      </div>
+    </div>
+
     <div id="page">
       <div id="content">
-        <h1>
-          <%= @meta_service.name %>
-        </h1>
+        <h1><%= @meta_service.name %></h1>
 
         <%= description %>
 
@@ -21,9 +25,7 @@
         <ul>
           <% services.each do |serv| %>
             <li>
-              <h3>
-                <%= serv.name_as_link %>
-              </h3>
+              <h4><%= serv.name_as_link %></h4>
             </li>
           <% end %>
         </ul>
@@ -32,6 +34,7 @@
 
         <% endpoints.each do |endpoint_ary| %>
           <%= tag_with_anchor('h3', endpoint_ary.first.prefix) %>
+
           <ul>
           <% endpoint_ary.each do |endpoint| %>
             <li>
@@ -49,4 +52,3 @@
     </div>
   </body>
 </html>
-

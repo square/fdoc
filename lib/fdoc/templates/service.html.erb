@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>
-      <%= @service.name %>
-    </title>
-
+    <title><%= @service.name %></title>
     <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
+    <script type="text/javascript" src="<%= js_path %>"></script>
   </head>
   <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="<%= html_directory %>">API Documentation</a>
+        </div>
+      </div>
+    </div>
+
     <div id="page">
       <div id="content">
-        <h1>
-          <%= @service.name %>
-        </h1>
+        <h1><%= @service.name %></h1>
 
-        <div id="nav">
+        <ul class="breadcrumb">
           <% if @service.meta_service %>
-            <a href="<%= index_path %>">
-              &#187; <%= @service.meta_service.name %>
-            </a>
+            <li><a href="<%= index_path %>"><%= @service.meta_service.name %></a></li>
           <% end %>
-        </div>
+        </ul>
 
         <%= description %>
 
@@ -29,11 +31,11 @@
         <% endpoints.each do |endpoint_ary| %>
           <%= tag_with_anchor('h3', endpoint_ary.first.prefix) %>
           <ul>
-          <% endpoint_ary.each do |endpoint| %>
-            <li>
-              <%= endpoint.name_as_link %>
-            </li>          
-          <% end %>
+            <% endpoint_ary.each do |endpoint| %>
+              <li>
+                <%= endpoint.name_as_link %>
+              </li>
+            <% end %>
           </ul>
         <% end %>
 
@@ -42,7 +44,6 @@
           <%= discussion %>
         <% end %>
       </div>
-    </div>
+      </div>
   </body>
 </html>
-

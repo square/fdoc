@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>
-      <%= title %>
-    </title>
-
+    <title><%= title %></title>
     <link rel="stylesheet" type="text/css" href="<%= css_path %>" />
+    <script type="text/javascript" src="<%= js_path %>"></script>
   </head>
   <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="<%= html_directory %>">API Documentation</a>
+        </div>
+      </div>
+    </div>
+
     <div id="page">
       <div id="content">
-        <h1>
-          <%= name %>
-        </h1>
+        <h1><%= name %></h1>
 
-        <div id="nav">
+        <ul class="breadcrumb">
           <% if @endpoint.service.meta_service %>
-            <a href="<%= index_path %>">
-              &#187; <%= @endpoint.service.meta_service.name %>
-            </a>
+            <li><a href="<%= index_path %>"><%= @endpoint.service.meta_service.name %></a></li>
           <% end %>
+
           <% if service_presenter %>
-            <%= service_presenter.name_as_link(:prefix => '&#187;') %>
+            <li><span class="divider">/</span> <%= service_presenter.name_as_link %></li>
           <% end %>
-        </div>
+        </ul>
 
         <%= description %>
 
@@ -38,6 +41,7 @@
         <% end %>
 
         <%= tag_with_anchor('h2', 'Response') %>
+
         <% if show_response? %>
           <%= tag_with_anchor('h3', 'Example Response') %>
           <%= example_response %>
@@ -47,6 +51,7 @@
         <% end %>
 
         <%= tag_with_anchor('h3', 'Response Codes') %>
+
         <% if !successful_response_codes.empty? %>
           <%= tag_with_anchor('h4', 'Successful Response Codes') %>
           <ul>
@@ -72,4 +77,3 @@
     </div>
   </body>
 </html>
-
