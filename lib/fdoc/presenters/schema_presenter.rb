@@ -131,15 +131,19 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
       properties.each do |key, property|
         next if property.nil?
 
+        schema = self.class.new(property, options.merge(:nested => true))
+
         output.tag(:li) do |t|
           tags = build do |tags|
-            tags.tag(:span, "[required]", :class => 'required') if nested? && required?
-            tags.tag(:span, "[#{format}]", :class => 'format') if format
-            tags.tag(:span, "[#{type_html}]", :class => 'type') if type_html
+            tags.tag(:span, "required", :class => 'required') if schema.nested? && schema.required?
+            tags.puts " "
+            tags.tag(:span, "#{schema.format}", :class => 'format') if schema.format
+            tags.puts " "
+            tags.tag(:span, "#{schema.type_html}", :class => 'type') if schema.type_html
           end
 
-          t.puts(tag_with_anchor('span', "<tt>%s</tt> - #{description} #{tags}" % key, schema_slug(key, property)))
-          t.puts(self.class.new(property, options.merge(:nested => true)).to_html)
+          t.puts(tag_with_anchor('span', "<tt>%s</tt> - #{schema.description} #{tags}" % key, schema_slug(key, property)))
+          t.puts(schema.to_html)
         end
       end
     end
