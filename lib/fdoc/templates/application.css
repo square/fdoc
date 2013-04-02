@@ -29,7 +29,7 @@ a.anchor.active::before {
   background: white;
   margin: 10px auto;
   width: 900px;
-  border: 4px #ccc solid;
+  border: 2px #ccc solid;
 }
 
 #content {
