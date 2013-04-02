@@ -18,7 +18,7 @@ html_options = {
 }
 
 def mkdir(dirname)
-  `mkdir -p #{dirname}` unless File.directory?(dirname)
+  `mkdir -p "#{dirname}"` unless File.directory?(dirname)
 end
 
 def cp(from, to)
