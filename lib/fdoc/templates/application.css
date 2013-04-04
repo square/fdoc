@@ -21,7 +21,6 @@ a.anchor { color: inherit; }
 
 a.anchor:hover::before,
 a.anchor.active::before {
-  background: white;
   display: inline-block;
   position: absolute;
   content: '\0261E';
