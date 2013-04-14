@@ -1,3 +1,7 @@
 Gemfile.lock
 .rvmrc
+.rspec
+.ruby-version
+.ruby-gemset
 html
+tmp/
