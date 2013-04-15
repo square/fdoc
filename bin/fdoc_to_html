@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+$:<< File.expand_path("../lib", File.dirname(__FILE__))
+
+require "rubygems"
+require "fdoc"
+require "fdoc/cli"
+
+if ARGV.length < 2
+  abort "Usage: fdoc_to_html [fdoc_directory] [html_directory] (url_base_path)"
+end
+
+Fdoc::Cli.new([], {output: ARGV[1], url_base_path: ARGV[2]}).convert(ARGV.first)
