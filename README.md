@@ -82,11 +82,11 @@ end
 
 ### Outside a Rails App
 
-fdoc provides the `fdoc_to_html` script to transform a directory of `.fdoc` files into more human-readable HTML.
+fdoc provides the `fdoc convert` script to transform a directory of `.fdoc` files into more human-readable HTML.
 
 In this repo, try running:
 
-    bin/fdoc_to_html ./spec/fixtures ./html
+    bin/fdoc convert ./spec/fixtures --output=./html
 
 ## Example
 
