@@ -23,11 +23,12 @@ Gem::Specification.new do |s|
   s.files = Dir['{lib,spec}/**/*'] + %w(fdoc.gemspec Rakefile README.md Gemfile)
   s.test_files = Dir['spec/**/*']
   s.bindir        = "bin"
-  s.executables  << "fdoc_to_html"
+  s.executables  << "fdoc"
 
   s.add_dependency("json")
   s.add_dependency("json-schema", ">= 1.0.1")
   s.add_dependency("kramdown")
+  s.add_dependency("thor")
 
   s.add_development_dependency("rake")
   s.add_development_dependency("rspec", "~> 2.5")
