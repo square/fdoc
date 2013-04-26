@@ -10,4 +10,6 @@ if ARGV.length < 2
   abort "Usage: fdoc_to_html [fdoc_directory] [html_directory] (url_base_path)"
 end
 
+puts "Warning: fdoc_to_html is deprecated, see fdoc"
+
 Fdoc::Cli.new([], {output: ARGV[1], url_base_path: ARGV[2]}).convert(ARGV.first)
