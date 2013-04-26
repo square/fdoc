@@ -33,4 +33,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rspec", "~> 2.5")
   s.add_development_dependency("nokogiri")
   s.add_development_dependency("cane")
+  s.add_development_dependency("guard-rspec")
 end
