@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+$:<< File.expand_path("../lib", File.dirname(__FILE__))
+
+require "rubygems"
+require "fdoc"
+require "fdoc/cli"
+
+Fdoc::Cli.start
