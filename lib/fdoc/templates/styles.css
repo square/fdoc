@@ -61,7 +61,7 @@ tt, kbd, code {
   background: #eee;
   padding: .1em;
   border: 1pt solid #ddd;
-  white-space: pre-wrap;    
+  white-space: pre-wrap;
 }
 
 .endpoint-name {}

@@ -24,7 +24,7 @@ Endpoint filenames must match `*.fdoc`. The endpoints derive their API path from
 
 Given a VERB and a PATH, an endpoint *must* be named one of:
 
-- `PATH-VERB.fdoc` (flat style) 
+- `PATH-VERB.fdoc` (flat style)
 - `PATH/VERB.fdoc` (nested style)
 
 There is no one default that covers all cases, so fdoc offers two options. The flat style works for groups of one-off endpoints, while the nested style groups well for endpoints that can be grouped.
