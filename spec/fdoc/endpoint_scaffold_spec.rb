@@ -81,9 +81,9 @@ describe Fdoc::EndpointScaffold do
       subject.request_parameters["properties"].should have_key "with_symbol"
       subject.request_parameters["properties"].should_not have_key :with_symbol
       subject.request_parameters["properties"].should have_key "with_string"
-      subject.request_parameters["properties"].should_not have_key :with_string          
+      subject.request_parameters["properties"].should_not have_key :with_string
     end
-    
+
     it "uses strings (not symbols) for keys of nested hashes" do
       mixed_params = {
         "nested_object" => {
@@ -95,14 +95,14 @@ describe Fdoc::EndpointScaffold do
       subject.consume_request(mixed_params)
       subject.request_parameters["properties"]["nested_object"]["properties"].keys.sort.should == ["with_string", "with_symbol"]
     end
-    
+
     it "uses strings (not symbols) for nested hashes inside arrays" do
       mixed_params = {
         "nested_array" => [
           {
             :with_symbol => false,
             "with_string" => true
-          }            
+          }
         ]
       }
 
@@ -214,7 +214,7 @@ describe Fdoc::EndpointScaffold do
         subject.response_parameters["properties"].should have_key "with_symbol"
         subject.response_parameters["properties"].should_not have_key :with_symbol
         subject.response_parameters["properties"].should have_key "with_string"
-        subject.response_parameters["properties"].should_not have_key :with_string          
+        subject.response_parameters["properties"].should_not have_key :with_string
       end
 
       it "produces a valid JSON schema for the response" do
