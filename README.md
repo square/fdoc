@@ -88,6 +88,14 @@ In this repo, try running:
 
     bin/fdoc convert ./spec/fixtures --output=./html
 
+```
+Options:
+  -o, [--output=OUTPUT]                # Output path
+  -u, [--url-base-path=URL_BASE_PATH]  # URL base path
+  -f, [--format=FORMAT]                # Format in html or markdown, defaults to html
+                                       # Default: html
+```
+
 ## Example
 
 `.fdoc` files are YAML files based on [JSON schema][json_schema] to describe API endpoints. They derive their endpoint path and verb from their filename.
