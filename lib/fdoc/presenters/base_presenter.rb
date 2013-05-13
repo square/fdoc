@@ -1,6 +1,7 @@
 require 'erb'
 require 'kramdown'
 require 'json'
+require 'forwardable'
 
 # BasePresenters assist in generating Html for fdoc classes.
 # BasePresenters is an abstract class with a lot of helper methods
@@ -40,6 +41,8 @@ class Fdoc::BasePresenter
   end
 
   def index_path(subdirectory = "")
+    require 'debugger'
+    # debugger;1
     html_path = File.join(html_directory, subdirectory)
     if options[:static_html]
       File.join(html_path, 'index.html')

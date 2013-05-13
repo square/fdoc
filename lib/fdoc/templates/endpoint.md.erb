@@ -1,4 +1,4 @@
-# <%= render_erb('shared/endpoint_name.md.erb', endpoint_presenter.get_binding)  %>
+# <%= endpoint.verb -%> <%= base_path -%><%= path -%><%= "#{deprecated}" if deprecated? -%>
 
 <%= description %>
 
