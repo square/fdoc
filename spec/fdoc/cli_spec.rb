@@ -5,7 +5,7 @@ describe Fdoc::Cli do
   let(:temporary_path) { Dir.mktmpdir("fdoc-cli") }
   let(:fdoc_path) { File.expand_path("fdoc", temporary_path) }
   let(:html_path) { File.expand_path("html", temporary_path) }
-  let(:options) { {} }
+  let(:options) { { format: 'html' } }
 
   subject(:cli) { Fdoc::Cli.new([fdoc_path], options) }
 

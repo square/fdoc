@@ -13,7 +13,7 @@ class Fdoc::HtmlPresenter
     @options = options
   end
 
-  def render_erb(erb_name)
+  def render_erb(erb_name, binding = get_binding)
     template_path = File.join(File.dirname(__FILE__), "../templates", erb_name)
     template = ERB.new(File.read(template_path))
     template.result(binding)
@@ -25,6 +25,10 @@ class Fdoc::HtmlPresenter
     else
       nil
     end
+  end
+
+  def get_binding
+    binding
   end
 
   def render_json(json)

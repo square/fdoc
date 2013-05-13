@@ -11,7 +11,7 @@
     <div id="page">
       <div id="content">
         <h1>
-          <%= name %>
+          <%= render_erb('shared/endpoint_name.html.erb', endpoint_presenter.get_binding)  %>
         </h1>
 
         <div id="nav">

@@ -1,33 +1,15 @@
 # HtmlPresenter for an Endpoint
 class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
-  attr_accessor :service_presenter, :endpoint
+  attr_accessor :service_presenter, :endpoint, :endpoint_presenter
 
   def initialize(endpoint, options = {})
     super(options)
     @endpoint = endpoint
+    @endpoint_presenter = self
   end
 
   def to_html
     render_erb('endpoint.html.erb')
-  end
-
-  def name
-    <<-EOS
-    <span class="endpoint-name #{@endpoint.deprecated? ? 'deprecated' : nil}">
-      <span class="verb">#{@endpoint.verb}</span>
-      <span class="root">#{zws_ify(@endpoint.service.base_path)}</span><span
-       class="path">#{zws_ify(@endpoint.path)}</span>
-      #{@endpoint.deprecated? ? '(deprecated)' : nil}
-    </span>
-    EOS
-  end
-
-  def name_as_link
-    <<-EOS
-    <a href="#{url}">
-      #{name}
-    </a>
-    EOS
   end
 
   def url(extension = ".html")
@@ -89,6 +71,22 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
 
   def example_response
     render_json(example_from_schema(endpoint.response_parameters))
+  end
+
+  def deprecated
+    deprecated? ? 'deprecated' : ''
+  end
+
+  def deprecated?
+    @endpoint.deprecated?
+  end
+
+  def base_path
+    zws_ify(@endpoint.service.base_path)
+  end
+
+  def path
+    zws_ify(@endpoint.path)
   end
 
   ATOMIC_TYPES = %w(string integer number boolean null)
