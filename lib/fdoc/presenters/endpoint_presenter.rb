@@ -70,11 +70,11 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def example_request
-    render_json(example_from_schema(endpoint.request_parameters))
+    Fdoc::JsonPresenter.new(example_from_schema(endpoint.request_parameters))
   end
 
   def example_response
-    render_json(example_from_schema(endpoint.response_parameters))
+    Fdoc::JsonPresenter.new(example_from_schema(endpoint.response_parameters))
   end
 
   def deprecated

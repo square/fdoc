@@ -5,7 +5,9 @@
 <% if show_request? %>
 ## Request
 ### Example Request
-<%= example_request %>
+```
+<%= example_request.to_markdown %>
+```
 
 ### Example Parameters
 <%= request_parameters.to_markdown %>
@@ -14,7 +16,9 @@
 ## Response
 <% if show_response? %>
 ### Example Response
-<%= example_response %>
+```
+<%= example_response.to_markdown %>
+```
 
 ### Response Parameters
 <%= response_parameters.to_markdown %>
