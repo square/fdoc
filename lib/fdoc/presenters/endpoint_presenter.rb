@@ -12,6 +12,10 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
     render_erb('endpoint.html.erb')
   end
 
+  def to_markdown
+    render_erb('endpoint.md.erb')
+  end
+
   def url(extension = ".html")
     '%s%s-%s%s' % [ options[:prefix], endpoint.path, endpoint.verb, extension ]
   end
@@ -44,11 +48,11 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   def request_parameters
     Fdoc::SchemaPresenter.new(endpoint.request_parameters,
       options.merge(:request => true)
-    ).to_html
+    )
   end
 
   def response_parameters
-    Fdoc::SchemaPresenter.new(endpoint.response_parameters, options).to_html
+    Fdoc::SchemaPresenter.new(endpoint.response_parameters, options)
   end
 
   def response_codes

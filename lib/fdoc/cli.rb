@@ -24,7 +24,7 @@ module Fdoc
     method_option :url_base_path, :aliases => "-u", :desc => "URL base path"
     method_option :format, :aliases => "-f", :desc => "Format in html or markdown, defaults to html", :default => "html"
     def convert(fdoc_path)
-      say_status nil, "Converting fdoc to HTML"
+      say_status nil, "Converting fdoc to #{options[:format]}"
 
       self.origin_path = File.expand_path(fdoc_path)
       raise Fdoc::NotFound.new(origin_path) unless has_valid_origin?
@@ -64,7 +64,6 @@ module Fdoc
 
       def convert_to_markdown
         in_root do
-          copy_file("styles.css")
           create_file("index.md", meta_presenter.to_markdown) if has_meta_service?
         end
 
@@ -74,7 +73,7 @@ module Fdoc
 
             service_presenter.endpoints.each do |endpoint_prefix_group|
               endpoint_prefix_group.each do |endpoint|
-                create_file(endpoint.url, endpoint.to_markdown)
+                create_file(endpoint.url('.md'), endpoint.to_markdown)
               end
             end
           end

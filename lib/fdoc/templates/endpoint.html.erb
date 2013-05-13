@@ -34,7 +34,7 @@
           <%= example_request %>
 
           <%= tag_with_anchor('h3', 'Request Parameters') %>
-          <%= request_parameters %>
+          <%= request_parameters.to_html %>
         <% end %>
 
         <%= tag_with_anchor('h2', 'Response') %>
@@ -43,7 +43,7 @@
           <%= example_response %>
 
           <%= tag_with_anchor('h3', 'Response Parameters') %>
-          <%= response_parameters %>
+          <%= response_parameters.to_html %>
         <% end %>
 
         <%= tag_with_anchor('h3', 'Response Codes') %>

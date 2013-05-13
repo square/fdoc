@@ -11,6 +11,10 @@ class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
     render_erb('service.html.erb')
   end
 
+  def to_markdown
+    render_erb('service.md.erb')
+  end
+
   def name_as_link(options = {})
     path = service.meta_service ? index_path(slug_name) : index_path
     '<a href="%s">%s %s</a>' % [ path, options[:prefix], service.name ]

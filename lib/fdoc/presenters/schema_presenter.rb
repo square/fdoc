@@ -58,6 +58,10 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     html.string
   end
 
+  def to_markdown
+    render_erb('schema.md.erb')
+  end
+
   def type
     t = @schema["type"]
     if t.kind_of? Array

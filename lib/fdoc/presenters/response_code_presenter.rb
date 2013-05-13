@@ -18,6 +18,12 @@ class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
     EOS
   end
 
+  def to_markdown
+    <<-EOS
+      __#{status}__: #{description_raw}
+    EOS
+  end
+
   def successful?
     response_code["successful"]
   end
@@ -27,6 +33,11 @@ class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
   end
 
   def description
-    render_markdown(response_code["description"])
+    render_markdown(description_raw)
   end
+
+  def description_raw
+    response_code["description"]
+  end
+
 end

@@ -15,7 +15,7 @@ class Fdoc::HtmlPresenter
 
   def render_erb(erb_name, binding = get_binding)
     template_path = File.join(File.dirname(__FILE__), "../templates", erb_name)
-    template = ERB.new(File.read(template_path))
+    template = ERB.new(File.read(template_path), nil, '-')
     template.result(binding)
   end
 
