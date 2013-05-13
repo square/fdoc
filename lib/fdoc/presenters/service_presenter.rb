@@ -63,7 +63,7 @@ class Fdoc::ServicePresenter < Fdoc::BasePresenter
     options[:render] ? render_markdown(service.discussion) : service.discussion
   end
 
-  def relative_meta_service_path(meta_service, file_name = nil)
+  def relative_meta_service_path(file_name = nil)
     service_path = service_dir.gsub(meta_service.meta_service_dir, "")
     service_path = service_path.count("/").times.map { "../" }.join
     if file_name

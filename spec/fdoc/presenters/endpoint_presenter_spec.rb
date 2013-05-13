@@ -22,7 +22,7 @@ describe Fdoc::EndpointPresenter do
   context "#to_markdown" do
     it "should generate markdown" do
       markdown = subject.to_markdown
-      markdown.should include "# GET [spec&#8203;/fixtures&#8203;/members&#8203;/list](spec/fixtures/members/list-GET.md)"
+      markdown.should include "# GET spec&#8203;/fixtures&#8203;/members&#8203;/list"
     end
   end
 
