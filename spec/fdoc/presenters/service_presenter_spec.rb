@@ -15,4 +15,12 @@ describe Fdoc::ServicePresenter do
       }.to_not raise_exception
     end
   end
+
+  context "#to_markdown" do
+    it "should generate markdown" do
+      markdown = subject.to_markdown
+      markdown.should include "* PUT [members&#8203;/add](members/add-PUT.md)"
+      markdown.should include "* POST [members&#8203;/draft](members/draft-POST.md)"
+    end
+  end
 end
