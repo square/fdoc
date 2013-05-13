@@ -57,9 +57,8 @@ class Fdoc::MetaServicePresenter < Fdoc::BasePresenter
     options[:render] ? render_markdown(meta_service.discussion) : meta_service.discussion
   end
 
-  def relative_service_path(service, file_name = nil)
-    service_path = service.service_dir.gsub(meta_service.meta_service_dir, "")
-    service_path = service_path.gsub(/^\//, "") # remove first /
+  def relative_service_path(service_presenter, file_name = nil)
+    service_path = service_presenter.slug_name
     if file_name
       service_path = File.join(service_path, file_name)
     end

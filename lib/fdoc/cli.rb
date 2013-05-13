@@ -34,10 +34,10 @@ module Fdoc
       raise Fdoc::NotADirectory.new(output_path) unless has_valid_destination?
       say_status :inside, output_path
 
-      if options[:format] == 'html'
-        convert_to_html
-      else
+      if options[:format] == 'markdown'
         convert_to_markdown
+      else
+        convert_to_html
       end
     end
 

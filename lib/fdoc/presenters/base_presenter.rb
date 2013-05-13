@@ -41,8 +41,6 @@ class Fdoc::BasePresenter
   end
 
   def index_path(subdirectory = "")
-    require 'debugger'
-    # debugger;1
     html_path = File.join(html_directory, subdirectory)
     if options[:static_html]
       File.join(html_path, 'index.html')
