@@ -1,5 +1,5 @@
-# HtmlPresenter for Fdoc::MetaService
-class Fdoc::MetaServicePresenter < Fdoc::HtmlPresenter
+# BasePresenter for Fdoc::MetaService
+class Fdoc::MetaServicePresenter < Fdoc::BasePresenter
   attr_reader :meta_service
 
   def initialize(meta_service, options = {})

@@ -1,5 +1,5 @@
-# An HtmlPresenter for ResponseCodes
-class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
+# An BasePresenter for ResponseCodes
+class Fdoc::ResponseCodePresenter < Fdoc::BasePresenter
   attr_reader :response_code
 
   def initialize(response_code, options)

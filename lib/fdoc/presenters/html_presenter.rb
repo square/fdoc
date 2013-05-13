@@ -2,11 +2,11 @@ require 'erb'
 require 'kramdown'
 require 'json'
 
-# HtmlPresenters assist in generating Html for fdoc classes.
-# HtmlPresenters is an abstract class with a lot of helper methods
+# BasePresenters assist in generating Html for fdoc classes.
+# BasePresenters is an abstract class with a lot of helper methods
 # for URLs and common text styling tasks (like #render_markdown
 # and #render_json)
-class Fdoc::HtmlPresenter
+class Fdoc::BasePresenter
   attr_reader :options
 
   def initialize(options = {})

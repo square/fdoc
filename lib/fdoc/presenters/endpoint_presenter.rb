@@ -1,5 +1,5 @@
-# HtmlPresenter for an Endpoint
-class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
+# BasePresenter for an Endpoint
+class Fdoc::EndpointPresenter < Fdoc::BasePresenter
   attr_accessor :service_presenter, :endpoint, :endpoint_presenter
 
   def initialize(endpoint, options = {})

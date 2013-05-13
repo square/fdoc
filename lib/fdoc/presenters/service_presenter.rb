@@ -1,5 +1,5 @@
-# An HtmlPresenter for Fdoc::Service
-class Fdoc::ServicePresenter < Fdoc::HtmlPresenter
+# An BasePresenter for Fdoc::Service
+class Fdoc::ServicePresenter < Fdoc::BasePresenter
   attr_reader :service
 
   def initialize(service, options = {})
