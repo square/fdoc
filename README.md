@@ -24,6 +24,12 @@ Tell fdoc where to look for `.fdoc` files. By default, fdoc will look in `docs/f
 require 'fdoc'
 
 Fdoc.service_path = "path/to/your/fdocs"
+
+# Configure how Fdoc decides a successful response
+Fdoc.decide_success_with do |response, status|
+ status.to_i < 400
+end
+
 ```
 
 fdoc is built to work around controller specs in rspec, and provides `Fdoc::SpecWatcher` as a mixin. Make sure to include it *inside* your top level describe.
