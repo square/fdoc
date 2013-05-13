@@ -1,9 +1,9 @@
-# <%= @service.name %>
-<% if @service.meta_service %>
-### &#187; <%= "[#{@service.meta_service.name}](#{index_path})" %>
+# <%= name %>
+<% if meta_service %>
+### &#187; <%= "[#{meta_service.name}](#{relative_meta_service_path(meta_service, "index.md")})" %>
 <% end %>
 
-<%= description %>
+<%= description(render: false) %>
 
 <% endpoints.each do |endpoint_ary| %>
 ### <%= endpoint_ary.first.prefix %>
@@ -14,5 +14,5 @@
 
 <% if discussion %>
 ## Discussion
-<%= discussion %>
+<%= discussion(render: false) %>
 <% end %>

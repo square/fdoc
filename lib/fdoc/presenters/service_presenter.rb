@@ -2,6 +2,11 @@
 class Fdoc::ServicePresenter < Fdoc::BasePresenter
   attr_reader :service
 
+  extend Forwardable
+
+  def_delegators :service, :name, :service_dir, :meta_service
+
+
   def initialize(service, options = {})
     super(options)
     @service = service
@@ -50,11 +55,21 @@ class Fdoc::ServicePresenter < Fdoc::BasePresenter
     @endpoints
   end
 
-  def description
-    render_markdown(service.description)
+  def description(options = {render: true})
+    options[:render] ? render_markdown(service.description) : service.description
   end
 
-  def discussion
-    render_markdown(service.discussion)
+  def discussion(options = {render: true})
+    options[:render] ? render_markdown(service.discussion) : service.discussion
   end
+
+  def relative_meta_service_path(meta_service, file_name = nil)
+    service_path = service_dir.gsub(meta_service.meta_service_dir, "")
+    service_path = service_path.count("/").times.map { "../" }.join
+    if file_name
+      service_path = File.join(service_path, file_name)
+    end
+    service_path
+  end
+
 end

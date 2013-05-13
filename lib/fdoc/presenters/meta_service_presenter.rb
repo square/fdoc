@@ -1,14 +1,25 @@
 # BasePresenter for Fdoc::MetaService
 class Fdoc::MetaServicePresenter < Fdoc::BasePresenter
   attr_reader :meta_service
+  extend Forwardable
+
+  def_delegators :meta_service, :name, :meta_service_dir
 
   def initialize(meta_service, options = {})
     super(options)
     @meta_service = meta_service
   end
 
+  def name
+    meta_service.name
+  end
+
   def to_html
     render_erb('meta_service.html.erb')
+  end
+
+  def to_markdown
+    render_erb('meta_service.md.erb')
   end
 
   def services
@@ -38,12 +49,21 @@ class Fdoc::MetaServicePresenter < Fdoc::BasePresenter
     @endpoints
   end
 
-  def description
-    render_markdown(meta_service.description)
+  def description(options = {render: true})
+    options[:render] ? render_markdown(meta_service.description) : meta_service.description
   end
 
-  def discussion
-    render_markdown(meta_service.discussion)
+  def discussion(options = {render: true})
+    options[:render] ? render_markdown(meta_service.discussion) : meta_service.discussion
+  end
+
+  def relative_service_path(service, file_name = nil)
+    service_path = service.service_dir.gsub(meta_service.meta_service_dir, "")
+    service_path = service_path.gsub(/^\//, "") # remove first /
+    if file_name
+      service_path = File.join(service_path, file_name)
+    end
+    service_path
   end
 
   private
