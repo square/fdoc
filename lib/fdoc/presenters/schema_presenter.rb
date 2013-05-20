@@ -76,6 +76,19 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     end
   end
 
+  def item_html
+    html do |output|
+      output.tag(:span, 'Deprecated', :class => 'deprecated') if deprecated?
+      unformatted_keys.each do |key|
+        output.tag(:li, "#{key}: #{@schema[key]}")
+      end
+
+      output.puts(enum_html)
+      output.puts(items_html)
+      output.puts(properties_html)
+    end
+  end
+
   def type_html
     if type.kind_of?(Array)
       html do |output|
@@ -110,16 +123,13 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     return unless items = @schema["items"]
 
     html do |output|
-      output.tag(:li) do
-        sub_options = options.merge(:nested => true)
-
-        if items.kind_of?(Array)
-          items.compact.map do |item|
-            self.class.new(item, sub_options).to_html
-          end.join
-        else
-          self.class.new(items, sub_options).to_html
+      sub_options = options.merge(:nested => true)
+      if items.kind_of?(Array)
+        items.compact.each do |item|
+          output.tag(:li, self.class.new(item, sub_options).item_html)
         end
+      else
+        output.puts(self.class.new(items, sub_options).item_html)
       end
     end
   end
