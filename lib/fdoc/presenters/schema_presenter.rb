@@ -110,15 +110,16 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     return unless items = @schema["items"]
 
     html do |output|
-      output.tag(:li) do
+      output.tag(:li) do |list|
+        list.puts('Items')
         sub_options = options.merge(:nested => true)
 
         if items.kind_of?(Array)
-          items.compact.map do |item|
-            self.class.new(item, sub_options).to_html
-          end.join
+          items.compact.each do |item|
+            list.puts(self.class.new(item, sub_options).to_html)
+          end
         else
-          self.class.new(items, sub_options).to_html
+          list.puts(self.class.new(items, sub_options).to_html)
         end
       end
     end
