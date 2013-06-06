@@ -49,11 +49,11 @@ class Fdoc::MetaServicePresenter < Fdoc::BasePresenter
     @endpoints
   end
 
-  def description(options = {render: true})
+  def description(options = {:render => true})
     options[:render] ? render_markdown(meta_service.description) : meta_service.description
   end
 
-  def discussion(options = {render: true})
+  def discussion(options = {:render => true})
     options[:render] ? render_markdown(meta_service.discussion) : meta_service.discussion
   end
 

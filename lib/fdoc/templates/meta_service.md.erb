@@ -1,6 +1,6 @@
 # <%= name %>
 
-<%= description(render: false) %>
+<%= description(:render => false) %>
 
 <% services.each do |serv| %>
   * <%= "[#{serv.name}](#{relative_service_path(serv, "index.md")})" %>
@@ -16,5 +16,5 @@
 
 <% if discussion %>
 ## Discussion
-<%= discussion(render: false) %>
+<%= discussion(:render => false) %>
 <% end %>

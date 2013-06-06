@@ -55,11 +55,11 @@ class Fdoc::ServicePresenter < Fdoc::BasePresenter
     @endpoints
   end
 
-  def description(options = {render: true})
+  def description(options = {:render => true})
     options[:render] ? render_markdown(service.description) : service.description
   end
 
-  def discussion(options = {render: true})
+  def discussion(options = {:render => true})
     options[:render] ? render_markdown(service.discussion) : service.discussion
   end
 

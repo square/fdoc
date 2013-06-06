@@ -74,17 +74,17 @@ class Fdoc::SchemaPresenter < Fdoc::BasePresenter
       md << "\n#{prefix}* Items"
       if items.kind_of? Array
         item.compact.each do |item|
-          md << Fdoc::SchemaPresenter.new(item, options.merge(nested: true)).to_markdown(prefix + "\t")
+          md << Fdoc::SchemaPresenter.new(item, options.merge(:nested => true)).to_markdown(prefix + "\t")
         end
       else
-        md << Fdoc::SchemaPresenter.new(@schema["items"], options.merge(nested: true)).to_markdown(prefix + "\t")
+        md << Fdoc::SchemaPresenter.new(@schema["items"], options.merge(:nested => true)).to_markdown(prefix + "\t")
       end
     end
     if properties = @schema["properties"]
       properties.each do |key, property|
         next if property.nil?
         md << "\n#{prefix}* __#{key}__:"
-        md << Fdoc::SchemaPresenter.new(property, options.merge(nested: true)).to_markdown(prefix + "\t")
+        md << Fdoc::SchemaPresenter.new(property, options.merge(:nested => true)).to_markdown(prefix + "\t")
       end
     end
     md.string

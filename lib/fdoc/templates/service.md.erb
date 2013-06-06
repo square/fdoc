@@ -3,7 +3,7 @@
 ### &#187; <%= "[#{meta_service.name}](#{relative_meta_service_path("index.md")})" %>
 <% end %>
 
-<%= description(render: false) %>
+<%= description(:render => false) %>
 
 <% endpoints.each do |endpoint_ary| %>
 ### <%= endpoint_ary.first.prefix %>
@@ -14,5 +14,5 @@
 
 <% if discussion %>
 ## Discussion
-<%= discussion(render: false) %>
+<%= discussion(:render => false) %>
 <% end %>

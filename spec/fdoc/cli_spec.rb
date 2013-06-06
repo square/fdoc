@@ -6,7 +6,7 @@ describe Fdoc::Cli do
   let(:fdoc_path) { File.expand_path("fdoc", temporary_path) }
   let(:html_path) { File.expand_path("html", temporary_path) }
   let(:markdown_path) { File.expand_path("markdown", temporary_path) }
-  let(:options) { { format: 'html' } }
+  let(:options) { { :format => 'html' } }
 
   subject(:cli) { Fdoc::Cli.new([fdoc_path], options) }
 
@@ -151,7 +151,7 @@ describe Fdoc::Cli do
       end
 
       context "output Markdown" do
-        let(:options) { { format: 'markdown' } }
+        let(:options) { { :format => 'markdown' } }
 
         context "when there is no meta service fdoc" do
           let(:root_file) { File.expand_path("index.md", markdown_path) }
