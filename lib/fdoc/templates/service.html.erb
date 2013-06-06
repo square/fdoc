@@ -30,9 +30,11 @@
           <%= tag_with_anchor('h3', endpoint_ary.first.prefix) %>
           <ul>
           <% endpoint_ary.each do |endpoint| %>
-            <a href="<%= endpoint.url %>">
-              <%= render_erb("shared/endpoint_name.html.erb", endpoint.get_binding) %>
-            </a>
+            <li>
+              <a href="<%= endpoint.url %>">
+                <%= render_erb("shared/endpoint_name.html.erb", endpoint.get_binding) %>
+              </a>
+            </li>
           <% end %>
           </ul>
         <% end %>
