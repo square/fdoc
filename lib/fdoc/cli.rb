@@ -42,7 +42,6 @@ module Fdoc
     end
 
     no_tasks do
-
       def convert_to_html
         in_root do
           copy_file("styles.css")

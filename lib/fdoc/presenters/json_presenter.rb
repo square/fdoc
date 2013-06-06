@@ -28,5 +28,4 @@ class Fdoc::JsonPresenter
       json
     end
   end
-
 end

@@ -34,6 +34,5 @@ describe Fdoc::MetaServicePresenter do
     it "should join relative path if passed in a filename" do
       expect(subject.relative_service_path(service, 'index.md')).to eq "members_api/index.md"
     end
-
   end
 end
