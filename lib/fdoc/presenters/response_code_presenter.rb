@@ -19,9 +19,7 @@ class Fdoc::ResponseCodePresenter < Fdoc::BasePresenter
   end
 
   def to_markdown
-    <<-EOS
-      __#{status}__: #{description_raw}
-    EOS
+    "__#{status}__: #{description_raw}"
   end
 
   def successful?
