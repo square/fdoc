@@ -77,10 +77,6 @@ class Fdoc::EndpointPresenter < Fdoc::BasePresenter
     Fdoc::JsonPresenter.new(example_from_schema(endpoint.response_parameters))
   end
 
-  def deprecated
-    deprecated? ? 'deprecated' : ''
-  end
-
   def deprecated?
     @endpoint.deprecated?
   end
