@@ -31,7 +31,9 @@
           <ul>
           <% endpoint_ary.each do |endpoint| %>
             <li>
-              <%= endpoint.name_as_link %>
+              <a href="<%= endpoint.url %>">
+                <%= render_erb("shared/endpoint_name.html.erb", endpoint.get_binding) %>
+              </a>
             </li>
           <% end %>
           </ul>

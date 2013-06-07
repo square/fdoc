@@ -1,21 +1,22 @@
 require 'erb'
 require 'kramdown'
 require 'json'
+require 'forwardable'
 
-# HtmlPresenters assist in generating Html for fdoc classes.
-# HtmlPresenters is an abstract class with a lot of helper methods
+# BasePresenters assist in generating Html for fdoc classes.
+# BasePresenters is an abstract class with a lot of helper methods
 # for URLs and common text styling tasks (like #render_markdown
 # and #render_json)
-class Fdoc::HtmlPresenter
+class Fdoc::BasePresenter
   attr_reader :options
 
   def initialize(options = {})
     @options = options
   end
 
-  def render_erb(erb_name)
+  def render_erb(erb_name, binding = get_binding)
     template_path = File.join(File.dirname(__FILE__), "../templates", erb_name)
-    template = ERB.new(File.read(template_path))
+    template = ERB.new(File.read(template_path), nil, '-')
     template.result(binding)
   end
 
@@ -27,17 +28,8 @@ class Fdoc::HtmlPresenter
     end
   end
 
-  def render_json(json)
-    if json.kind_of? String
-      '<tt>&quot;%s&quot;</tt>' % json.gsub(/\"/, 'quot;')
-    elsif json.kind_of?(Numeric) ||
-          json.kind_of?(TrueClass) ||
-          json.kind_of?(FalseClass)
-      '<tt>%s</tt>' % json
-    elsif json.kind_of?(Hash) ||
-          json.kind_of?(Array)
-      '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
-    end
+  def get_binding
+    binding
   end
 
   def html_directory

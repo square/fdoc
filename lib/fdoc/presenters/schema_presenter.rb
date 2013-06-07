@@ -1,6 +1,6 @@
-# An HtmlPresenter for a JSON Schema fragment. Like most JSON
+# An BasePresenter for a JSON Schema fragment. Like most JSON
 # schema things, has a tendency to recurse.
-class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
+class Fdoc::SchemaPresenter < Fdoc::BasePresenter
   FORMATTED_KEYS = %w(
     description
     type
@@ -58,6 +58,38 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
     html.string
   end
 
+  def to_markdown(prefix = "")
+    md = StringIO.new
+    md << 'Deprecated' if deprecated?
+    md << "\n#{@schema["description"]}"
+    md << "\n#{prefix}* __Required__: #{required?}" if nested?
+    md << "\n#{prefix}* __Type__: #{type}" if type
+    md << "\n#{prefix}* __Format__: #{format}" if format
+    md << "\n#{prefix}* __Example__: <tt>#{example.to_markdown}</tt>" if example
+    md << "\n#{@schema['enum']}"
+    (@schema.keys - Fdoc::SchemaPresenter::FORMATTED_KEYS).each do |key|
+      md << "\n#{prefix}* %{key} %{@schema[key]}"
+    end
+    if items = @schema["items"]
+      md << "\n#{prefix}* Items"
+      if items.kind_of? Array
+        item.compact.each do |item|
+          md << Fdoc::SchemaPresenter.new(item, options.merge(:nested => true)).to_markdown(prefix + "\t")
+        end
+      else
+        md << Fdoc::SchemaPresenter.new(@schema["items"], options.merge(:nested => true)).to_markdown(prefix + "\t")
+      end
+    end
+    if properties = @schema["properties"]
+      properties.each do |key, property|
+        next if property.nil?
+        md << "\n#{prefix}* __#{key}__:"
+        md << Fdoc::SchemaPresenter.new(property, options.merge(:nested => true)).to_markdown(prefix + "\t")
+      end
+    end
+    md.string
+  end
+
   def type
     t = @schema["type"]
     if t.kind_of? Array
@@ -82,7 +114,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
   def example
     return unless e = @schema["example"]
 
-    render_json(e)
+    Fdoc::JsonPresenter.new(e)
   end
 
   def deprecated?

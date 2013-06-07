@@ -1,33 +1,19 @@
-# HtmlPresenter for an Endpoint
-class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
-  attr_accessor :service_presenter, :endpoint
+# BasePresenter for an Endpoint
+class Fdoc::EndpointPresenter < Fdoc::BasePresenter
+  attr_accessor :service_presenter, :endpoint, :endpoint_presenter
 
   def initialize(endpoint, options = {})
     super(options)
     @endpoint = endpoint
+    @endpoint_presenter = self
   end
 
   def to_html
     render_erb('endpoint.html.erb')
   end
 
-  def name
-    <<-EOS
-    <span class="endpoint-name #{@endpoint.deprecated? ? 'deprecated' : nil}">
-      <span class="verb">#{@endpoint.verb}</span>
-      <span class="root">#{zws_ify(@endpoint.service.base_path)}</span><span
-       class="path">#{zws_ify(@endpoint.path)}</span>
-      #{@endpoint.deprecated? ? '(deprecated)' : nil}
-    </span>
-    EOS
-  end
-
-  def name_as_link
-    <<-EOS
-    <a href="#{url}">
-      #{name}
-    </a>
-    EOS
+  def to_markdown
+    render_erb('endpoint.md.erb')
   end
 
   def url(extension = ".html")
@@ -62,11 +48,11 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   def request_parameters
     Fdoc::SchemaPresenter.new(endpoint.request_parameters,
       options.merge(:request => true)
-    ).to_html
+    )
   end
 
   def response_parameters
-    Fdoc::SchemaPresenter.new(endpoint.response_parameters, options).to_html
+    Fdoc::SchemaPresenter.new(endpoint.response_parameters, options)
   end
 
   def response_codes
@@ -84,11 +70,23 @@ class Fdoc::EndpointPresenter < Fdoc::HtmlPresenter
   end
 
   def example_request
-    render_json(example_from_schema(endpoint.request_parameters))
+    Fdoc::JsonPresenter.new(example_from_schema(endpoint.request_parameters))
   end
 
   def example_response
-    render_json(example_from_schema(endpoint.response_parameters))
+    Fdoc::JsonPresenter.new(example_from_schema(endpoint.response_parameters))
+  end
+
+  def deprecated?
+    @endpoint.deprecated?
+  end
+
+  def base_path
+    zws_ify(@endpoint.service.base_path)
+  end
+
+  def path
+    zws_ify(@endpoint.path)
   end
 
   ATOMIC_TYPES = %w(string integer number boolean null)

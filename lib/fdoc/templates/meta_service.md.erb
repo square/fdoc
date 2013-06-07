@@ -1,0 +1,20 @@
+# <%= name %>
+
+<%= description(:render => false) %>
+
+<% services.each do |serv| %>
+  * <%= "[#{serv.name}](#{relative_service_path(serv, "index.md")})" %>
+<% end %>
+
+## Endpoints
+<% endpoints.each do |endpoint_ary| %>
+### <%= endpoint_ary.first.prefix %>
+<% endpoint_ary.each do |endpoint| %>
+* <%= render_erb("shared/endpoint_name.md.erb", endpoint.get_binding) %>
+<% end -%>
+<% end -%>
+
+<% if discussion %>
+## Discussion
+<%= discussion(:render => false) %>
+<% end %>

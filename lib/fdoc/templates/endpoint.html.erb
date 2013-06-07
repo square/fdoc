@@ -11,7 +11,7 @@
     <div id="page">
       <div id="content">
         <h1>
-          <%= name %>
+          <%= render_erb('shared/endpoint_name.html.erb', endpoint_presenter.get_binding)  %>
         </h1>
 
         <div id="nav">
@@ -31,19 +31,19 @@
           <%= tag_with_anchor('h2', 'Request') %>
 
           <%= tag_with_anchor('h3', 'Example Request') %>
-          <%= example_request %>
+          <%= example_request.to_html %>
 
           <%= tag_with_anchor('h3', 'Request Parameters') %>
-          <%= request_parameters %>
+          <%= request_parameters.to_html %>
         <% end %>
 
         <%= tag_with_anchor('h2', 'Response') %>
         <% if show_response? %>
           <%= tag_with_anchor('h3', 'Example Response') %>
-          <%= example_response %>
+          <%= example_response.to_html %>
 
           <%= tag_with_anchor('h3', 'Response Parameters') %>
-          <%= response_parameters %>
+          <%= response_parameters.to_html %>
         <% end %>
 
         <%= tag_with_anchor('h3', 'Response Codes') %>
