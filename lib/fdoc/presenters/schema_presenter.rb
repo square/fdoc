@@ -40,7 +40,7 @@ class Fdoc::SchemaPresenter < Fdoc::BasePresenter
       html << '<li>Required: %s</li>' % required? if nested?
       html << '<li>Type: %s</li>' % type if type
       html << '<li>Format: %s</li>' % format if format
-      html << '<li>Example: %s</li>' % example if example
+      html << '<li>Example: %s</li>' % example.to_html if example
       html << enum_html
 
       (@schema.keys - FORMATTED_KEYS).each do |key|
