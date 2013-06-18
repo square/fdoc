@@ -1,0 +1,18 @@
+# <%= name %>
+<% if meta_service %>
+### &#187; <%= "[#{meta_service.name}](#{relative_meta_service_path("index.md")})" %>
+<% end %>
+
+<%= description(:render => false) %>
+
+<% endpoints.each do |endpoint_ary| %>
+### <%= endpoint_ary.first.prefix %>
+  <% endpoint_ary.each do |endpoint| %>
+  * <%= render_erb("shared/endpoint_name.md.erb", endpoint.get_binding) %>
+  <% end %>
+<% end %>
+
+<% if discussion %>
+## Discussion
+<%= discussion(:render => false) %>
+<% end %>

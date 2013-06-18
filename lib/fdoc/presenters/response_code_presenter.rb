@@ -1,5 +1,5 @@
-# An HtmlPresenter for ResponseCodes
-class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
+# An BasePresenter for ResponseCodes
+class Fdoc::ResponseCodePresenter < Fdoc::BasePresenter
   attr_reader :response_code
 
   def initialize(response_code, options)
@@ -18,6 +18,10 @@ class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
     EOS
   end
 
+  def to_markdown
+    "__#{status}__: #{description_raw}"
+  end
+
   def successful?
     response_code["successful"]
   end
@@ -27,6 +31,11 @@ class Fdoc::ResponseCodePresenter < Fdoc::HtmlPresenter
   end
 
   def description
-    render_markdown(response_code["description"])
+    render_markdown(description_raw)
   end
+
+  def description_raw
+    response_code["description"]
+  end
+
 end

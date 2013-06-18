@@ -5,7 +5,7 @@ class Fdoc::MetaService
   attr_reader :meta_service_dir
 
   def initialize(meta_service_dir)
-    @meta_service_dir = meta_service_dir
+    @meta_service_dir = File.expand_path(meta_service_dir)
 
     service_path = Dir["#{meta_service_dir}/*.fdoc.meta"].first
     @schema = if service_path

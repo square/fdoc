@@ -5,7 +5,8 @@ describe Fdoc::Cli do
   let(:temporary_path) { Dir.mktmpdir("fdoc-cli") }
   let(:fdoc_path) { File.expand_path("fdoc", temporary_path) }
   let(:html_path) { File.expand_path("html", temporary_path) }
-  let(:options) { {} }
+  let(:markdown_path) { File.expand_path("markdown", temporary_path) }
+  let(:options) { { :format => 'html' } }
 
   subject(:cli) { Fdoc::Cli.new([fdoc_path], options) }
 
@@ -58,15 +59,7 @@ describe Fdoc::Cli do
         end.to change { File.exist?(styles_css_path) }.from(false)
       end
 
-      context "when there is a meta service fdoc" do
-        let(:root_html) { File.expand_path("index.html", html_path) }
-        let(:members_html) do
-          File.expand_path("members_api/index.html", html_path)
-        end
-        let(:endpoint_html) do
-          File.expand_path("members_api/add-PUT.html", html_path)
-        end
-
+      shared_examples "when there is a meta service fdoc" do
         before { with_fixture("sample_group.fdoc.meta") }
 
         context "when no service fdoc exists" do
@@ -76,41 +69,37 @@ describe Fdoc::Cli do
         context "when a service fdoc exists" do
           before { with_fixture("members/members.fdoc.service") }
 
-          it "creates a root-level html file" do
+          it "creates a root-level file" do
             expect do
               cli.convert(fdoc_path)
-            end.to change { File.exist?(root_html) }.from(false)
+            end.to change { File.exist?(root_file) }.from(false)
           end
 
-          it "writes the service-level html file" do
+          it "writes the service-level file" do
             expect do
               cli.convert(fdoc_path)
-            end.to change { File.exist?(members_html) }.from(false)
+            end.to change { File.exist?(members_file) }.from(false)
           end
 
           context "when an endpoint fdoc exists" do
             before { with_fixture("members/add-PUT.fdoc") }
 
-            it "writes the endpoint html file" do
+            it "writes the endpoint file" do
               expect do
                 cli.convert(fdoc_path)
-              end.to change { File.exist?(endpoint_html) }.from(false)
+              end.to change { File.exist?(endpoint_file) }.from(false)
             end
           end
         end
       end
 
-      context "when there is no meta service fdoc" do
-        let(:root_html) { File.expand_path("index.html", html_path) }
-        let(:endpoint_html) do
-          File.expand_path("add-PUT.html", html_path)
-        end
+      shared_examples "when there is no meta service fdoc" do
 
         context "when no service fdoc exists" do
           it "creates a dummy index" do
             expect do
               cli.convert(fdoc_path)
-            end.to change { File.exist?(root_html) }.from(false)
+            end.to change { File.exist?(root_file) }.from(false)
           end
         end
 
@@ -122,7 +111,7 @@ describe Fdoc::Cli do
           it "writes the service-level html file" do
             expect do
               cli.convert(fdoc_path)
-            end.to change { File.exist?(root_html) }.from(false)
+            end.to change { File.exist?(root_file) }.from(false)
           end
 
           context "when an endpoint fdoc exists" do
@@ -131,11 +120,60 @@ describe Fdoc::Cli do
             it "writes the endpoint html file" do
               expect do
                 cli.convert(fdoc_path)
-              end.to change { File.exist?(endpoint_html) }.from(false)
+              end.to change { File.exist?(endpoint_file) }.from(false)
             end
           end
         end
       end
+
+      context "output HTML" do
+
+        context "when there is no meta service fdoc" do
+          let(:root_file) { File.expand_path("index.html", html_path) }
+          let(:members_file) do
+            File.expand_path("members_api/index.html", html_path)
+          end
+          let(:endpoint_file) do
+            File.expand_path("members_api/add-PUT.html", html_path)
+          end
+
+          it_behaves_like "when there is a meta service fdoc"
+        end
+
+        context "when there is no meta service fdoc" do
+          let(:root_file) { File.expand_path("index.html", html_path) }
+          let(:endpoint_file) do
+            File.expand_path("add-PUT.html", html_path)
+          end
+          it_behaves_like "when there is no meta service fdoc"
+        end
+
+      end
+
+      context "output Markdown" do
+        let(:options) { { :format => 'markdown' } }
+
+        context "when there is no meta service fdoc" do
+          let(:root_file) { File.expand_path("index.md", markdown_path) }
+          let(:members_file) do
+            File.expand_path("members_api/index.md", markdown_path)
+          end
+          let(:endpoint_file) do
+            File.expand_path("members_api/add-PUT.md", markdown_path)
+          end
+
+          it_behaves_like "when there is a meta service fdoc"
+        end
+
+        context "when there is no meta service fdoc" do
+          let(:root_file) { File.expand_path("index.md", markdown_path) }
+          let(:endpoint_file) do
+            File.expand_path("add-PUT.md", markdown_path)
+          end
+          it_behaves_like "when there is no meta service fdoc"
+        end
+      end
+
     end
   end
 

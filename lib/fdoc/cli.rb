@@ -19,11 +19,12 @@ module Fdoc
       File.expand_path("../templates", __FILE__)
     end
 
-    desc "convert FDOC_PATH", "Convert fdoc to HTML"
-    method_option :output, :aliases => "-o", :desc => "HTML output path"
+    desc "convert FDOC_PATH", "Convert fdoc to HTML or Markdowns"
+    method_option :output, :aliases => "-o", :desc => "Output path"
     method_option :url_base_path, :aliases => "-u", :desc => "URL base path"
+    method_option :format, :aliases => "-f", :desc => "Format in html or markdown, defaults to html", :default => "html"
     def convert(fdoc_path)
-      say_status nil, "Converting fdoc to HTML"
+      say_status nil, "Converting fdoc to #{options[:format]}"
 
       self.origin_path = File.expand_path(fdoc_path)
       raise Fdoc::NotFound.new(origin_path) unless has_valid_origin?
@@ -33,25 +34,51 @@ module Fdoc
       raise Fdoc::NotADirectory.new(output_path) unless has_valid_destination?
       say_status :inside, output_path
 
-      in_root do
-        copy_file("styles.css")
-        create_file("index.html", meta_presenter.to_html) if has_meta_service?
-      end
-
-      service_presenters.each do |service_presenter|
-        inside_service_presenter(service_presenter) do
-          create_file("index.html", service_presenter.to_html)
-
-          service_presenter.endpoints.each do |endpoint_prefix_group|
-            endpoint_prefix_group.each do |endpoint|
-              create_file(endpoint.url, endpoint.to_html)
-            end
-          end
-        end
+      if options[:format] == 'markdown'
+        convert_to_markdown
+      else
+        convert_to_html
       end
     end
 
     no_tasks do
+      def convert_to_html
+        in_root do
+          copy_file("styles.css")
+          create_file("index.html", meta_presenter.to_html) if has_meta_service?
+        end
+
+        service_presenters.each do |service_presenter|
+          inside_service_presenter(service_presenter) do
+            create_file("index.html", service_presenter.to_html)
+
+            service_presenter.endpoints.each do |endpoint_prefix_group|
+              endpoint_prefix_group.each do |endpoint|
+                create_file(endpoint.url, endpoint.to_html)
+              end
+            end
+          end
+        end
+      end
+
+      def convert_to_markdown
+        in_root do
+          create_file("index.md", meta_presenter.to_markdown) if has_meta_service?
+        end
+
+        service_presenters.each do |service_presenter|
+          inside_service_presenter(service_presenter) do
+            create_file("index.md", service_presenter.to_markdown)
+
+            service_presenter.endpoints.each do |endpoint_prefix_group|
+              endpoint_prefix_group.each do |endpoint|
+                create_file(endpoint.url('.md'), endpoint.to_markdown)
+              end
+            end
+          end
+        end
+      end
+
       def inside_service_presenter(service, &block)
         if has_meta_service?
           inside(service.slug_name, {:verbose => true}, &block)
@@ -65,7 +92,7 @@ module Fdoc
           if options[:output]
             File.expand_path(options[:output])
           else
-            File.expand_path("../html", origin_path)
+            File.expand_path("../#{options[:format]}", origin_path)
           end
       end
 

@@ -19,6 +19,13 @@ describe Fdoc::EndpointPresenter do
     end
   end
 
+  context "#to_markdown" do
+    it "should generate markdown" do
+      markdown = subject.to_markdown
+      markdown.should include "# GET spec&#8203;/fixtures&#8203;/members&#8203;/list"
+    end
+  end
+
   context "#example_from_schema" do
     example_schema_yaml = <<-EOS
     properties:

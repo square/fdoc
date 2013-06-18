@@ -1,0 +1,40 @@
+# <%= endpoint.verb -%> <%= base_path -%><%= path -%><%= "deprecated" if deprecated? -%>
+
+<%= description %>
+
+<% if show_request? %>
+## Request
+### Example Request
+```
+<%= example_request.to_markdown %>
+```
+
+### Example Parameters
+<%= request_parameters.to_markdown %>
+<% end %>
+
+## Response
+<% if show_response? %>
+### Example Response
+```
+<%= example_response.to_markdown %>
+```
+
+### Response Parameters
+<%= response_parameters.to_markdown %>
+<% end %>
+
+### Response Codes
+<% if !successful_response_codes.empty? %>
+#### Successful Response Codes
+<% successful_response_codes.each do |response_code| %>
+* <%= response_code.to_markdown %>
+<% end %>
+<% end %>
+
+<% if !successful_response_codes.empty? %>
+#### Failure Response Codes
+<% failure_response_codes.each do |response_code| %>
+* <%= response_code.to_markdown %>
+<% end %>
+<% end %>
