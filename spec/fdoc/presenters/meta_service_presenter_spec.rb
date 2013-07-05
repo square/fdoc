@@ -28,11 +28,11 @@ describe Fdoc::MetaServicePresenter do
     let(:service) { subject.services.first }
 
     it "returns relative path" do
-      expect(subject.relative_service_path(service)).to eq "members_api"
+      subject.relative_service_path(service).should == "members_api"
     end
 
     it "should join relative path if passed in a filename" do
-      expect(subject.relative_service_path(service, 'index.md')).to eq "members_api/index.md"
+      subject.relative_service_path(service, 'index.md').should == "members_api/index.md"
     end
   end
 end
