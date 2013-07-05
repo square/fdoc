@@ -8,7 +8,7 @@ describe Fdoc::Cli do
   let(:markdown_path) { File.expand_path("markdown", temporary_path) }
   let(:options) { { :format => 'html' } }
 
-  subject(:cli) { Fdoc::Cli.new([fdoc_path], options) }
+  subject { Fdoc::Cli.new([fdoc_path], options) }
 
   before { FileUtils.mkdir_p(fdoc_path) }
 
@@ -29,7 +29,7 @@ describe Fdoc::Cli do
 
       it "raises an exception" do
         expect do
-          cli.convert(fdoc_path)
+          subject.convert(fdoc_path)
         end.to raise_exception(Fdoc::NotFound)
       end
     end
@@ -38,7 +38,7 @@ describe Fdoc::Cli do
       context "when the destination does not exist" do
         it "makes a destination directory" do
           expect do
-            cli.convert(fdoc_path)
+            subject.convert(fdoc_path)
           end.to change { File.directory?(html_path) }.to(true)
         end
       end
@@ -48,14 +48,14 @@ describe Fdoc::Cli do
 
         it "raises an exception" do
           expect do
-            cli.convert(fdoc_path)
+            subject.convert(fdoc_path)
           end.to raise_exception(Fdoc::NotADirectory)
         end
       end
 
       it "copies the css to the destination" do
         expect do
-          cli.convert(fdoc_path)
+          subject.convert(fdoc_path)
         end.to change { File.exist?(styles_css_path) }.from(false)
       end
 
@@ -63,7 +63,7 @@ describe Fdoc::Cli do
         before { with_fixture("sample_group.fdoc.meta") }
 
         context "when no service fdoc exists" do
-          specify { expect { cli.convert(fdoc_path) }.to raise_error }
+          specify { expect { subject.convert(fdoc_path) }.to raise_error }
         end
 
         context "when a service fdoc exists" do
@@ -71,13 +71,13 @@ describe Fdoc::Cli do
 
           it "creates a root-level file" do
             expect do
-              cli.convert(fdoc_path)
+              subject.convert(fdoc_path)
             end.to change { File.exist?(root_file) }.from(false)
           end
 
           it "writes the service-level file" do
             expect do
-              cli.convert(fdoc_path)
+              subject.convert(fdoc_path)
             end.to change { File.exist?(members_file) }.from(false)
           end
 
@@ -86,7 +86,7 @@ describe Fdoc::Cli do
 
             it "writes the endpoint file" do
               expect do
-                cli.convert(fdoc_path)
+                subject.convert(fdoc_path)
               end.to change { File.exist?(endpoint_file) }.from(false)
             end
           end
@@ -98,7 +98,7 @@ describe Fdoc::Cli do
         context "when no service fdoc exists" do
           it "creates a dummy index" do
             expect do
-              cli.convert(fdoc_path)
+              subject.convert(fdoc_path)
             end.to change { File.exist?(root_file) }.from(false)
           end
         end
@@ -110,7 +110,7 @@ describe Fdoc::Cli do
 
           it "writes the service-level html file" do
             expect do
-              cli.convert(fdoc_path)
+              subject.convert(fdoc_path)
             end.to change { File.exist?(root_file) }.from(false)
           end
 
@@ -119,7 +119,7 @@ describe Fdoc::Cli do
 
             it "writes the endpoint html file" do
               expect do
-                cli.convert(fdoc_path)
+                subject.convert(fdoc_path)
               end.to change { File.exist?(endpoint_file) }.from(false)
             end
           end
@@ -260,7 +260,7 @@ describe Fdoc::Cli do
   end
 
   describe "#inside_service" do
-    let(:presenter) { cli.service_presenters.first }
+    let(:presenter) { subject.service_presenters.first }
 
     before do
       subject.origin_path = fdoc_path
@@ -274,7 +274,7 @@ describe Fdoc::Cli do
       end
 
       it "leaves the output directory" do
-        cli.inside_service_presenter(presenter) do
+        subject.inside_service_presenter(presenter) do
           Dir.pwd.should =~ %r|#{html_path}/members_api$|
         end
       end
@@ -286,7 +286,7 @@ describe Fdoc::Cli do
       end
 
       it "does not leave the output directory" do
-        cli.inside_service_presenter(presenter) do
+        subject.inside_service_presenter(presenter) do
           Dir.pwd.should =~ /#{html_path}$/
         end
       end
