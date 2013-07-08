@@ -4,84 +4,84 @@ requestParameters:
     toplevel_param:
       type: string
       description: A paramater as normal
-      required: Yes
+      required: yes
     optional_nested_array:
       type: array
-      required: No
+      required: no
       items:
         type: object
         properties:
           required_param:
-            required: Yes
+            required: yes
             description: It's required
             type: string
           optional_param:
-            required: Yes
+            required: yes
             description: It's optional
             type: string
     required_nested_array:
       type: array
-      required: Yes
+      required: yes
       items:
         type: object
         properties:
           required_param:
-            required: Yes
+            required: yes
             description: It's required
             type: string
           optional_param:
-            required: No
+            required: no
             description: It's optional
             type: string
           optional_second_nested_object:
-            required: No
+            required: no
             type: object
             description: It's a bug
             properties:
               required_param:
-                required: Yes
+                required: yes
                 description: It's required
                 type: string
               optional_param:
-                required: No
+                required: no
                 description: It's optional
                 type: string
-          
+
     optional_nested_object:
       type: object
-      required: No
+      required: no
       properties:
         required_param:
-          required: Yes
+          required: yes
           description: It's required
           type: string
         optional_param:
-          required: No
+          required: no
           description: It's optional
           type: string
     required_nested_object:
       type: object
-      required: Yes
+      required: yes
       properties:
         required_param:
-          required: Yes
+          required: yes
           description: It's required
           type: string
         optional_param:
-          required: No
+          required: no
           description: It's optional
           type: string
         optional_second_nested_object:
-          required: No
+          required: no
           type: object
           description: It's a bug
           properties:
             required_param:
-              required: Yes
+              required: yes
               description: It's required
               type: string
             optional_param:
-              required: No
+              required: no
               description: It's optional
               type: string
 
