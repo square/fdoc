@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.executables  << "fdoc_to_html"
 
   s.add_dependency("json")
-  s.add_dependency("json-schema", ">= 1.0.1")
+  s.add_dependency("json-schema", "< 2.0.0")
   s.add_dependency("kramdown")
 
   s.add_development_dependency("rake")
