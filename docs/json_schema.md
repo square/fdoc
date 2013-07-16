@@ -2,9 +2,9 @@
 
 ## Verification
 
-All the hard work of verifiying that inputs conform their respective schemas is done by [hoxworth][hoxworth]'s [JSON schema gem][json-schema-gem].
+All the hard work of verifying that inputs conform their respective schemas is done by [hoxworth][hoxworth]'s [JSON schema gem][json-schema-gem].
 
-We made added a small patch to help error messages be more descriptive, and it was [merged upstream][square-contribution]. It's a useful tool, and we like to contribute back anything we can.
+We added a small patch to help error messages be more descriptive, and it was [merged upstream][square-contribution]. It's a useful tool, and we like to contribute back anything we can.
 
 ## Undocumented Keys
 
@@ -13,9 +13,6 @@ In our usage, the most valuable part of API documentation is what keys are and w
 At Square, our desired behavior is throw an error when a new property is detected in the schema to verify, indicating the documentation needs updating.
 
 To achieve this, fdoc's verification methods will, in memory, modify schemas to default `additionalProperties` to `false` (unless specified).
-
-
-
 
 [hoxworth]: https://github.com/hoxworth/
 [json-schema-gem]: https://github.com/hoxworth/json-schema
