@@ -241,11 +241,20 @@ describe Fdoc::Cli do
 
   describe "#html_options" do
     let(:html_path) { "/a/great/place/to/keep/html"}
+    let(:template_path) { '/a/great/place/to/keep/templates' }
 
-    before { subject.destination_root = html_path }
+    before do
+      subject.origin_path = fdoc_path
+      subject.destination_root = html_path
+    end
 
     its(:html_options) { should include(:static_html => true) }
     its(:html_options) { should include(:html_directory => html_path) }
+
+    context "when a template_directory is provided" do
+      let(:options) { { :format => 'html', :templates => template_path } }
+      its(:html_options) { should include(:template_directory => template_path) }
+    end
 
     context "when url_base_path is not provided" do
       its(:html_options) { should include(:url_base_path => nil) }
