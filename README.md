@@ -100,6 +100,7 @@ Options:
   -u, [--url-base-path=URL_BASE_PATH]  # URL base path
   -f, [--format=FORMAT]                # Format in html or markdown, defaults to html
                                        # Default: html
+  -t, [--templates=TEMPLATES]          # Directory with override templates
 ```
 
 ## Example

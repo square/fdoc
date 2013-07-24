@@ -23,6 +23,7 @@ module Fdoc
     method_option :output, :aliases => "-o", :desc => "Output path"
     method_option :url_base_path, :aliases => "-u", :desc => "URL base path"
     method_option :format, :aliases => "-f", :desc => "Format in html or markdown, defaults to html", :default => "html"
+    method_option :templates, :aliases => "-t", :desc => "Template overrides path"
     def convert(fdoc_path)
       say_status nil, "Converting fdoc to #{options[:format]}"
 
@@ -96,6 +97,15 @@ module Fdoc
           end
       end
 
+      def template_path
+        @template_path ||=
+          if options[:templates]
+            File.expand_path(options[:templates])
+          else
+            File.expand_path("../templates", origin_path)
+          end
+      end
+
       def has_valid_origin?
         origin.directory?
       end
@@ -118,6 +128,7 @@ module Fdoc
         {
           :static_html => true,
           :url_base_path => options[:url_base_path],
+          :template_directory => template_path,
           :html_directory => destination_root
         }
       end
