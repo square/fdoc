@@ -15,6 +15,8 @@ Gem::Specification.new do |s|
   s.summary = "A tool for documenting API endpoints."
   s.homepage = "http://github.com/square/fdoc"
 
+  s.license = "Apache 2.0"
+
   s.rdoc_options = ["--charset=UTF-8"]
   s.extra_rdoc_files = [
     "README.md"
