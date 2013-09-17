@@ -2,7 +2,7 @@ require 'json'
 
 module Fdoc
   module SpecWatcher
-    VERBS = [:get, :post, :put, :delete]
+    VERBS = [:get, :post, :put, :patch, :delete]
 
     VERBS.each do |verb|
       define_method(verb) do |*params|
