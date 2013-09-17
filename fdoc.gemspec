@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.executables  << "fdoc"
 
   s.add_dependency("json")
-  s.add_dependency("json-schema", ">= 1.0.1")
+  s.add_dependency("json-schema", "~> 1.1")
   s.add_dependency("kramdown")
   s.add_dependency("thor")
 
