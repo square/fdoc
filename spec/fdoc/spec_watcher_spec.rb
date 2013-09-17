@@ -74,4 +74,13 @@ describe Fdoc::SpecWatcher do
       @klass.get("/", {:id => 1}.to_json)
     end
   end
+
+  it 'should override the existing HTTP verb methods' do
+    klass = Class.new do
+      include Fdoc::SpecWatcher
+    end.new
+    [:get, :post, :put, :patch, :delete].each do |verb|
+      klass.method(verb).owner.should be Fdoc::SpecWatcher
+    end
+  end
 end
