@@ -15,10 +15,7 @@ class Fdoc::BasePresenter
   end
 
   def render_erb(erb_name, binding = get_binding)
-    template_path = File.join(options[:template_directory], erb_name)
-    if !File.exists? template_path
-      template_path = File.join(File.dirname(__FILE__), "../templates", erb_name)
-    end
+    template_path = path_for_template(erb_name)
     template = ERB.new(File.read(template_path), nil, '-')
     template.result(binding)
   end
@@ -61,5 +58,16 @@ class Fdoc::BasePresenter
       </a>
     </#{tag}>
     EOS
+  end
+
+  protected
+
+  def path_for_template(filename)
+    template_dir  = options[:template_directory]
+    template_path = File.join(template_dir, filename) if template_dir
+    if template_path.nil? || !File.exists?(template_path)
+      template_path = File.join(File.dirname(__FILE__), "../templates", filename)
+    end
+    template_path
   end
 end
