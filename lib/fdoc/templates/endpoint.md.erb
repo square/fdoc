@@ -32,7 +32,7 @@
 <% end %>
 <% end %>
 
-<% if !successful_response_codes.empty? %>
+<% if !failure_response_codes.empty? %>
 #### Failure Response Codes
 <% failure_response_codes.each do |response_code| %>
 * <%= response_code.to_markdown %>

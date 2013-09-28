@@ -58,7 +58,7 @@
           </ul>
         <% end %>
 
-        <% if !successful_response_codes.empty? %>
+        <% if !failure_response_codes.empty? %>
           <%= tag_with_anchor('h4', 'Failure Response Codes') %>
           <ul>
             <% failure_response_codes.each do |response_code| %>
