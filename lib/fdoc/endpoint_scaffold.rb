@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # EndpointScaffolds aggregate input to guess at the structure of an API
 # endpoint. The #consume_* methods can modify the structure of the
 # in-memory endpoint, to save the results to the file system, call #persist!

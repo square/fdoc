@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'yaml'
 
 # Services represent a group of Fdoc API endpoints in a directory

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'thor'
 require 'fdoc/service'
 require 'fdoc/meta_service'

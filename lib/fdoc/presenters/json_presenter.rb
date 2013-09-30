@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'erb'
 require 'json'
 class Fdoc::JsonPresenter
