@@ -20,7 +20,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
     dirname = File.dirname(@endpoint_path)
     Dir.mkdir(dirname) unless File.directory?(dirname)
 
-    File.open(@endpoint_path, "w") do |file|
+    File.open(@endpoint_path, "w:UTF-8") do |file|
       YAML.dump(@schema, file)
     end
   end
