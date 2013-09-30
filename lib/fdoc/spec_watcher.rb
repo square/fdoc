@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-require 'json'
+require 'oj'
 
 module Fdoc
   module SpecWatcher
@@ -28,7 +28,7 @@ module Fdoc
         request_params
       else
         begin
-          JSON.parse(request_params)
+          Oj.load(request_params)
         rescue
           {}
         end
@@ -60,7 +60,7 @@ module Fdoc
 
     def response_params
       begin
-        JSON.parse(real_response.body)
+        Oj.load(real_response.body)
       rescue
         {}
       end
