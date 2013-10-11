@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+# encoding: utf-8
 # BasePresenter for Fdoc::MetaService
 class Fdoc::MetaServicePresenter < Fdoc::BasePresenter
   attr_reader :meta_service

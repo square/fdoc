@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+# encoding: utf-8
 # An BasePresenter for ResponseCodes
 class Fdoc::ResponseCodePresenter < Fdoc::BasePresenter
   attr_reader :response_code

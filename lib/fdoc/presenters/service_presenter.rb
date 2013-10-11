@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+# encoding: utf-8
 # An BasePresenter for Fdoc::Service
 class Fdoc::ServicePresenter < Fdoc::BasePresenter
   attr_reader :service

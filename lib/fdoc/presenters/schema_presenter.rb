@@ -1,4 +1,4 @@
-# -*- encoding : utf-8 -*-
+# encoding: utf-8
 # An BasePresenter for a JSON Schema fragment. Like most JSON
 # schema things, has a tendency to recurse.
 class Fdoc::SchemaPresenter < Fdoc::BasePresenter
