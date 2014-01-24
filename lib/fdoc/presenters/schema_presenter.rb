@@ -111,7 +111,7 @@ class Fdoc::SchemaPresenter < Fdoc::HtmlPresenter
 
     html do |output|
       output.tag(:li) do |list|
-        list.puts('Items')
+        list.tag(:span, 'Items', :class => 'items')
         sub_options = options.merge(:nested => true)
 
         if items.kind_of?(Array)

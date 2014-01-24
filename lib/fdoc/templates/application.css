@@ -75,13 +75,15 @@ a .endpoint-name .verb {
 
 span.required,
 span.format,
-span.type {
+span.type,
+span.items {
   font-size: 0.8em;
 }
 
 span.required { color: #508E75; }
 span.format { color: #60769F; }
 span.type { color: #BF3604; }
+span.items { color: #7E46B3; }
 
 .endpoint-name.deprecated { color: gray; }
 
