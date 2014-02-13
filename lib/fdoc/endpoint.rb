@@ -105,7 +105,7 @@ class Fdoc::Endpoint
       if v.is_a?(Hash)
         current_path = path.clone
         current_path << k if k != 'properties'
-        adjust_key_value_nodes(v, params, path)
+        adjust_key_value_nodes(v, params, current_path)
       end
     end
   end
