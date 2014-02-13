@@ -71,7 +71,6 @@ class Fdoc::Endpoint
       )
     end
 
-
     if !response_code
       raise Fdoc::UndocumentedResponseCode,
         'Undocumented response: %s, successful: %s' % [
@@ -79,10 +78,39 @@ class Fdoc::Endpoint
         ]
     elsif successful
       schema = set_additional_properties_false_on(response_parameters.dup)
+
+      adjust_key_value_nodes(schema, params)
+
       JSON::Validator.validate!(schema, stringify_keys(params))
     else
       true
     end
+  end
+
+  def adjust_key_value_nodes(schema, params, path = [])
+    if schema['type'] == 'key_value' &&
+        (hash_schema = schema['properties']).is_a?(Hash) &&
+        hash_schema.size == 1
+      
+      schema['type'] = 'object'
+      response_hash = get_nested_hash_value_by_keys(params, path)
+      item_schema = hash_schema.delete(hash_schema.keys.first)
+
+      response_hash.each do |k, v|
+        hash_schema[k] = item_schema
+      end
+    end
+
+    schema.each do |k, v|
+      if v.is_a?(Hash)
+        path << k if k != 'properties'
+        adjust_key_value_nodes(v, params, path)
+      end
+    end
+  end
+
+  def get_nested_hash_value_by_keys(hash, keys)
+    keys.inject(hash) { |h, key| h[key] }
   end
 
   def verb
