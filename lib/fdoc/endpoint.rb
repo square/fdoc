@@ -103,7 +103,8 @@ class Fdoc::Endpoint
 
     schema.each do |k, v|
       if v.is_a?(Hash)
-        path << k if k != 'properties'
+        current_path = path.clone
+        current_path << k if k != 'properties'
         adjust_key_value_nodes(v, params, path)
       end
     end
