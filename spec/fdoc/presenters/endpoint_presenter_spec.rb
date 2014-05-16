@@ -22,7 +22,7 @@ describe Fdoc::EndpointPresenter do
   context "#to_markdown" do
     it "should generate markdown" do
       markdown = subject.to_markdown
-      markdown.should include "# GET spec&#8203;/fixtures&#8203;/members&#8203;/list"
+      expect(markdown).to include "# GET spec&#8203;/fixtures&#8203;/members&#8203;/list"
     end
   end
 
@@ -94,7 +94,7 @@ describe Fdoc::EndpointPresenter do
     }
 
     it "should generate an example response from the contents of the schema" do
-      subject.example_from_schema(example_schema).should == expected_example
+      expect(subject.example_from_schema(example_schema)).to eq(expected_example)
     end
   end
 end

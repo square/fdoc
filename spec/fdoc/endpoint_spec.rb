@@ -23,13 +23,13 @@ describe Fdoc::Endpoint do
 
   describe "#verb" do
     it "infers the verb from the filename and service" do
-      subject.verb.should == "GET"
+      expect(subject.verb).to eq("GET")
     end
   end
 
   describe "#path" do
     it "infers its path from the filename and service" do
-      subject.path.should == "members/list"
+      expect(subject.path).to eq("members/list")
     end
   end
 
@@ -45,7 +45,7 @@ describe Fdoc::Endpoint do
 
     context "with a well-behaved request" do
       it "returns true" do
-        subject.should be_true
+        expect(subject).to be_true
       end
     end
 
@@ -110,18 +110,18 @@ describe Fdoc::Endpoint do
       }
 
       it "is successful" do
-        subject.should be_true
+        expect(subject).to be_true
       end
 
       context "with no optional keys" do
         before { remove_optional(params) }
 
         it "does not contain optional keys" do
-          params.keys.sort.should == ["required_nested_array", "required_nested_object", "toplevel_param"]
+          expect(params.keys.sort).to eq(["required_nested_array", "required_nested_object", "toplevel_param"])
         end
 
         it "is successful" do
-          subject.should be_true
+          expect(subject).to be_true
         end
       end
 
@@ -214,11 +214,11 @@ describe Fdoc::Endpoint do
 
     context "for successful responses" do
       it "validates the response parameters against the schema" do
-        subject.consume_response(good_response_params, "200 OK").should be_true
+        expect(subject.consume_response(good_response_params, "200 OK")).to be_true
       end
 
       it "allows either fully-qualified or integer HTTP status codes" do
-        subject.consume_response(good_response_params, 200).should be_true
+        expect(subject.consume_response(good_response_params, 200)).to be_true
       end
 
       context "with unknown keys" do
@@ -239,7 +239,7 @@ describe Fdoc::Endpoint do
       context "when there is a valid success-code response" do
         it "does not throw an error with bad response parameters" do
           bad_params = good_response_params.merge({"extra_goodness" => true})
-          subject.consume_response(bad_params, "400 Bad Request", false).should be_true
+          expect(subject.consume_response(bad_params, "400 Bad Request", false)).to be_true
         end
       end
     end

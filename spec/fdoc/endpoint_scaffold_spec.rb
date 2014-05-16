@@ -16,16 +16,16 @@ describe Fdoc::EndpointScaffold do
     }
 
     before(:each) do
-      subject.request_parameters.should be_empty
+      expect(subject.request_parameters).to be_empty
     end
 
     it "creates properties for top-level keys, and populates them with examples" do
       subject.consume_request(request_params, true)
-      subject.request_parameters["type"].should == nil
-      subject.request_parameters["properties"].should have(3).keys
-      subject.request_parameters["properties"]["depth"]["type"].should == "integer"
-      subject.request_parameters["properties"]["max_connections"]["example"].should == 20
-      subject.request_parameters["properties"]["root_node"]["type"].should == "string"
+      expect(subject.request_parameters["type"]).to eq(nil)
+      expect(subject.request_parameters["properties"].keys.size).to eq(3)
+      expect(subject.request_parameters["properties"]["depth"]["type"]).to eq("integer")
+      expect(subject.request_parameters["properties"]["max_connections"]["example"]).to eq(20)
+      expect(subject.request_parameters["properties"]["root_node"]["type"]).to eq("string")
     end
 
     it "infers boolean types" do
@@ -34,9 +34,9 @@ describe Fdoc::EndpointScaffold do
         "hold_the_lettuce" => true
       }
       subject.consume_request(bool_params)
-      subject.request_parameters["properties"].should have(2).keys
-      subject.request_parameters["properties"]["with_cheese"]["type"].should == "boolean"
-      subject.request_parameters["properties"]["hold_the_lettuce"]["type"].should == "boolean"
+      expect(subject.request_parameters["properties"].keys.size).to eq(2)
+      expect(subject.request_parameters["properties"]["with_cheese"]["type"]).to eq("boolean")
+      expect(subject.request_parameters["properties"]["hold_the_lettuce"]["type"]).to eq("boolean")
     end
 
     context "infers formats" do
@@ -46,11 +46,11 @@ describe Fdoc::EndpointScaffold do
           "time_obj" => Time.now
         }
         subject.consume_request(datetime_params)
-        subject.request_parameters["properties"].should have(2).keys
-        subject.request_parameters["properties"]["time_str"]["type"].should == "string"
-        subject.request_parameters["properties"]["time_str"]["format"].should == "date-time"
-        subject.request_parameters["properties"]["time_obj"]["type"].should == "string"
-        subject.request_parameters["properties"]["time_obj"]["format"].should == "date-time"
+        expect(subject.request_parameters["properties"].keys.size).to eq(2)
+        expect(subject.request_parameters["properties"]["time_str"]["type"]).to eq("string")
+        expect(subject.request_parameters["properties"]["time_str"]["format"]).to eq("date-time")
+        expect(subject.request_parameters["properties"]["time_obj"]["type"]).to eq("string")
+        expect(subject.request_parameters["properties"]["time_obj"]["format"]).to eq("date-time")
       end
 
       it "detects uri formats" do
@@ -58,16 +58,16 @@ describe Fdoc::EndpointScaffold do
           "sample_uri" => "http://my.example.com"
         }
         subject.consume_request(uri_params)
-        subject.request_parameters["properties"].should have(1).keys
-        subject.request_parameters["properties"]["sample_uri"]["type"].should == "string"
-        subject.request_parameters["properties"]["sample_uri"]["format"].should == "uri"
+        expect(subject.request_parameters["properties"].keys.size).to eq(1)
+        expect(subject.request_parameters["properties"]["sample_uri"]["type"]).to eq("string")
+        expect(subject.request_parameters["properties"]["sample_uri"]["format"]).to eq("uri")
       end
 
       it "detects color formats (hex only for now)" do
         color_params = { "page_color" => "#AABBCC" }
         subject.consume_request(color_params)
-        subject.request_parameters["properties"]["page_color"]["type"].should == "string"
-        subject.request_parameters["properties"]["page_color"]["format"].should == "color"
+        expect(subject.request_parameters["properties"]["page_color"]["type"]).to eq("string")
+        expect(subject.request_parameters["properties"]["page_color"]["format"]).to eq("color")
       end
     end
 
@@ -77,11 +77,11 @@ describe Fdoc::EndpointScaffold do
         "with_string" => true
       }
       subject.consume_request(mixed_params)
-      subject.request_parameters["properties"].should have(2).keys
-      subject.request_parameters["properties"].should have_key "with_symbol"
-      subject.request_parameters["properties"].should_not have_key :with_symbol
-      subject.request_parameters["properties"].should have_key "with_string"
-      subject.request_parameters["properties"].should_not have_key :with_string
+      expect(subject.request_parameters["properties"].keys.size).to eq(2)
+      expect(subject.request_parameters["properties"]).to have_key "with_symbol"
+      expect(subject.request_parameters["properties"]).not_to have_key :with_symbol
+      expect(subject.request_parameters["properties"]).to have_key "with_string"
+      expect(subject.request_parameters["properties"]).not_to have_key :with_string
     end
 
     it "uses strings (not symbols) for keys of nested hashes" do
@@ -93,7 +93,7 @@ describe Fdoc::EndpointScaffold do
       }
 
       subject.consume_request(mixed_params)
-      subject.request_parameters["properties"]["nested_object"]["properties"].keys.sort.should == ["with_string", "with_symbol"]
+      expect(subject.request_parameters["properties"]["nested_object"]["properties"].keys.sort).to eq(["with_string", "with_symbol"])
     end
 
     it "uses strings (not symbols) for nested hashes inside arrays" do
@@ -107,13 +107,13 @@ describe Fdoc::EndpointScaffold do
       }
 
       subject.consume_request(mixed_params)
-      subject.request_parameters["properties"]["nested_array"]["items"]["properties"].keys.sort.should == ["with_string", "with_symbol"]
+      expect(subject.request_parameters["properties"]["nested_array"]["items"]["properties"].keys.sort).to eq(["with_string", "with_symbol"])
     end
 
     it "produces a valid JSON schema for the response" do
       subject.consume_request(request_params)
-      subject.request_parameters["properties"].should have(3).keys
-      JSON::Validator.validate!(subject.request_parameters, request_params).should be_true
+      expect(subject.request_parameters["properties"].keys.size).to eq(3)
+      expect(JSON::Validator.validate!(subject.request_parameters, request_params)).to be_true
     end
   end
 
@@ -151,57 +151,57 @@ describe Fdoc::EndpointScaffold do
 
     context "for succesful responses" do
       before(:each) do
-        subject.should have(0).response_codes
+        expect(subject.response_codes.size).to eq(0)
       end
 
       it "adds response codes" do
         subject.consume_response({}, "200 OK")
-        subject.should have(1).response_codes
+        expect(subject.response_codes.size).to eq(1)
 
         subject.consume_response({}, "201 Created")
-        subject.should have(2).response_codes
+        expect(subject.response_codes.size).to eq(2)
       end
 
      it "does not add duplicate response codes" do
         subject.consume_response({}, "200 OK")
-        subject.should have(1).response_codes
+        expect(subject.response_codes.size).to eq(1)
 
         subject.consume_response({}, "200 OK")
-        subject.should have(1).response_codes
+        expect(subject.response_codes.size).to eq(1)
 
         subject.response_codes.each do |response|
-          response["description"].should == "???"
+          expect(response["description"]).to eq("???")
         end
       end
 
       it "creates properties for top-level keys, and populates them with examples" do
         subject.consume_response(response_params, "200 OK")
-        subject.response_parameters["type"].should == nil
-        subject.response_parameters["properties"].keys.should =~ ["nodes", "root_node", "std_dev", "version", "updated_at"]
+        expect(subject.response_parameters["type"]).to eq(nil)
+        expect(subject.response_parameters["properties"].keys).to match_array(["nodes", "root_node", "std_dev", "version", "updated_at"])
 
-        subject.response_parameters["properties"]["nodes"]["type"].should == "array"
-        subject.response_parameters["properties"]["nodes"]["description"].should == "???"
-        subject.response_parameters["properties"]["nodes"]["required"].should == "???"
+        expect(subject.response_parameters["properties"]["nodes"]["type"]).to eq("array")
+        expect(subject.response_parameters["properties"]["nodes"]["description"]).to eq("???")
+        expect(subject.response_parameters["properties"]["nodes"]["required"]).to eq("???")
 
-        subject.response_parameters["properties"]["root_node"]["type"].should == "object"
-        subject.response_parameters["properties"]["root_node"]["description"].should == "???"
-        subject.response_parameters["properties"]["root_node"]["required"].should == "???"
+        expect(subject.response_parameters["properties"]["root_node"]["type"]).to eq("object")
+        expect(subject.response_parameters["properties"]["root_node"]["description"]).to eq("???")
+        expect(subject.response_parameters["properties"]["root_node"]["required"]).to eq("???")
 
-        subject.response_parameters["properties"]["version"]["type"].should == "integer"
-        subject.response_parameters["properties"]["std_dev"]["type"].should == "number"
+        expect(subject.response_parameters["properties"]["version"]["type"]).to eq("integer")
+        expect(subject.response_parameters["properties"]["std_dev"]["type"]).to eq("number")
       end
 
       it "populates items in arrays" do
         subject.consume_response(response_params, "200 OK")
-        subject.response_parameters["properties"]["nodes"]["type"].should == "array"
-        subject.response_parameters["properties"]["nodes"]["items"]["type"].should == "object"
-        subject.response_parameters["properties"]["nodes"]["items"]["properties"].keys.sort.should == [
-          "id", "linked_to","name"]
+        expect(subject.response_parameters["properties"]["nodes"]["type"]).to eq("array")
+        expect(subject.response_parameters["properties"]["nodes"]["items"]["type"]).to eq("object")
+        expect(subject.response_parameters["properties"]["nodes"]["items"]["properties"].keys.sort).to eq([
+          "id", "linked_to","name"])
       end
 
       it "turns nil into null" do
         subject.consume_response(response_params, "200 OK")
-        subject.response_parameters["properties"]["updated_at"]["type"].should == "null"
+        expect(subject.response_parameters["properties"]["updated_at"]["type"]).to eq("null")
       end
 
       it "uses strings (not symbols) as keys" do
@@ -210,32 +210,32 @@ describe Fdoc::EndpointScaffold do
           "with_string" => true
         }
         subject.consume_response(mixed_params, "200 OK")
-        subject.response_parameters["properties"].should have(2).keys
-        subject.response_parameters["properties"].should have_key "with_symbol"
-        subject.response_parameters["properties"].should_not have_key :with_symbol
-        subject.response_parameters["properties"].should have_key "with_string"
-        subject.response_parameters["properties"].should_not have_key :with_string
+        expect(subject.response_parameters["properties"].keys.size).to eq(2)
+        expect(subject.response_parameters["properties"]).to have_key "with_symbol"
+        expect(subject.response_parameters["properties"]).not_to have_key :with_symbol
+        expect(subject.response_parameters["properties"]).to have_key "with_string"
+        expect(subject.response_parameters["properties"]).not_to have_key :with_string
       end
 
       it "produces a valid JSON schema for the response" do
         subject.consume_response(response_params, "200 OK")
-        JSON::Validator.validate!(subject.response_parameters, response_params).should be_true
+        expect(JSON::Validator.validate!(subject.response_parameters, response_params)).to be_true
       end
     end
 
     context "for unsuccessful responses" do
       it "adds response codes" do
-        subject.should have(0).response_codes
+        expect(subject.response_codes.size).to eq(0)
         subject.consume_response({}, "400 Bad Request", false)
-        subject.should have(1).response_codes
+        expect(subject.response_codes.size).to eq(1)
         subject.consume_response({}, "404 Not Found", false)
-        subject.should have(2).response_codes
+        expect(subject.response_codes.size).to eq(2)
       end
 
       it "does not modify the response_parameters" do
-        subject.response_parameters.should be_empty
+        expect(subject.response_parameters).to be_empty
         subject.consume_response(response_params, "403 Forbidden", false)
-        subject.response_parameters.should be_empty
+        expect(subject.response_parameters).to be_empty
       end
     end
   end
