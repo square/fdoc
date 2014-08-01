@@ -35,7 +35,9 @@ module Fdoc
     end
 
     def path
-      if respond_to?(:example) # Rspec 2
+      if RSpec.respond_to?(:current_example) # Rspec 3
+        RSpec.current_example.metadata[:fdoc]
+      elsif respond_to?(:example) # Rspec 2
         example.metadata[:fdoc]
       else # Rspec 1.3.2
         opts = {}
