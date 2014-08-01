@@ -17,7 +17,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
 
   def persist!
     dirname = File.dirname(@endpoint_path)
-    Dir.mkdir(dirname) unless File.directory?(dirname)
+    FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
     File.open(@endpoint_path, "w") do |file|
       YAML.dump(@schema, file)
