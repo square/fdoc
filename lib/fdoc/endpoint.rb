@@ -59,6 +59,9 @@ class Fdoc::Endpoint
   def consume_request(params, successful=true)
     if successful
       schema = set_additional_properties_false_on(request_parameters.dup)
+
+      adjust_key_value_nodes(schema, params)
+
       JSON::Validator.validate!(schema, stringify_keys(params))
     end
   end
@@ -96,8 +99,10 @@ class Fdoc::Endpoint
       response_hash = get_nested_hash_value_by_keys(params, path)
       item_schema = hash_schema.delete(hash_schema.keys.first)
 
-      response_hash.each do |k, v|
-        hash_schema[k] = item_schema
+      if response_hash.present?
+        response_hash.each do |k, v|
+          hash_schema[k] = item_schema
+        end
       end
     end
 
