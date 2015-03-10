@@ -116,7 +116,10 @@ class Fdoc::Endpoint
   end
 
   def get_nested_hash_value_by_keys(hash, keys)
-    keys.inject(hash) { |h, key| h[key] unless h.nil? }
+    keys.inject(hash) do |h, key|
+      return if h.nil?
+      key == 'items' ? h.first : h[key]
+    end
   end
 
   def verb
