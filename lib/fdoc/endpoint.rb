@@ -94,7 +94,7 @@ class Fdoc::Endpoint
     if schema['type'] == 'key_value' &&
         (hash_schema = schema['properties']).is_a?(Hash) &&
         hash_schema.size == 1
-      
+
       schema['type'] = 'object'
       response_hash = get_nested_hash_value_by_keys(params, path)
       item_schema = hash_schema.delete(hash_schema.keys.first)
@@ -116,7 +116,7 @@ class Fdoc::Endpoint
   end
 
   def get_nested_hash_value_by_keys(hash, keys)
-    keys.inject(hash) { |h, key| h[key] }
+    keys.inject(hash) { |h, key| h[key] unless h.nil? }
   end
 
   def verb
