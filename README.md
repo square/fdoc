@@ -46,7 +46,7 @@ end
 To enable fdoc for an endpoint, add the `fdoc` option with the path to the endpoint. fdoc will intercept all calls to `get`, `post`, `put`, and `delete` and verify those parameters accordingly.
 
 ```ruby
-context "#show", :fdoc => 'members/list' do
+context "#show", fdoc: 'members/list' do
   # ...
 end
 ```
@@ -152,7 +152,7 @@ Our spec file, `spec/controllers/members_controller_spec.rb` looks like:
 require 'fdoc/spec_watcher'
 
 describe MembersController do
-  context "#show", :fdoc => "members/list" do
+  context "#show", fdoc: "members/list" do
     it "can take an offset" do
       get :show, {
         :offset => 5

@@ -8,11 +8,13 @@ require 'fdoc/spec_watcher'
 describe MembersController do
   include Fdoc::SpecWatcher
 
-  context "#list", :fdoc => 'members/list' do
-    get :list, {
-      :limit => 10,
-      :older_than => Time.gm(2012,"jun",21,10,40,00)
-    }
+  context "#list", fdoc: 'members/list' do
+    it "lists members scoped to age" do
+      get :list, {
+        limit: 10,
+        older_than: Time.gm(2012,"jun",21,10,40,00)
+      }
+    end
   end
 end
 ````
