@@ -25,16 +25,16 @@ describe Fdoc::SpecWatcher do
     end
 
     it 'should verify when params are a hash' do
-      Fdoc::Service.should_receive(:verify!).with do |*args|
+      expect(Fdoc::Service).to receive(:verify!).with { |*args|
         args[2] == {:id => 1}
-      end
+      }
       @klass.get(:index, {:id => 1})
     end
 
     it 'should verify when params are JSON' do
-      Fdoc::Service.should_receive(:verify!).with do |*args|
+      expect(Fdoc::Service).to receive(:verify!).with { |*args|
         args[2] == {'id' => 1}
-      end
+      }
       @klass.get(:index, {:id => 1}.to_json)
     end
   end
@@ -61,16 +61,16 @@ describe Fdoc::SpecWatcher do
     end
 
     it 'should verify when params are a hash' do
-      Fdoc::Service.should_receive(:verify!).with do |*args|
+      expect(Fdoc::Service).to receive(:verify!).with { |*args|
         args[2] == {:id => 1}
-      end
+      }
       @klass.get("/", {:id => 1})
     end
 
     it 'should verify when params are JSON' do
-      Fdoc::Service.should_receive(:verify!).with do |*args|
+      expect(Fdoc::Service).to receive(:verify!).with { |*args|
         args[2] == {'id' => 1}
-      end
+      }
       @klass.get("/", {:id => 1}.to_json)
     end
   end
@@ -80,7 +80,7 @@ describe Fdoc::SpecWatcher do
       include Fdoc::SpecWatcher
     end.new
     [:get, :post, :put, :patch, :delete].each do |verb|
-      klass.method(verb).owner.should be Fdoc::SpecWatcher
+      expect(klass.method(verb).owner).to be Fdoc::SpecWatcher
     end
   end
 end

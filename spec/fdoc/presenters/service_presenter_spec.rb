@@ -19,8 +19,8 @@ describe Fdoc::ServicePresenter do
   context "#to_markdown" do
     it "should generate markdown" do
       markdown = subject.to_markdown
-      markdown.should include "* PUT [https:&#8203;/&#8203;/api.sample.com&#8203;/members&#8203;/add](add-PUT.md)"
-      markdown.should include "* POST [https:&#8203;/&#8203;/api.sample.com&#8203;/members&#8203;/draft](draft-POST.md)"
+      expect(markdown).to include "* PUT [https:&#8203;/&#8203;/api.sample.com&#8203;/members&#8203;/add](add-PUT.md)"
+      expect(markdown).to include "* POST [https:&#8203;/&#8203;/api.sample.com&#8203;/members&#8203;/draft](draft-POST.md)"
     end
   end
 
@@ -34,7 +34,7 @@ describe Fdoc::ServicePresenter do
 
     context "pass in filename" do
       it "should join with filename" do
-        subject.relative_meta_service_path('index.md').should == "../index.md"
+        expect(subject.relative_meta_service_path('index.md')).to eq "../index.md"
       end
     end
   end
