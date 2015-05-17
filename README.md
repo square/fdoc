@@ -39,6 +39,8 @@ require 'fdoc/spec_watcher'
 
 describe MembersController do
   include Fdoc::SpecWatcher
+  
+  render_views
   # ...
 end
 ```
