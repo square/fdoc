@@ -101,7 +101,7 @@ class Fdoc::Endpoint
 
       if response_hash.present?
         response_hash.each do |k, v|
-          hash_schema[k] = item_schema
+          hash_schema[k] = item_schema.deep_dup
         end
       end
     end
