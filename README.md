@@ -55,7 +55,7 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
 
     FDOC_SCAFFOLD=true bundle exec rspec spec/controllers
 
-For more information on scaffolding, please see the more in-depth [fdoc scaffolding example][github_scaffold].
+For more information on scaffolding, please see the more in-depth [fdoc scaffolding example][github_scaffold], also you can see our [step by step quick guide][github_guide].
 
 ### In a Sinatra app
 
@@ -211,13 +211,10 @@ Notice how it infers a type, and copies an example, but leaves description and r
 
 Just fork and make a pull request! You will need to sign the [Individual Contributor License Agreement (CLA)][contrib_license] before we can merge your code.
 
-
-
-
 [github_img]: https://github.com/square/fdoc/raw/master/docs/farnsworth.png
 [github_scaffold]: https://github.com/square/fdoc/blob/master/docs/scaffold.md
 [github_json]: https://github.com/square/fdoc/blob/master/docs/json_schema.md
 [github_files]: https://github.com/square/fdoc/blob/master/docs/files.md
-
+[github_guide]: https://github.com/square/fdoc/blob/master/docs/guide.md
 [json_schema]: http://json-schema.org/
 [contrib_license]: https://spreadsheets.google.com/spreadsheet/viewform?formkey=dDViT2xzUHAwRkI3X3k5Z0lQM091OGc6MQ&ndplr=1
