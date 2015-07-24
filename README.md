@@ -55,7 +55,7 @@ fdoc also has a scaffolding mode, where it attemps to infer the schema of a requ
 
     FDOC_SCAFFOLD=true bundle exec rspec spec/controllers
 
-For more information on scaffolding, please see the more in-depth [fdoc scaffolding example][github_scaffold], also you can see our [step by step quick guide].
+For more information on scaffolding, please see the more in-depth [fdoc scaffolding example][github_scaffold], also you can see our [step by step quick guide][github_guide].
 
 ### In a Sinatra app
 
