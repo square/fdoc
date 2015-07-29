@@ -1,4 +1,5 @@
 require 'json'
+require 'pry'
 
 module Fdoc
   module SpecWatcher
@@ -35,17 +36,12 @@ module Fdoc
     end
 
     def path
-      if RSpec.respond_to?(:current_example) # Rspec 3
-        RSpec.current_example.metadata[:fdoc]
-      elsif respond_to?(:example) # Rspec 2
-        example.metadata[:fdoc]
-      else # Rspec 1.3.2
-        opts = {}
-        __send__(:example_group_hierarchy).each do |example|
-          opts.merge!(example.options)
-        end
-        opts.merge!(options)
-        opts[:fdoc]
+      if rspec_3_path
+        rspec_3_path
+      elsif rspec_2_path
+        rspec_2_path
+      else
+        rspec_1_path
       end
     end
 
@@ -67,5 +63,25 @@ module Fdoc
       end
     end
 
+    private
+
+    def rspec_3_path
+      return unless RSpec.respond_to?(:current_example)
+      RSpec.current_example.metadata[:fdoc]
+    end
+
+    def rspec_2_path
+      return unless respond_to?(:example)
+      example.metadata[:fdoc]
+    end
+
+    def rspec_1_path # RSpec 1.3.2
+      opts = {}
+      __send__(:example_group_hierarchy).each do |example|
+        opts.merge!(example.options)
+      end
+      opts.merge!(options)
+      opts[:fdoc]
+    end
   end
 end
