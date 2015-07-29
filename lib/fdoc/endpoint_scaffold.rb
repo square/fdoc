@@ -72,7 +72,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
     schema["properties"] ||= {}
 
     params.each do |key, value|
-      unless schema[key]
+      unless schema[key] && available_types.include?(value)
         schema["properties"][key] ||= {}
         sub_options = options.merge(:root_object => false)
         scaffold_schema(schema["properties"][key], value, sub_options)
@@ -110,6 +110,11 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
       "NilClass" => "null"
     }
     type_map[in_type] || in_type.downcase
+  end
+
+  def available_types
+    # Found at: http://json-schema.org/latest/json-schema-core.html#anchor8
+    %w( array boolean integer number null object string )
   end
 
   def guess_format(value)
