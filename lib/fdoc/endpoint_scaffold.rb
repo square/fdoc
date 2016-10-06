@@ -20,7 +20,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
     FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
     File.open(@endpoint_path, "w") do |file|
-      YAML.dump(@schema, file)
+      file.write(@schema.to_yaml)
     end
   end
 

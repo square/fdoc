@@ -23,7 +23,7 @@ class Fdoc::Service
 
       Dir.mkdir(service_dir) unless Dir.exist?(service_dir)
       service_path = "#{service_dir}/???.fdoc.service"
-      File.open(service_path, "w") { |file| YAML.dump(schema, file) }
+      File.open(service_path, "w") { |file| file.write(@schema.to_yaml) }
 
       schema
     else
