@@ -1,5 +1,6 @@
+# encoding: utf-8
 require 'erb'
-require 'json'
+require 'oj'
 class Fdoc::JsonPresenter
   attr_reader :json
 
@@ -16,14 +17,14 @@ class Fdoc::JsonPresenter
       '<tt>%s</tt>' % json
     elsif json.kind_of?(Hash) ||
           json.kind_of?(Array)
-      '<pre><code>%s</code></pre>' % JSON.pretty_generate(json)
+      '<pre><code>%s</code></pre>' % Oj.dump(json, indent: 4)
     end
   end
 
   def to_markdown
     if json.kind_of?(Hash) ||
        json.kind_of?(Array)
-      JSON.pretty_generate(json)
+      Oj.dump(json, indent: 4)
     else
       json
     end

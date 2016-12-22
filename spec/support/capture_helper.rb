@@ -1,3 +1,4 @@
+# encoding: utf-8
 module CaptureHelper
   def capture(stream)
     begin

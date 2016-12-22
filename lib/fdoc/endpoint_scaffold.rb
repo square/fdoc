@@ -1,3 +1,4 @@
+# encoding: utf-8
 # EndpointScaffolds aggregate input to guess at the structure of an API
 # endpoint. The #consume_* methods can modify the structure of the
 # in-memory endpoint, to save the results to the file system, call #persist!
@@ -19,7 +20,7 @@ class Fdoc::EndpointScaffold < Fdoc::Endpoint
     dirname = File.dirname(@endpoint_path)
     FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
 
-    File.open(@endpoint_path, "w") do |file|
+    File.open(@endpoint_path, "w:UTF-8") do |file|
       YAML.dump(@schema, file)
     end
   end

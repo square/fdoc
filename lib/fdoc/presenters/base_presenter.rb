@@ -1,6 +1,6 @@
+# encoding: utf-8
 require 'erb'
 require 'kramdown'
-require 'json'
 require 'forwardable'
 
 # BasePresenters assist in generating Html for fdoc classes.
