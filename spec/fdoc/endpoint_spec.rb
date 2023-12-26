@@ -45,7 +45,7 @@ describe Fdoc::Endpoint do
 
     context "with a well-behaved request" do
       it "returns true" do
-        subject.should be_true
+        subject.should be true
       end
     end
 
@@ -110,7 +110,7 @@ describe Fdoc::Endpoint do
       }
 
       it "is successful" do
-        subject.should be_true
+        subject.should be true
       end
 
       context "with no optional keys" do
@@ -121,7 +121,7 @@ describe Fdoc::Endpoint do
         end
 
         it "is successful" do
-          subject.should be_true
+          subject.should be true
         end
       end
 
@@ -214,11 +214,11 @@ describe Fdoc::Endpoint do
 
     context "for successful responses" do
       it "validates the response parameters against the schema" do
-        subject.consume_response(good_response_params, "200 OK").should be_true
+        subject.consume_response(good_response_params, "200 OK").should be true
       end
 
       it "allows either fully-qualified or integer HTTP status codes" do
-        subject.consume_response(good_response_params, 200).should be_true
+        subject.consume_response(good_response_params, 200).should be true
       end
 
       context "with unknown keys" do
@@ -239,7 +239,7 @@ describe Fdoc::Endpoint do
       context "when there is a valid success-code response" do
         it "does not throw an error with bad response parameters" do
           bad_params = good_response_params.merge({"extra_goodness" => true})
-          subject.consume_response(bad_params, "400 Bad Request", false).should be_true
+          subject.consume_response(bad_params, "400 Bad Request", false).should be true
         end
       end
     end

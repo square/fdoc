@@ -113,7 +113,7 @@ describe Fdoc::EndpointScaffold do
     it "produces a valid JSON schema for the response" do
       subject.consume_request(request_params)
       subject.request_parameters["properties"].should have(3).keys
-      JSON::Validator.validate!(subject.request_parameters, request_params).should be_true
+      JSON::Validator.validate!(subject.request_parameters, request_params).should be true
     end
   end
 
@@ -219,7 +219,7 @@ describe Fdoc::EndpointScaffold do
 
       it "produces a valid JSON schema for the response" do
         subject.consume_response(response_params, "200 OK")
-        JSON::Validator.validate!(subject.response_parameters, response_params).should be_true
+        JSON::Validator.validate!(subject.response_parameters, response_params).should be true
       end
     end
 
