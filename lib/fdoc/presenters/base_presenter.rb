@@ -65,7 +65,7 @@ class Fdoc::BasePresenter
   def path_for_template(filename)
     template_dir  = options[:template_directory]
     template_path = File.join(template_dir, filename) if template_dir
-    if template_path.nil? || !File.exists?(template_path)
+    if template_path.nil? || !File.exist?(template_path)
       template_path = File.join(File.dirname(__FILE__), "../templates", filename)
     end
     template_path

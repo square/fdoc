@@ -14,13 +14,13 @@ describe Fdoc::BasePresenter do
 
   context "#render_erb" do
     it "renders a default template" do
-      File.should_receive(:exists?).with('templates/test.html.erb').and_return(false)
+      File.should_receive(:exist?).with('templates/test.html.erb').and_return(false)
       File.stub(:read).and_return('test content')
       subject.to_html
     end
 
     it "renders from local template directory" do
-      File.should_receive(:exists?).with('templates/test.html.erb').and_return(true)
+      File.should_receive(:exist?).with('templates/test.html.erb').and_return(true)
       File.should_receive(:read).with('templates/test.html.erb').and_return('test content')
       subject.to_html
     end
