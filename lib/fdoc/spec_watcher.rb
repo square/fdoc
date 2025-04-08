@@ -8,7 +8,7 @@ module Fdoc
       define_method(verb) do |*params|
         action, request_params = params
 
-        super(*params)
+        request_params.nil? ? super(*params) : super(action, request_params)
 
         check_response(verb, request_params) if path
       end
