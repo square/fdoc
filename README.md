@@ -178,7 +178,7 @@ And since `offset` is undocumented, fdoc will fail the test:
 
 If we run the same spec in scaffold mode, it passes and fdoc will write changes to the correspoding `.fdoc` file:
 
-    FDOC_SCAFFOLD=true bundle exec spec/controllers/members_controller_spec.rb
+    FDOC_SCAFFOLD=true bundle exec rspec spec/controllers/members_controller_spec.rb
 
 The diff looks like:
 
